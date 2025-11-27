@@ -575,7 +575,7 @@
           margin-left: 50px;
           margin-bottom: 50px;
         ">
-      <button id="btnAddChain">
+      <button id="btnAddChain" title="Seçtiğiniz niteliklere göre zinciri oluşturmak için hemen tıklayın!">
         <i class="fa-solid fa-plus"></i>
         <span class="btn-text">
           <span class="btn-text-word">Zinciri</span>
@@ -583,7 +583,7 @@
         </span>
       </button>
 
-      <button id="btnLoadFromFile" title="Bilgisayarınızdan dosya aktarımı"
+      <button id="btnLoadFromFile" title="Bilgisayarınızdan ana sunucuya dosya aktarımı"
         style="margin-left: 125px; margin-right: 25px">
         <i class="fa-solid fa-folder-plus"></i>
         <span class="btn-text">
@@ -593,7 +593,7 @@
       </button>
 
       <button id="btnExportFallback"
-        title="Aşada var olan tüm tablolarınızın .zincir uzantılı (JSON formatında) verilerin yedeği">
+        title="Aşağıda var olan tüm tablolarınızın .zincir uzantılı (JSON formatında) verilerin yedeği">
         <i class="fa-solid fa-download"></i>
         <span class="btn-text">
           <span class="btn-text-word">Yedek</span>
@@ -1048,6 +1048,42 @@
           picked
         ).length;
 
+      
+          cols = 1;
+          rows = n;
+          let bestDiff = Infinity;
+
+          // Özel durum: n <= nSelected ise
+          if (nSelected > 0 && n <= nSelected) {
+            cols = nSelected;
+            rows = Math.ceil(n / cols);
+          }
+          else {
+            // Normal durum → optimum grid bul
+            let c = 1;
+            while (c <= n) {
+              if (nSelected === 0 || c % nSelected === 0) {
+                let r = Math.ceil(n / c);
+                let diff = Math.abs(r - c);
+
+                if (
+                  diff < bestDiff ||
+                  (diff === bestDiff && c > cols)
+                ) {
+                  bestDiff = diff;
+                  cols = c;
+                  rows = r;
+                }
+              }
+              c++;
+            }
+          }
+
+          // Varsayılanları inputlara yaz
+          colsInput.value = cols;
+          rowsInput.value = rows;
+
+
         countEl.textContent = String(n);
 
         if (!n || n <= 0) {
@@ -1057,18 +1093,13 @@
           return;
         }
 
-        // Varsayılan olarak seçili gün sayısı kadar sütun seç (hafta içi 7 gibi)
-        if (nSelected && nSelected > 0) {
-          cols = nSelected;
-          if (cols > n) cols = n;
-        } else {
-          cols = 1;
-        }
-
         computeLayoutFromColsAbsolute(nSelected, cols);
         syncLayoutInputs(nSelected);
         countEl.textContent = String(n);
       }
+
+
+
 
       /**
        * Sütun input'u (colsInput) değiştiğinde çağrılır.
