@@ -1,118 +1,209 @@
+
+
 # Zinciri Kırma (Alışkanlık Takip Aracı)
 
-Bu proje, Jerry Seinfeld’in popüler **“Don’t Break the Chain / Zinciri Kırma”** metodundan ilham alan,
-tamamen tarayıcı üzerinde çalışan, çevrimdışı kullanılabilen basit bir alışkanlık takip aracıdır.
+Bu proje, Jerry Seinfeld’in **“Don’t Break the Chain / Zinciri Kırma”** yaklaşımından ilham alan, tarayıcı üzerinde çalışan, çevrimdışı kullanılabilen bir alışkanlık takip aracıdır.
 
-Belirli bir tarih aralığında ve haftanın seçtiğiniz günlerinde bir zincir (alışkanlık) oluşturur,
-günleri tablo şeklinde gösterir ve her tamamlanan gün için hücreye **el yazısı stilinde bir X** atmanızı sağlar.
+Kod tabanı, anlamlı değişken isimleri ve yerinde kullanılan yorum satırları sayesinde **okunabilirliği yüksek** olacak şekilde tasarlanmıştır; ayrıca parçalı ama aynı zamanda **minimal** mimarisi sayesinde yeni özellik eklemek veya mevcut davranışı değiştirmek oldukça kolaydır.
 
-> **Not:** Arayüz ve bu README şimdilik tamamen **Türkçe**’dir.
+Uygulama iki temel zincir modunu destekler:
 
----
+* **Tarihe bağlı zincirler**
+* **Sayıya bağlı zincirler**
 
-## Özellikler
-
-- **Çevrimdışı çalışma**  
-  Her şey tarayıcı içinde çalışır, sunucuya veri gönderilmez. Veriler `localStorage` ve istersen
-  JSON formatlı **`.zincir`** dosyaları ile saklanır ve taşınabilir.
-
-- **Esnek tarih aralığı**  
-  Başlangıç ve bitiş tarihini seçerek istediğiniz uzunlukta zincir oluşturabilirsiniz.
-
-- **Haftanın günlerini seçme**  
-  Haftanın istediğiniz günlerini kapsayan kendi haftalık periyotunuzu tanımlayabilirsiniz
-  (örneğin sadece Pazartesi/Çarşamba/Cuma veya haftanın her günü). Uygulama, seçiminize göre
-  zinciri otomatik oluşturur; hiç gün seçmezseniz uyarır, tüm günler seçiliyse bunu ayrıca belirtir.
-
-- **Otomatik halka (gün) hesaplama**  
-  Seçilen tarih aralığı + seçilen günlere göre toplam halka (gün) sayısını otomatik hesaplar
-  ve ekranda gösterir.
-
-- **Akıllı satır / sütun düzeni (dinamik grid)**  
-  - Toplam halka sayısına göre tablo düzeni **otomatik ve mantıklı** bir şekilde hesaplanır.  
-  - Seçtiğiniz günlere göre sütun sayısı için mantıklı adımlar belirlenir (örneğin haftada 3 gün
-    seçtiysen sütun sayısı 3’ün katları olacak şekilde önerilir).  
-  - Satır ve sütun değerlerini manuel değiştirebilirsiniz; uygulama, seçtiğiniz değeri en yakın
-    geçerli düzene yuvarlayarak **bozulmayan, tutarlı bir grid** üretir.  
-  - Düzen değiştikçe (tarih aralığı veya gün seçimlerini değiştirdiğinizde) satır/sütun aralığı,
-    minimum–maksimum değerler ve bilgilendirme metni otomatik güncellenir.
-
-- **El yazısı X işareti**  
-  Her hücreye tıklanarak, hafif titreşimli çizgilerle çizilmiş el yazısı hissi veren bir **X**
-  işareti eklenir veya kaldırılır. Her X, `localStorage`’a kaydedilir.
-
-- **Ay ve yıl geçişleri için görsel sınırlar**  
-  Ay veya yıl değişimlerinde ilgili hücrelerin sol tarafında farklı kenarlık stili ile görsel ayrım yapılır.
-  Böylece uzun zincirlerde hangi satırın hangi ay/yıla ait olduğu kolayca seçilir.
-
-- **Birden fazla zincir desteği + sekmeler**  
-  Aynı sayfada birden fazla zincir oluşturabilirsiniz. Zincirler,
-  üstte **sekme (tab) yapısı** ile listelenir; sekmelerden birini seçtiğinizde o zincirin tablosu
-  aktif olarak gösterilir.
-
-- **Zincir oluşturulma zamanı bilgisi**  
-  Her zincir oluşturulurken o anki tarih ve saat kaydedilir ve zincir kartında
-  “Oluşturulma” bilgisi olarak gösterilir.
-
-- **JSON ile içe/dışa aktarma (.zincir dosyaları)**  
-  - Tüm zincirlerinizi JSON formatında **`.zincir`** dosyası olarak indirebilirsiniz.  
-  - Daha sonra bu dosyayı tekrar yükleyerek zincirlerinizi geri alabilirsiniz.  
-  - Mevcut zincirleriniz silinmez; dışarıdan içe aktardığınız zincirler **var olanların sonuna
-    eklenir**. ID çakışmalarında yeni ID üretilerek veri kaybı önlenir.
-
-- **Tablet ve mobil cihazlarla uyumlu (responsive) arayüz**  
-  Düzen, küçük ekranlarda (telefon ve tablet) otomatik olarak yeniden yerleşecek şekilde tasarlanmıştır.
-  Form alanları, butonlar ve tablo görünümü dar ekranlarda kaydırılabilir ve rahat okunabilir bir
-  yapıya dönüşür; masaüstü görünümünü bozmadan mobil deneyimi iyileştirir.
-
-- **Basit, okunabilir ve yoğun yorumlanmış kod yapısı**  
-  Uygulama tek bir HTML dosyası içinde, **gömülü CSS ve JavaScript** ile çalışır. Kodun büyük bölümünde
-  açıklayıcı yorum satırları bulunur; değişken isimleri ve fonksiyonlar olabildiğince açık seçik tutulmuştur.
-  Bu sayede hem arayüzden hem de kaynak koddaki yorumlardan, “hangi değişken ne işe yarıyor / ne oluyor”
-  gibi soruların cevabını kolayca takip edebilirsin.
-
-- **Sade ve dikkat dağıtmayan tasarım**  
-  Arayüz, zinciri takip etme işine odaklanan sade bir tasarıma sahiptir. Renkler ve kenarlıklar:
-  - Tamamlanmış günleri ve tarih aralıklarını net gösterecek kadar belirgin,  
-  - Ama göz yormayacak kadar yumuşak seçilmiştir.  
-  Böylece uzun süre kullanırken bile dikkatini asıl işten uzaklaştırmadan, alışkanlık takibine
-  odaklanabilirsin.
-
-- **Kurulum gerektirmez, tek dosya ile çalışır**  
-  Projeyi GitHub Pages, herhangi basit bir statik sunucu veya doğrudan dosyaya çift tıklayarak
-  tarayıcıda açabilirsin. Ek bir build adımı, paket yöneticisi veya framework kurulumu gerektirmez.
+Yeni sürüm ayrıca yapılandırılmış sekmeler, iyileştirilmiş grid sistemi ve kapsamlı validasyon mekanizmaları içerir.
 
 ---
 
-## 📸 Ekran Görüntüsü
+## Arayüz Görselleri
 
-Aşağıda uygulamanın örnek görünümü yer almaktadır:
+Aşağıdaki görüntüler uygulamanın farklı bölümlerine aittir:
 
-![Zinciri Kırma ekran görüntüsü](images/zincirikirma_arayuz.png)
+![Arayüz 1](images/arayuz1-zincirikirma.png)
+
+![Arayüz 2](images/arayuz2-zincirikirma.png)
+
+![Arayüz 3](images/arayuz3-zincirikirma.png)
+
+![Arayüz 4](images/arayuz4-zincirikirma.png)
+
+![Arayüz 5](images/arayuz5-zincirikirma.png)
+
+
+Mobile Cihazlarda: 
+
+![Arayüz 6](images/arayuz6-zincirikirma.jpg)
 
 ---
 
-## Kullanım (Kısa Özet)
+## 1. Öne Çıkan Değişiklikler
 
-1. **Hedefini gir:**  
-   “Hedefim” alanına takip etmek istediğin alışkanlığı yaz (örn. *Her gün 1 saat kitap okuyacağım*).
+* Sade grid tasarımı
+* Tarihli / sayı bazlı iki mod
+* Geliştirilmiş validasyon
+* Akıllı grid hesaplama
+* Mobil uyumlu panel
+* Minimal UI
 
-2. **Tarih aralığını seç:**  
-   Başlangıç ve bitiş tarihini belirle.
+---
 
-3. **Haftanın günlerini seç:**  
-   Hangi günler için zincir oluşturmak istiyorsan ilgili kutucukları işaretle.
+## 2. Özellikler
 
-4. **Satır / sütun düzenine göz at:**  
-   Aşağıda görünen “Satır / Sütun” alanında önerilen düzeni incele; gerekirse satır veya sütun
-   sayısını değiştir. Uygulama, seçimlerini bozmadan en mantıklı düzene yuvarlar.
+### 2.1. Çevrimdışı kullanım
 
-5. **“Zinciri oluştur!” butonuna bas:**  
-   Zincirin oluşturulur ve sekmelerde listelenir.
+Tüm veriler tarayıcı `localStorage` içinde saklanır. Yedekleme JSON formatında yapılabilir.
 
-6. **X işaretlerini ekle:**  
-   Her tamamladığın gün için ilgili hücreye tıkla; el yazısı X işaretleri otomatik kaydedilir.
+### 2.2. Zincir modları
 
-7. **İçe/dışa aktar:**  
-   - “Yedek indir” ile `.zincir` dosyası indir.  
-   - “Karşıya yükle” ile daha önce kaydettiğin `.zincir` dosyasını ekleyerek zincirlerini geri getir.
+#### Tarihli Zincir
+
+* Tarih aralığı + seçili günlere göre otomatik hesaplama
+* Ay/yıl geçişlerini belirten görsel ayrımlar
+
+#### Sayı Bazlı Zincir
+
+* Toplam halkaya göre kareye yakın grid üretir
+* Manuel satır–sütun değişiklikleri en yakın geçerli düzene yuvarlanır
+
+### 2.3. Akıllı Grid Hesaplamaları
+
+* Tarihli modda sütunlar gün sayısına göre hesaplanır
+* Sayı modunda en kareye yakın düzen bulunur
+
+### 2.4. X İşaretleri
+
+* Hücreye tıklama ile jitter efektli el yazısı X eklenir
+* İkinci tıklamada silinir
+* Yedeklerde saklanır
+
+### 2.5. Sekmeli çoklu zincir yönetimi
+
+* Üstte her zincir için sekme
+* Zincir silme yalnızca aktif zinciri etkiler
+
+### 2.6. JSON Yedekleme
+
+* Tüm zincirleri JSON olarak indirin
+* Yedekten yüklemede ID çakışmaları çözülür
+
+---
+
+## 3. Hata ve Validasyon Sistemi
+
+### 3.1. Hata türleri:
+
+* Eksik zincir adı
+* Geçersiz tarih aralığı
+* Tarihli modda gün seçilmemesi
+* Sayı modunda geçersiz toplam değer
+* Hatalı JSON dosyası
+
+### 3.2. Otomatik temizleme
+
+* Hata mesajları belirli süre sonra kaybolur
+* Glow durumları düzeltildikçe otomatik temizlenir
+
+---
+
+## 4. Kullanım Akışı
+
+1. Mod seçin
+2. Zincir adını girin
+3. Tarihli modda tarih + gün seçin
+4. Sayı modunda toplam halkaları girin
+5. Satır–sütun düzenini kontrol edin
+6. Zinciri ekleyin
+7. Hücreleri X ile işaretleyin
+8. Yedek alın veya geri yükleyin
+
+---
+
+## 5. Teknik Mimarinin Özeti
+
+* Tek sayfalık HTML–CSS–JS yapı
+* JS tarafında dinamik grid üretimi
+* SVG jitter path ile X çizimleri
+* Global minimal durum yönetimi
+* Modüler ve düzenlenmesi kolay kod yapısı
+
+---
+
+## 6. Number Input Kullanımı (Mobil + Masaüstü)
+
+### Mobilde:
+
+* `input[type="number"]` okları görünmeyebilir
+* Kullanıcı numerik klavyeden değer girer
+* Sistem girilen değeri **en yakın geçerli grid değerine** yuvarlar
+* Büyük değerlerde grid bozulmaz
+
+### Masaüstünde:
+
+* Artı/eksi okları ile adımlı değişim mümkündür
+* Manuel girişlerde otomatik doğrulama aktiftir
+
+---
+
+### 7. Tema ve Renk Özelleştirme
+
+Uygulama içerisinde arayüzün neredeyse tüm görsel bileşenlerinin rengi kullanıcı tarafından değiştirilebilir.
+
+* Arka plan, yazılar, hücreler, grid çizgileri ve X işaretleri için renk özelleştirme
+* Yapılan renk değişiklikleri **localStorage** üzerinde otomatik olarak saklanır
+* İstenildiği zaman **varsayılan (default) tema ayarlarına geri dönülebilir**
+* Tema ayarları sayfa yenilense dahi korunur
+
+> Notlar:
+> * Bu özellik henüz **responsive değildir** ve **sadece masaüstü (desktop)** görünümünde kullanılabilir.
+
+
+## 8. Roadmap / Yakında Gelecek Özellikler
+
+### 8.1. Yazdırılabilir Tablo Üretimi (Dijital Olmayan Zincir Kullanımı)
+
+Dijital takipten bağımsız olarak, zincir kırma metodolojisi için
+yazdırılabilir, boş ve işaretlenmeye hazır tablolar üretimi.
+
+* Word ve PDF gibi ortamlarda kullanılabilecek **yazıcı uyumlu tablolar**
+* Önceden işaretlenmiş hücreler olmadan, **tamamen boş tablo üretimi**
+* Zincir mantığına uygun:
+  * Satır / sütun sayısı
+  * Gün / blok / dönem bazlı yapı
+* Tek sayfa veya çok sayfalı tablo düzenleri
+* Çıktı öncesinde tüm yapısal ayarların belirlenebilmesi
+* HTML üzerinde manuel düzenleme gerektirmeden,
+  **doğrudan çıktı almaya odaklı üretim**
+
+> Bu yapı, uygulamanın dijital modlarından bağımsızdır ve
+> fiziksel (kağıt) zincir takibi için tasarlanmıştır.
+
+### 8.2. Tema ve Tablo Ayarlarında Responsive Destek
+
+* Tema, renk ve tablo ayar panellerinin mobil ve tablet uyumluluğu
+* Farklı ekran boyutlarında tutarlı ayar deneyimi
+
+### 8.3. Preset Ayar Yönetimi
+
+Uygulama içerisindeki renk, tablo ve yapı ayarlarının preset’ler halinde yönetilmesi.
+
+* Ayarların **preset olarak kaydedilebilmesi**
+* Preset’lerin **aktarılabilir ve paylaşılabilir** hale getirilmesi
+* Preset içe / dışa aktarma desteği
+* Varsayılan ayarlara tek tıkla geri dönüş
+
+
+### 8.4. Full English UI Support
+
+* Tüm arayüzün İngilizce çalışmasını sağlayan tam çeviri modu
+* Hata mesajları, butonlar, açıklamalar, grid metinleri dahil tüm metin seti
+* Dil seçici veya otomatik tarayıcı dil algılama
+* Yedekleme dosyalarına dil bilgisi eklenmesi (opsiyonel)
+
+---
+
+## 9. Kurulum ve Çalıştırma
+
+1. Projeyi indirin veya klonlayın
+2. `zincirikirma.html` dosyasını bir tarayıcıda açın
+3. Tüm özellikler çevrimdışı çalışır
+4. İsterseniz GitHub Pages, Netlify, Vercel vb. ile yayınlayabilirsiniz
