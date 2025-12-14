@@ -45,7 +45,7 @@
     }
 
     #btn-theme-settings:hover {
-      background-color: rgba(182, 33, 182, 0.5);
+      background-color: rgba(238, 45, 238, 0.5);
     }
 
     .main-frame {
@@ -118,7 +118,7 @@
 
     .form-titles {
       display: inline-flex;
-      color: rgb(255, 255, 255);
+      color: rgb(22, 8, 53);
       flex-direction: column;
       gap: 8px;
       font-weight: 700;
@@ -280,9 +280,9 @@
       align-items: center;
       justify-content: center;
     }
-
-    button:hover {
-      background-color: rgba(204, 202, 202, 0.5);
+/* buton kaydedilen default ayarlar, normal görünümü override etmesi sorununu çözer */
+    button:hover, #btn-add-chain:hover {
+      background-color: rgba(158, 145, 145, 0.5);
     }
 
     #btn-load-file {
@@ -384,12 +384,12 @@
     }
 
     #btn-delete {
-      color: rgb(255, 0, 0);
-      border-color: rgb(192, 34, 34);
+      color: rgb(235, 25, 25);
+      border-color: rgb(214, 32, 32);
     }
 
     #btn-delete:hover {
-      background-color: rgba(255, 135, 135, 0.5);
+      background-color: rgba(238, 47, 47, 0.5);
     }
 
     table {
@@ -1920,10 +1920,9 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           selector: '.size-box > *',
           fields: ['border']
         },
-        
         { // butonların arkaplan (default: beyaz) rengi topluca değiştirebilir
           id: 'buttons',
-          label: 'Tüm butonlar (genel)',
+          label: 'Butonlar Arkplan',
           selector: 'button',
           fields: ['bg']
         },
@@ -1931,11 +1930,11 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           id: 'btn-theme-settings',
           label: 'Renk Ayarı Butonu ;)',
           selector: '#btn-theme-settings',
-          fields: ['bg', 'border', 'text']
+          fields: ['border', 'text']
         },
         {  // üzerine gelince cam efekti
           id: 'btn-theme-settings-hover',
-          label: 'Renk Ayarı efekti',
+          label: 'Renk Ayarı Efekti',
           selector: '#btn-theme-settings:hover',
           fields: ['bg', 'border', 'text']
         },
@@ -1943,9 +1942,9 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           id: 'btn-add-chain',
           label: 'Zinciri oluştur butonu',
           selector: '#btn-add-chain',
-          fields: ['bg', 'border', 'text']
+          fields: ['border', 'text']
         },
-        {
+        {  
           id: 'btn-add-chain-hover',
           label: 'Zinciri oluştur efekti',
           selector: '#btn-add-chain:hover',
@@ -1955,7 +1954,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           id: 'btn-load-file',
           label: 'Karşıya yükle butonu',
           selector: '#btn-load-file',
-          fields: ['bg', 'border', 'text']
+          fields: ['border', 'text']
         },
         {
           id: 'btn-load-file-hover',
@@ -1967,7 +1966,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           id: 'btn-backup-download',
           label: 'Yedek indir butonu',
           selector: '#btn-backup-download',
-          fields: ['bg', 'border', 'text']
+          fields: ['border', 'text']
         },
         {
           id: 'btn-backup-download-hover',
@@ -1979,7 +1978,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           id: 'btn-reset',
           label: 'Temizle butonu',
           selector: '#btn-reset',
-          fields: ['bg', 'border', 'text']
+          fields: ['border', 'text']
         },
         {
           id: 'btn-reset-hover',
@@ -1990,7 +1989,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           id: 'btn-delete',
           label: 'Zinciri sil butonu',
           selector: '#btn-delete',
-          fields: ['bg', 'border', 'text']
+          fields: ['border', 'text']
         },
         {
           id: 'btn-delete-hover',
