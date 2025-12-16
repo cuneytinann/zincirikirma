@@ -552,7 +552,10 @@
       width: calc(0.75 * var(--cell-size));
       /* başlık sütunu normal bir hücrenin %75 genişliğinde ayarlanmıştır */
       padding: 0 8px;
-      white-space: nowrap;
+      white-space: wrap;
+      /* çok fazla ay adı içerene thler yüzünden sabit yükseklik artabilir. */
+      /* white-space: nowrap yapılarak ve line-height silinerek önüne geçilebilir*/
+      line-height: 1.6;
       font-size: 14px;
       background-color: rgb(150, 150, 180);
       color: rgb(0, 0, 0);
@@ -562,7 +565,7 @@
     .chain table tr:first-child th {
       height: calc(0.5 * var(--cell-size));
       /* başlık satırı normal bir hücrenin %50 yüksekliğinde ayarlanmıştır */
-      font-size: 14px;
+      font-size: 12px;
       background-color: rgb(180, 150, 150);
       color: rgb(0, 0, 0);
     }
@@ -595,13 +598,11 @@
     }
 
     .month-break-left {
-      border: 0 dashed rgb(74, 50, 179);
-      border-left-width: 2px;
+      border-left: 2px dashed rgb(74, 50, 179);
     }
 
     .year-break-left {
-      border: 0 double rgb(202, 24, 24);
-      border-left-width: 4px;
+      border-left: 4px double rgb(202, 24, 24);
     }
 
     .x-mark {
@@ -1078,7 +1079,7 @@
         padding-right: 0;
       }
 
-      
+
 
       .theme-cell input {
         width: 20px;
@@ -1940,11 +1941,11 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         { id: '32', label: 'Yıl Metni', selector: '#first-cell', fields: ['text'] },
         { id: '33', label: 'Hücre', selector: '.cell', fields: ['bg', 'text'] },
         { id: '34', label: 'Boş Hücre', selector: '.empty-cell', fields: ['bg'] },
-        { id: '35', label: 'Ay Geçişi Belirteç', selector: '.month-break-left', fields: ['bd'] },
-        { id: '36', label: 'Yıl Geçişi Belirteç', selector: '.year-break-left', fields: ['bd'] },
+        { id: '35', label: 'Ay Geçişi Belirteç', fields: ['excp'] },
+        { id: '36', label: 'Yıl Geçişi Belirteç', fields: ['excp'] },
         { id: '37', label: 'X İşareti Dolgusu', fields: ['excp'] },
       ];
-      // buton hoverları (kalabalık azaltsın diye), svg attributeları
+      // buton hoverları (kalabalık azaltsın diye), svg attributeları, tek taraflı borderlar
       const Exceptions = [
         { id: '01', selector: '.chain-bg', property: 'fill' },
         { id: '19', selector: '#btn-theme-settings:hover', property: 'background-color' },
@@ -1953,6 +1954,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         { id: '22', selector: '#btn-backup-download:hover', property: 'background-color' },
         { id: '23', selector: '#btn-reset:hover', property: 'background-color' },
         { id: '24', selector: '#btn-delete:hover', property: 'background-color' },
+        { id: '35', selector: '.month-break-left', property: 'border-left-color' },
+        { id: '36', selector: '.year-break-left', property: 'border-left-color' },
         { id: '37', selector: '.x-mark', property: 'stroke' },
       ]
 
@@ -3959,7 +3962,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
             var nm = new Date(iso + 'T00:00:00').toLocaleDateString('tr-TR', { month: 'long' });
             if (labels.indexOf(nm) === -1) labels.push(nm);
           }
-          rh.textContent = labels.length ? labels.join(' / ') : '';
+          rh.textContent = labels.length ? labels.join(', ') : '';
           tr.appendChild(rh);
 
           for (var c2 = 0; c2 < cols; c2++) {
