@@ -5,21 +5,12 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Zinciri Kırma Metodolojisi (Takvimli veya Tablolu Sayaç)</title>
-  <style>
+  <style id="base-theme-style">
     :root {
       --input-width: 480px;
       /* 6 adet input ve gaplar, bu değeri kendine göre oranlar*/
       --cell-size: 72px;
       /* tablonun hücre boyutu, hücreler kare */
-      --main-frame-bg: rgba(88, 133, 124, 0.734);
-      --main-frame-b: rgba(34, 80, 100, 0.62);
-      --chain-frame-bg: rgba(111, 201, 126, 0.7);
-      --chain-frame-b: rgba(26, 138, 69, 0.7);
-      --count-frame-bg: rgba(12, 189, 189, 0.34);
-      --count-frame-b: rgba(21, 228, 228, 0.62);
-      /* framelerin arkaplan ve border renkleri */
-      --checked-or-focus: rgba(5, 190, 30, 0.5);
-      /* iki paralel amaçla kullanılan renk*/
     }
 
     * {
@@ -33,29 +24,165 @@
     }
 
     #btn-theme-settings {
-      color: rgb(187, 55, 187);
+      color: rgb(212, 71, 212);
       border: 2px ridge rgb(192, 85, 192);
-      border-radius: 16px;
-      padding: 6px;
-      font-size: 16px;
+      border-radius: 50%;
       position: absolute;
       z-index: 1;
+      padding: 6px;
+      font-size: 16px;
       top: 24px;
-      right: 32px;
+      right: 40px;
     }
 
     #btn-theme-settings:hover {
-      background-color: rgba(238, 45, 238, 0.5);
+      background-color: rgba(201, 84, 201, 0.5);
+    }
+
+    /* Modal panel container */
+    #theme-panel {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: rgb(0, 0, 0);
+      color: rgb(255, 255, 255);
+      border: 2px solid rgba(255, 255, 255);
+      border-radius: 10px;
+      width: max-content;
+      /* içerik kadar */
+      min-height: 240px;
+      height: 480px;
+      max-height: calc(100vh - 24px);
+      display: none;
+      /* sadece dikey resize */
+      resize: vertical;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #theme-panel.is-open {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #theme-panel-header {
+      user-select: none;
+      cursor: move;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      white-space: nowrap;
+    }
+
+    #theme-panel-header .title {
+      font-weight: 600;
+      color: rgb(184, 3, 72);
+      font-size: 16px;
+    }
+
+    #theme-panel-header .hint {
+      color: rgb(114, 114, 216);
+      font-size: 12px;
+    }
+
+    #theme-panel-body {
+      overflow-y: auto;
+      overflow-x: hidden;
+      /* yatay scroll yok */
+    }
+
+    #theme-table {
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    #theme-table thead th {
+      position: sticky;
+      top: 1px;
+      padding: 12px;
+      background-color: rgb(31, 3, 3, 0.8);
+      border: 1.5px solid rgb(196, 22, 22);
+      color: rgba(245, 245, 220, 0.50);
+      z-index: 1;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    #theme-table th.col-label,
+    #theme-table td.col-label {
+      width: 200px;
+      /* sabit label sütunu */
+      text-align: left;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* sadece input değerleri */
+    #theme-table td,
+    #theme-table tr {
+      border: 1px solid rgb(127, 127, 127);
+      border-top: none;
+      border-left: none;
+      padding: 12px;
+      height: max-content;
+      text-align: center;
+    }
+
+    .theme-cell input {
+      padding: 0;
+      border: none;
+      height: 24px;
+      width: 32px;
+      background: transparent;
+    }
+
+    #theme-panel-footer {
+      position: sticky;
+      bottom: 0;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgb(192, 192, 192);
+    }
+
+    #theme-panel-footer .right {
+      display: flex;
+      gap: 16px;
+    }
+
+    #theme-panel-footer button {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background-color: rgb(48, 45, 45);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    #btn-theme-reset-all {
+      color: rgb(252, 255, 221);
+    }
+
+    #btn-theme-cancel {
+      color: rgb(209, 54, 54);
+    }
+
+    #btn-theme-ok {
+      color: rgb(75, 255, 105);
     }
 
     .main-frame {
-      padding: 16px 48px;
-      background-color: var(--main-frame-bg);
-      border: outset 16px var(--main-frame-b);
-      border-top: none;
-      border-left: none;
+      background-color: rgba(88, 133, 124, 0.734);
+      border: 0 outset rgba(34, 80, 100, 0.62);
+      border-bottom-width: 16px;
+      border-right-width: 16px;
       border-radius: 4px;
       border-bottom-left-radius: 16px;
+      border-top-right-radius: 16px;
+      padding: 8px 48px;
       position: relative;
       overflow: hidden;
       z-index: 0;
@@ -85,25 +212,24 @@
     .question-mark {
       font-size: 16px;
       text-decoration-line: none;
+      color: rgba(82, 76, 76, 0.5);
       /* a elementinin default çizgisini silerek temiz görüntü elde edilir */
     }
 
     .main-title {
       color: rgb(230, 4, 4);
-      font-size: 36px;
-      font-weight: 800;
+      font-size: 32px;
+      font-weight: 700;
+      font-family: cursive;
       gap: 8px;
-      display: block;
-      position: relative;
-      left: calc(3*var(--cell-size));
-      /* cihazlara göre ideal sol boşluk, başlık ortalı yerine sola yakındır */
+      margin-left: calc(var(--cell-size)*1.5);
     }
 
     .btn-toggle-menu {
       font-size: 16px;
-      border-radius: 4px;
       color: rgb(221, 29, 29);
       border: 1.5px solid rgb(184, 18, 18);
+      border-radius: 4px;
       width: 50px;
       height: 20px;
       background-color: transparent;
@@ -137,15 +263,21 @@
       align-items: center;
       flex-direction: row;
       border: 1px solid rgb(75, 53, 67);
-      border-radius: 16px;
-      padding: 8px;
+      border-radius: 14px;
+      padding: 6px 12px;
+      font-size: 17px;
       max-width: fit-content;
       height: fit-content;
-      font-size: 16px;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
     }
 
     label:has(input:checked) {
-      background-color: var(--checked-or-focus);
+      background-color: rgba(0, 200, 0, 0.5);
       color: rgb(255, 255, 255);
     }
 
@@ -179,13 +311,11 @@
     }
 
     input:focus {
-      border-color: var(--checked-or-focus);
-      box-shadow: 0 0 0 3px var(--checked-or-focus);
+      box-shadow: 0 0 0 2px rgb(140, 255, 155);
     }
 
     .input-error {
-      border-color: rgb(255, 59, 59) !important;
-      box-shadow: 0 0 0 2px rgba(255, 59, 59, 0.2) !important;
+      box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.8) !important;
     }
 
     .error-info {
@@ -212,8 +342,8 @@
     }
 
     .ring-number-box {
-      background-color: var(--count-frame-bg);
-      border: 2px groove var(--count-frame-b);
+      background-color: rgba(12, 189, 189, 0.34);
+      border: 2px groove rgba(21, 228, 228, 0.62);
       border-radius: 32px;
       padding: 8px;
       width: fit-content;
@@ -271,6 +401,7 @@
       border-left: none;
       border-top: none;
       border-bottom-left-radius: 5px;
+      border-top-right-radius: 5px;
       background-color: rgb(255, 255, 255);
       padding: 8px 12px;
       cursor: pointer;
@@ -280,9 +411,9 @@
       align-items: center;
       justify-content: center;
     }
-/* buton kaydedilen default ayarlar, normal görünümü override etmesi sorununu çözer */
-    button:hover, #btn-add-chain:hover {
-      background-color: rgba(158, 145, 145, 0.5);
+
+    button:hover {
+      background-color: rgba(173, 164, 164, 0.5);
     }
 
     #btn-load-file {
@@ -300,7 +431,7 @@
     }
 
     #btn-backup-download:hover {
-      background-color: rgba(117, 243, 106, 0.5);
+      background-color: rgba(155, 221, 149, 0.5);
     }
 
     #btn-reset {
@@ -309,14 +440,7 @@
     }
 
     #btn-reset:hover {
-      background-color: rgba(232, 253, 38, 0.5);
-    }
-
-    .chain {
-      background-color: var(--chain-frame-bg);
-      border: 10px ridge var(--chain-frame-b);
-      padding: 24px;
-      align-items: center;
+      background-color: rgba(187, 206, 23, 0.5);
     }
 
     .tab-box {
@@ -341,10 +465,22 @@
       background-color: rgba(0, 0, 0, 0.2);
     }
 
+    .chain,
     .chain-tab.active {
-      background-color: var(--chain-frame-bg);
-      /* ilgili framele aynı olması daha temiz görünür */
-      border: 1px solid var(--chain-frame-b);
+      background-color: rgba(111, 201, 126, 0.7);
+      border-color: rgba(26, 138, 69, 0.7);
+    }
+
+    .chain {
+      border-width: 10px;
+      border-style: ridge;
+      padding: 24px;
+      align-items: center;
+    }
+
+    .chain-tab.active {
+      border-width: 1px;
+      border-style: solid;
       border-bottom: none;
       font-weight: 700;
       border-radius: 6px 6px 0 0;
@@ -389,7 +525,7 @@
     }
 
     #btn-delete:hover {
-      background-color: rgba(238, 47, 47, 0.5);
+      background-color: rgba(224, 85, 85, 0.5);
     }
 
     table {
@@ -401,7 +537,7 @@
     th,
     td {
       border: 1.5px solid rgb(0, 0, 0);
-      /* tüm tablonun çizgi rengidir, buradan değiştirebilir */
+      /* tüm tablonun çizgi rengidir */
       width: var(--cell-size);
       height: var(--cell-size);
       position: relative;
@@ -418,7 +554,7 @@
       padding: 0 8px;
       white-space: nowrap;
       font-size: 14px;
-      background-color: rgb(180, 180, 180);
+      background-color: rgb(150, 150, 180);
       color: rgb(0, 0, 0);
     }
 
@@ -427,7 +563,7 @@
       height: calc(0.5 * var(--cell-size));
       /* başlık satırı normal bir hücrenin %50 yüksekliğinde ayarlanmıştır */
       font-size: 14px;
-      background-color: rgb(180, 180, 180);
+      background-color: rgb(180, 150, 150);
       color: rgb(0, 0, 0);
     }
 
@@ -439,10 +575,10 @@
     }
 
     #first-cell {
-      background-color: rgba(var(--chain-frame-bg), 1);
-      border-left: var(--chain-frame-bg);
-      border-top: var(--chain-frame-bg);
-      color: black;
+      background-color: transparent;
+      border-left: none;
+      border-top: none;
+      color: rgb(151, 255, 177);
     }
 
     .cell {
@@ -459,17 +595,19 @@
     }
 
     .month-break-left {
-      border-left: 2px dashed rgb(74, 50, 179);
+      border: 0 dashed rgb(74, 50, 179);
+      border-left-width: 2px;
     }
 
     .year-break-left {
-      border-left: 4px double rgb(202, 24, 24);
+      border: 0 double rgb(202, 24, 24);
+      border-left-width: 4px;
     }
 
     .x-mark {
       stroke: rgb(0, 0, 0);
-      opacity: 0.8;
-      stroke-width: 8;
+      opacity: 0.7;
+      stroke-width: 8px;
       position: absolute;
       left: 8px;
       top: 8px;
@@ -494,6 +632,8 @@
       max-width: 100%;
     }
 
+
+
     /* ========================================
    TABLET (max-width: 900px)
    - Tablet + küçük laptoplar
@@ -503,24 +643,6 @@
       :root {
         --input-width: 400px;
         --cell-size: 64px;
-      }
-
-      /* sadece masaüstüne özel olan spacerlar kaybolur*/
-      .only-for-desktop {
-        display: none;
-      }
-
-      /* dokunmatik cihazlarda üst scroll silinip daha temiz görüntü elde edilir */
-      .grid-scroll-inner {
-        height: 0px;
-      }
-
-      body {
-        margin: 6px;
-      }
-
-      .main-frame {
-        padding: 12px 36px;
       }
 
       /* arkaplan svg resmi dikey döndürülüp, büyütülür */
@@ -533,12 +655,83 @@
         height: 100vw;
       }
 
+      /* sadece masaüstüne özel olan spacerlar kaybolur*/
+      .only-for-desktop {
+        display: none;
+      }
+
+      /* dokunmatik cihazlarda üst scroll silinip daha temiz görüntü elde edilir */
+      .grid-scroll-inner {
+        height: 0px;
+      }
+
+      #btn-theme-settings {
+        font-size: 14px;
+        top: 24px;
+        padding: 5px;
+        right: 32px;
+      }
+
+      #theme-panel {
+        min-height: 160px;
+        height: 240px;
+      }
+
+      #theme-panel-header {
+        padding: 11px;
+      }
+
+      #theme-panel-header .title {
+        font-size: 15px;
+        padding: 0 8px;
+      }
+
+      #theme-panel-header .hint {
+        font-size: 12px;
+      }
+
+      #theme-table thead th {
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      #theme-table th.col-label,
+      #theme-table td.col-label {
+        width: 160px;
+        font-size: 12px;
+      }
+
+      #theme-table td,
+      #theme-table tr {
+        padding: 10px;
+      }
+
+      #theme-panel-footer {
+        padding: 8px 10px;
+      }
+
+      #theme-panel-footer .right {
+        gap: 12px;
+      }
+
+      #theme-panel-footer button {
+        padding: 8px 9px;
+        font-size: 12px;
+      }
+
+      .main-frame {
+        border-right-width: 12px;
+        border-bottom-width: 12px;
+        border-bottom-left-radius: 12px;
+        padding: 8px 24px;
+      }
+
       .question-mark {
         font-size: 14px;
       }
 
       .main-title {
-        font-size: 32px;
+        font-size: 30px;
         gap: 6px;
       }
 
@@ -554,8 +747,7 @@
       }
 
       .selections label {
-        padding: 6px;
-        font-size: 14px;
+        font-size: 15px;
       }
 
       input {
@@ -592,7 +784,6 @@
       .chain-tab {
         padding: 5px 10px;
         font-size: 13px;
-        border-radius: 8px;
       }
 
       .chain-tab.active {
@@ -626,9 +817,6 @@
         font-size: 10px;
       }
 
-      .x-mark {
-        stroke-width: 7;
-      }
     }
 
     /* ========================================
@@ -643,14 +831,79 @@
       }
 
       body {
-        margin: 4px;
+        margin: 6px 2px;
+      }
+
+      #btn-theme-settings {
+        font-size: 12px;
+        top: 22px;
+        padding: 4px;
+        right: 16px;
+      }
+
+      #theme-panel {
+        border-width: 1.5px;
+        min-height: 200px;
+        height: 280px;
+      }
+
+      #theme-panel-header {
+        padding: 8px 2px;
+      }
+
+      #theme-panel-header .title {
+        font-size: 12px;
+        padding: 0 16px;
+      }
+
+      #theme-panel-header .hint {
+        display: none;
+      }
+
+      #theme-table thead th {
+        padding: 8px 4px;
+        border-width: 1px;
+        font-size: 10px;
+      }
+
+      #theme-table th.col-label,
+      #theme-table td.col-label {
+        width: 80px;
+        font-size: 10px;
+        padding: 8px;
+        padding-right: 0;
+      }
+
+      /* sadece input değerleri */
+      #theme-table td,
+      #theme-table tr {
+        padding: 8px 2px;
+      }
+
+      .theme-cell input {
+        width: 24px;
+        height: 20px;
+      }
+
+      #theme-panel-footer {
+        padding: 2px 8px;
+      }
+
+      #theme-panel-footer .right {
+        gap: 8px;
+      }
+
+      #theme-panel-footer button {
+        padding: 4px 6px;
+        font-size: 10px;
       }
 
       .main-frame {
-        padding: 12px 4px 12px 20px;
-        border-width: 12px;
-        border-radius: 4px;
-        border-bottom-left-radius: 12px;
+        padding: 16px;
+        border-bottom-width: 8px;
+        border-right-width: 0;
+        border-bottom-left-radius: 8px;
+        border-top-right-radius: 8px;
       }
 
       .question-mark {
@@ -658,11 +911,10 @@
       }
 
       .main-title {
-        font-size: 22px;
-        font-weight: 640;
-        left: var(--cell-size);
-        /* boşluk root değerinin yarısına düşürülür */
+        font-size: 24px;
+        font-weight: 620;
         gap: 4px;
+        margin-left: 16px;
       }
 
       .btn-toggle-menu {
@@ -677,7 +929,7 @@
       }
 
       .selections label {
-        padding: 5px;
+        padding: 8px 11px;
         font-size: 12px;
       }
 
@@ -713,13 +965,14 @@
       }
 
       button {
-        border-width: 4px;
-        border-bottom-left-radius: 4px;
+        border-width: 3px;
+        border-bottom-left-radius: 3px;
+        border-top-right-radius: 3px;
         flex-direction: column;
         /* buton dikeyleşir, icon ve kelimeler satır-satır konumlanır */
-        padding: 4px;
+        padding: 3px;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 12px;
         gap: 2px;
       }
 
@@ -732,7 +985,6 @@
         padding: 4px 8px;
         border-width: 1.5px;
         font-size: 12px;
-        border-radius: 7px;
       }
 
       .chain-tab.active {
@@ -775,7 +1027,7 @@
       }
 
       .x-mark {
-        stroke-width: 6;
+        stroke-width: 7px;
       }
     }
 
@@ -790,16 +1042,56 @@
         --cell-size: 32px;
       }
 
-      body {
-        margin: 2px;
+      #btn-theme-settings {
+        font-size: 8px;
+        top: 18px;
+        right: 16px;
+        padding: 3px;
+      }
+
+      #theme-panel {
+        border-width: 1px;
+        min-height: 160px;
+        height: 240px;
+      }
+
+      #theme-panel-header {
+        padding: 8px 0px;
+      }
+
+      #theme-panel-header .title {
+        font-size: 12px;
+        padding: 0 16px;
+      }
+
+      #theme-table thead th {
+        padding: 6px 2px;
+        border-width: 1px;
+        font-size: 10px;
+      }
+
+      #theme-table th.col-label,
+      #theme-table td.col-label {
+        width: 60px;
+        font-size: 10px;
+        padding: 8px 4px;
+        padding-right: 0;
+      }
+
+      
+
+      .theme-cell input {
+        width: 20px;
+        height: 16px;
+      }
+
+      #theme-panel-footer button {
+        font-size: 8px;
       }
 
       .main-frame {
-        padding: 12px;
-        padding-right: 0;
-        border-width: 8px;
-        border-radius: 2px;
-        border-bottom-left-radius: 6px;
+        padding: 8px;
+        border-bottom-width: 4px;
       }
 
       .question-mark {
@@ -807,8 +1099,8 @@
       }
 
       .main-title {
-        font-size: 20px;
-        font-weight: 550;
+        font-size: 18px;
+        font-weight: 540;
         gap: 2px;
       }
 
@@ -825,8 +1117,8 @@
       }
 
       .selections label {
-        padding: 4px;
         font-size: 10px;
+        padding: 4px 6px;
       }
 
       input {
@@ -842,24 +1134,19 @@
       }
 
       .text-total-chain {
-        font-size: 16px;
-      }
-
-      #show-count {
-        font-size: 16px;
-      }
-
-      .parenthesis {
         font-size: 14px;
       }
 
+      #show-count {
+        font-size: 14px;
+      }
+
+      .parenthesis {
+        font-size: 12px;
+      }
+
       button {
-        border-width: 3px;
-        border-bottom-left-radius: 3px;
-        padding: 3px;
-        font-weight: 450;
         font-size: 10px;
-        gap: 1px;
       }
 
       .chain {
@@ -871,7 +1158,6 @@
         padding: 3px 6px;
         border-width: 1px;
         font-size: 10px;
-        border-radius: 6px;
       }
 
       .chain-title {
@@ -897,7 +1183,7 @@
       }
 
       .x-mark {
-        stroke-width: 5;
+        stroke-width: 6px;
       }
     }
 
@@ -912,232 +1198,31 @@
 
     @media (max-width: 240px) {
 
-      .main-frame,
-      .chain,
-      .chain-tab {
+      body * {
         display: none;
       }
 
-      .unsupported-display {
+      .unsupported-display,
+      br {
         display: block;
         font-size: 24px;
         text-align: center;
         font-weight: bold;
         padding: 20px;
+        color: rgb(235, 29, 29);
       }
     }
   </style>
-  <!-- tema / renk ayarlama tablosu. daha da sadeleştirilip, globale inline edilecek-->
-  <style name="color-theme-settings">
-    .theme-editor-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: 9999;
-      display: none;
-    }
 
-    .theme-editor-modal {
-      position: absolute;
-      top: 120px;
-      left: 120px;
 
-      background: #1f1f1f;
-      color: #f5f5f5;
-      border-radius: 8px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    crossorigin="anonymous" />
 
-      display: flex;
-      flex-direction: column;
-
-      /* v5: resize/scroll uyumu */
-      min-width: 640px;
-      min-height: 320px;
-      height: 400px;
-      max-width: calc(100vw - 48px);
-      max-height: calc(100vh - 24px);
-
-      overflow: hidden;
-      box-sizing: border-box;
-
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: 14px;
-    }
-
-    .theme-editor-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-bottom: 1px solid #333;
-      background: #262626;
-      cursor: move;
-      user-select: none;
-    }
-
-    .theme-editor-title {
-      font-weight: 600;
-    }
-
-    .theme-editor-close {
-      border: none;
-      background: transparent;
-      color: inherit;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    /* v5: dikey scroll var, yatay scroll yok */
-    .theme-editor-body {
-      padding: 8px 12px;
-
-      flex: 1 1 auto;
-      min-height: 0;
-
-      overflow-y: auto;
-      overflow-x: hidden;
-    }
-
-    /* v5: tablo container genişliğine uyar; daraldıkça wrap */
-    .theme-editor-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: auto;
-    }
-
-    /* v5: tüm hücreler (başlık satırı/sütunu dahil) center + wrap */
-    .theme-editor-table th,
-    .theme-editor-table td {
-      border: 1px solid #333;
-      padding: 6px 10px;
-
-      text-align: center;
-      vertical-align: middle;
-
-      font-size: 13px;
-
-      white-space: normal;
-      word-break: break-word;
-    }
-
-    .theme-editor-table th {
-      background: #2b2b2b;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-
-      text-align: center;
-    }
-
-    /* İlk sütun/label dahil: artık nowrap yok, wrap var */
-    .theme-editor-row-label {
-      white-space: normal;
-    }
-
-    .theme-editor-color-cell {
-      text-align: center;
-    }
-
-    .theme-editor-color-input {
-      width: 32px;
-      height: 22px;
-      padding: 0;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-    }
-
-    .theme-editor-footer {
-      display: flex;
-      align-items: center;
-      padding: 8px 12px;
-      border-top: 1px solid #333;
-      background: #262626;
-      gap: 8px;
-    }
-
-    .theme-editor-footer-spacer {
-      flex: 1;
-    }
-
-    .theme-editor-footer button {
-      padding: 4px 10px;
-      border-radius: 4px;
-      border: 1px solid #444;
-      background: #333;
-      color: #f5f5f5;
-      cursor: pointer;
-    }
-
-    .theme-editor-footer button:hover {
-      background: #444;
-    }
-
-    /* v5: ayrı resize handle'lar (sağ: yatay, alt: dikey) */
-    .resize-right {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 10px;
-      height: 100%;
-      cursor: ew-resize;
-      user-select: none;
-    }
-
-    .resize-bottom {
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 10px;
-      cursor: ns-resize;
-      user-select: none;
-    }
-  </style>
-  <!-- yeni renkler overrides yazılır, varsayılan previewe kaydedilir-->
-  <style id="theme-overrides"></style>
-  <style id="theme-preview"></style>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
 </head>
 
 <body>
-  <button type="button" id="btn-theme-settings" class="only-for-desktop">
-    <!-- renk değiştirme butonu henüz responsive değil--><i class="fa-solid fa-palette"></i></button>
-  <!-- Tema düzenleme paneli -->
-  <div id="theme-editor-backdrop" class="theme-editor-backdrop" style="display:none;">
-    <div class="theme-editor-modal">
-      <div class="theme-editor-header">
-        <div class="theme-editor-title">Renk Ayarları</div>
-        <button type="button" class="theme-editor-close" id="theme-editor-close">&times;</button>
-      </div>
-      <div class="theme-editor-body">
-        <table class="theme-editor-table">
-          <thead>
-            <tr>
-              <th>Alan</th>
-              <th>Arkaplan</th>
-              <th>Çerçeve / Çizgi</th>
-              <th>Yazı / Metin</th>
-              <th>Dolgu Rengi</th>
-            </tr>
-          </thead>
-          <tbody id="theme-editor-rows"></tbody>
-        </table>
-      </div>
-      <div class="theme-editor-footer">
-        <button type="button" id="theme-editor-reset">Varsayılanlara Dön</button>
-        <div class="theme-editor-footer-spacer"></div>
-        <button type="button" id="theme-editor-cancel">İptal</button>
-        <button type="button" id="theme-editor-ok">Tamam</button>
-      </div>
+  <button type="button" id="btn-theme-settings"><i class="fa-solid fa-palette"></i></button>
 
-
-      <div class="resize-right" aria-hidden="true"></div>
-      <div class="resize-bottom" aria-hidden="true"></div>
-
-    </div>
-  </div>
   <div class="main-frame" id="main-frame">
     <svg class="chain-bg" aria-hidden="true"> <!--inline svg, 35 kB civarı yer kaplar, isteğe bağlı silinebilir-->
       <?xml version="1.0" standalone="no"?>
@@ -1628,7 +1713,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
     <div class="main-title">
       <a href=""
         title="“Zinciri kırma” metodolojisi, hem yeni bir ALIŞKANLIK oluşturmayı hem de zararlı alışkanlıkları bırakmayı destekleyen; bir hedefi her gün küçük adımlarla ilerleterek süreklilik alışkanlığı oluşturmaya odaklanan bir yaklaşımdır. Temeli, yapılan her günlük adımı takvimde bir “X” ile işaretleyip zamanla ortaya çıkan çizgiyi, yani zinciri bozmamaya çalışmak üzerine kuruludur. Psikolojik olarak, beynimiz tamamlanmış işleri görmekten haz duyar ve bu görsel ilerleme motivasyonumuzu artırır. Ayrıca, büyük ve göz korkutucu hedefleri küçük ve yönetilebilir parçalara bölmek; erteleme döngüsünü kırar, BAŞARI hissini sıklaştırır ve süreci daha SÜRDÜRÜLEBİLİR hâle getirir. Bu yüzden yöntem, hem kişisel hem profesyonel hedeflerde odaklanmayı artıran ve alışkanlık kazandırmada oldukça etkili bir sistem olarak bilinir."
-        class="question-mark">❔ <!--uzun title açıklaması yerine href ya da inline page eklenebilir--></a>
+        class="question-mark"> <i class="fa-solid fa-clipboard-question"></i>
+        <!--uzun title açıklaması yerine href ya da inline page eklenebilir--></a>
       Zinciri Kırma!
       <button id="toggle-menu" class="btn-toggle-menu" title="Ayarları gizle / göster.">▲</button>
     </div>
@@ -1700,7 +1786,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           <input type="checkbox" id="wd6" checked />
           Pazar
         </label>
-        <label class="extra-info">
+        <label>
           <span id="all-selected-note" class="extra-info">
             Varsayılan olarak
             <span style="text-decoration-line: underline">tüm günler</span>
@@ -1743,7 +1829,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         <i class="fa-solid fa-folder-plus"></i>
         Karşıya <span data-line-break>yükle</span>
       </button>
-      <button id="btn-backup-download" title="Aşağıda var olan tüm tabloları json formatında aygıtınıza indirir.">
+      <button id="btn-backup-download"
+        title="Var olan tüm tabloları veya tema değişikliklerini json formatında aygıtınıza indirir.">
         <i class="fa-solid fa-download"></i>
         Yedek <span data-line-break>indir</span>
         <span id="backup-error" class="error-info" style="display: none;"></span>
@@ -1756,6 +1843,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       <span data-spacer class="only-for-desktop"></span>
       <span data-spacer class="only-for-desktop"></span>
     </div>
+    <span data-spacer class="only-for-desktop"><br></span>
   </div>
 
   <div id="chain-list"></div> <!-- zincir eklendiğinde sekmelerle, tabloyla her şeyle birlikte burada görünür-->
@@ -1804,7 +1892,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       var lastTrigger = null;
 
       // Haftanın gün isimleri (Pazartesi bazlı index)
-      var DAY_NAMES = [
+      const DAY_NAMES = [
         'Pazartesi',
         'Salı',
         'Çarşamba',
@@ -1814,891 +1902,682 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         'Pazar',
       ];
 
-      // ------------- KONFİGÜRASYON TABLOLARI -------------
 
-      // Arayüzde gösterilecek tüm satırlar
+      /* ---------------- CONFIG ---------------- */
       const COLOR_ROWS = [
-        { // body: En Dış Katman, arkaplan
-          id: 'body',
-          label: 'En Dış Katman',
-          selector: 'body',
-          fields: ['bg']
-        },
-        { // .chain-bg : Gömülü Zincir Görseli, özel durum "fill"
-          id: 'chain-bg',
-          label: 'Gömülü Zincir Görseli',
-          selector: '.chain-bg',
-          fields: ['fill']
-        },
-        { // .main-frame: Menü Kartı , arkaplan (--main-frame-bg), çizgi (--main-frame-b)
-          id: 'main-frame',
-          label: 'Menü Kartı',
-          selector: '.main-frame',
-          fields: ['bg', 'border']
-        },
-        { // .main-title: Ana Başlık, metin
-          id: 'main-title',
-          label: 'Ana Başlık',
-          selector: '.main-title',
-          fields: ['text']
-        },
-        {
-          id: 'btn-toggle-menu',
-          label: 'Menü Daraltma Düğmesi',
-          selector: '.btn-toggle-menu',
-          fields: ['border', 'text']
-        },
-        { // .hr-line: Menü Bölme Çizgileri, çizgi
-          id: 'hr-line',
-          label: 'Menü Bölme Çizgileri',
-          selector: '.hr-line',
-          fields: ['border']
-        },
-        { // .form-titles: Form Başlıkları, metin
-          id: 'form-titles',
-          label: 'Form Başlıkları',
-          selector: '.form-titles',
-          fields: ['text']
-        },
-        { // .selections label : Seçmeli Girdiler, sadece çizgi
-          id: 'selections-label',
-          label: 'Seçmeli Girdiler',
-          selector: '.selections label',
-          fields: ['border', 'text']
-        },
-        { // label:has(input:checked) : Seçilmiş Hali , arkaplan, çizgi, metin
-          id: 'label-input-checked',
-          label: 'Seçilmiş Hali',
-          selector: 'label:has(input:checked)',
-          fields: ['bg', 'text']
-        },
-        { // beyaz girdi kutuları
-          id: 'inputs',
-          label: 'Form Girdileri',
-          selector: 'input',
-          fields: ['bg', 'border', 'text']
-        },
-        { 
-          id: 'error-info',
-          label: 'Hata Kutucukları',
-          selector: '.error-info',
-          fields: ['bg', 'border', 'text']
-        },
-        {
-          id: 'extra-info',
-          label: 'Ek Bilgi Kutusu',
-          selector: '.extra-info',
-          fields: ['bg', 'text']
-        },
-        { // .ring-number-box : Halka Sayacı, arkaplan (--count-frame-bg) , çizgi (--count-frame-b)
-          id: 'ring-number-box',
-          label: 'Halka Sayacı',
-          selector: '.ring-number-box',
-          fields: ['bg', 'border']
-        },        
-        { 
-          id: 'text-total-chain',
-          label: 'Toplam Halka Yazısı',
-          selector: '.text-total-chain',
-          fields: ['text']
-        },
-        {
-          id: 'show-count',
-          label: 'Sayı Göstergesi',
-          selector: '#show-count',
-          fields: ['text']
-        },
-        {
-          id: 'parenthesis',
-          label: 'Parantez Bilgi',
-          selector: '.parenthesis',
-          fields: ['text']
-        },
-        { // .size-box>* : etrafındaki elips çizginin renk ayarı
-          id: 'size-box-children',
-          label: 'Satır / Sütun Girdileri',
-          selector: '.size-box > *',
-          fields: ['border']
-        },
-        { // butonların arkaplan (default: beyaz) rengi topluca değiştirebilir
-          id: 'buttons',
-          label: 'Butonlar Arkplan',
-          selector: 'button',
-          fields: ['bg']
-        },
-        { // tüm butonlar kolayca override edilebilir
-          id: 'btn-theme-settings',
-          label: 'Renk Ayarı Butonu ;)',
-          selector: '#btn-theme-settings',
-          fields: ['border', 'text']
-        },
-        {  // üzerine gelince cam efekti
-          id: 'btn-theme-settings-hover',
-          label: 'Renk Ayarı Efekti',
-          selector: '#btn-theme-settings:hover',
-          fields: ['bg', 'border', 'text']
-        },
-        { 
-          id: 'btn-add-chain',
-          label: 'Zinciri oluştur butonu',
-          selector: '#btn-add-chain',
-          fields: ['border', 'text']
-        },
-        {  
-          id: 'btn-add-chain-hover',
-          label: 'Zinciri oluştur efekti',
-          selector: '#btn-add-chain:hover',
-          fields: ['bg', 'border', 'text']
-        },
-        {
-          id: 'btn-load-file',
-          label: 'Karşıya yükle butonu',
-          selector: '#btn-load-file',
-          fields: ['border', 'text']
-        },
-        {
-          id: 'btn-load-file-hover',
-          label: 'Karşıya yükle efekti',
-          selector: '#btn-load-file:hover',
-          fields: ['bg', 'border', 'text']
-        },
-        {
-          id: 'btn-backup-download',
-          label: 'Yedek indir butonu',
-          selector: '#btn-backup-download',
-          fields: ['border', 'text']
-        },
-        {
-          id: 'btn-backup-download-hover',
-          label: 'Yedek indir efekti',
-          selector: '#btn-backup-download:hover',
-          fields: ['bg', 'border', 'text']
-        },
-        {
-          id: 'btn-reset',
-          label: 'Temizle butonu',
-          selector: '#btn-reset',
-          fields: ['border', 'text']
-        },
-        {
-          id: 'btn-reset-hover',
-          label: 'Temizle butonu efekti',
-          selector: '#btn-reset:hover',
-          fields: ['bg', 'border', 'text']
-        }, {
-          id: 'btn-delete',
-          label: 'Zinciri sil butonu',
-          selector: '#btn-delete',
-          fields: ['border', 'text']
-        },
-        {
-          id: 'btn-delete-hover',
-          label: 'Zinciri sil efekti',
-          selector: '#btn-delete:hover',
-          fields: ['bg', 'border', 'text']
-        },
-        { // .chain : Zincir Kartı, arkaplan ( --chain-frame-bg), çizgi ( --chain-frame-b)
-          id: 'chain',
-          label: 'Zincir Kartı',
-          selector: '.chain',
-          fields: ['bg', 'border']
-        },
-        { // .chain-tab: sadece metin,  diğer özelliklerini bodyden alır
-          id: 'chain-tab',
-          label: 'Zincir Sekmesi',
-          selector: '.chain-tab',
-          fields: ['text']
-        },
-        {
-          id: 'chain-title',
-          label: 'Zincir Başlığı',
-          selector: '.chain-title',
-          fields: ['text']
-        },
-        {
-          id: 'chain-info',
-          label: 'Zincir Bilgileri',
-          selector: '.chain-info',
-          fields: ['text']
-        },
-        { // oluşturulan tüm tabloların genel çizgisi
-          id: 'table-cells',
-          label: 'Tablo Çizgisi',
-          selector: 'th, td',
-          fields: ['border']
-        },
-        { // ekstra selector tanımlanmadan seçilmiştir
-          id: 'months',
-          label: 'Başlık Sütunu',
-          selector: '.chain table th:first-child',
-          fields: ['bg', 'text']
-        },
-        {  
-          id: 'days',
-          label: 'Başlık Satırı',
-          selector: '.chain table tr:first-child th',
-          fields: ['bg', 'text']
-        },
-        {
-          id: 'first-cell',
-          label: 'Yıl Metni',
-          selector: '#first-cell',
-          fields: ['text']
-        },
-        { // Tüm hücrelerin yazısı veya backgroundu ayarlanabilir
-          id: 'cell',
-          label: 'Hücre',
-          selector: '.cell',
-          fields: ['bg', 'text']
-        },
-        { // Zorunlu artık hücre
-          id: 'empty-cell',
-          label: 'Boş Hücre',
-          selector: '.empty-cell',
-          fields: ['bg']
-        },
-        {
-          id: 'month-break-left',
-          label: 'Ay Geçişi',
-          selector: '.month-break-left',
-          fields: ['border']
-        },
-        {
-          id: 'year-break-left',
-          label: 'Yıl Geçişi',
-          selector: '.year-break-left',
-          fields: ['border']
-        },
-        {
-          id: 'x-mark',
-          label: 'X İşareti',
-          selector: '.x-mark',
-          fields: ['stroke']
-        }
+        { id: '00', label: 'En Dış Katman', selector: 'body', fields: ['bg'] },
+        { id: '01', label: 'Soluk Zincir Görseli', fields: ['excp'] },
+        { id: '02', label: 'Menü Kartı', selector: '.main-frame', fields: ['bg', 'bd'] },
+        { id: '03', label: 'Bilgi İkonu', selector: '.question-mark', fields: ['text'] },
+        { id: '04', label: 'Ana Başlık', selector: '.main-title', fields: ['text'] },
+        { id: '05', label: 'Menü Daraltma Düğmesi', selector: '.btn-toggle-menu', fields: ['bd', 'text'] },
+        { id: '06', label: 'Menü Bölme Çizgileri', selector: '.hr-line', fields: ['bd'] },
+        { id: '07', label: 'Form Başlıkları', selector: '.form-titles', fields: ['text'] },
+        { id: '08', label: 'Seçmeli Girdiler', selector: '.selections label', fields: ['bd', 'text'] },
+        { id: '09', label: 'Seçilmiş Hali', selector: 'label:has(input:checked)', fields: ['bg', 'text'] },
+        { id: '10', label: 'Form Girdileri', selector: 'input', fields: ['bg', 'bd', 'text'] },
+        { id: '11', label: 'Hata Kutucukları', selector: '.error-info', fields: ['bg', 'bd', 'text'] },
+        { id: '12', label: 'Ek Bilgi Kutusu', selector: '.extra-info', fields: ['text'] },
+        { id: '13', label: 'Halka Sayacı', selector: '.ring-number-box', fields: ['bg', 'bd'] },
+        { id: '14', label: 'Toplam Halka Yazısı', selector: '.text-total-chain', fields: ['text'] },
+        { id: '15', label: 'Sayı Göstergesi', selector: '#show-count', fields: ['text'] },
+        { id: '16', label: 'Parantez Bilgi', selector: '.parenthesis', fields: ['text'] },
+        { id: '17', label: 'Satır / Sütun Girdileri', selector: '.size-box > *', fields: ['bd'] },
+        { id: '18', label: 'Butonlar Arkaplan', selector: 'button', fields: ['bg', 'excp'] },
+        { id: '19', label: 'Renk Ayarı Butonu ;)', selector: '#btn-theme-settings', fields: ['bd', 'text', 'excp'] },
+        { id: '20', label: 'Zinciri oluştur butonu', selector: '#btn-add-chain', fields: ['bd', 'text', 'excp'] },
+        { id: '21', label: 'Karşıya yükle butonu', selector: '#btn-load-file', fields: ['bd', 'text', 'excp'] },
+        { id: '22', label: 'Yedek indir butonu', selector: '#btn-backup-download', fields: ['bd', 'text', 'excp'] },
+        { id: '23', label: 'Temizle butonu', selector: '#btn-reset', fields: ['bd', 'text', 'excp'] },
+        { id: '24', label: 'Zinciri sil butonu', selector: '#btn-delete', fields: ['bd', 'text', 'excp'] },
+        { id: '25', label: 'Zincir Kartı', selector: '.chain, .chain-tab.active', fields: ['bg', 'bd'] },
+        { id: '26', label: 'Zincir Sekmesi', selector: '.chain-tab', fields: ['text'] },
+        { id: '27', label: 'Zincir Başlığı', selector: '.chain-title', fields: ['text'] },
+        { id: '28', label: 'Zincir Bilgileri', selector: '.chain-info', fields: ['text'] },
+        { id: '29', label: 'Tablo Çizgisi', selector: 'th, td', fields: ['bd'] },
+        { id: '30', label: 'Başlık Sütunu', selector: '.chain table th:first-child', fields: ['bg', 'text'] },
+        { id: '31', label: 'Başlık Satırı', selector: '.chain table tr:first-child th', fields: ['bg', 'text'] },
+        { id: '32', label: 'Yıl Metni', selector: '#first-cell', fields: ['text'] },
+        { id: '33', label: 'Hücre', selector: '.cell', fields: ['bg', 'text'] },
+        { id: '34', label: 'Boş Hücre', selector: '.empty-cell', fields: ['bg'] },
+        { id: '35', label: 'Ay Geçişi Belirteç', selector: '.month-break-left', fields: ['bd'] },
+        { id: '36', label: 'Yıl Geçişi Belirteç', selector: '.year-break-left', fields: ['bd'] },
+        { id: '37', label: 'X İşareti Dolgusu', fields: ['excp'] },
       ];
+      // buton hoverları (kalabalık azaltsın diye), svg attributeları
+      const Exceptions = [
+        { id: '01', selector: '.chain-bg', property: 'fill' },
+        { id: '19', selector: '#btn-theme-settings:hover', property: 'background-color' },
+        { id: '20', selector: '#btn-add-chain:hover', property: 'background-color' },
+        { id: '21', selector: '#btn-load-file:hover', property: 'background-color' },
+        { id: '22', selector: '#btn-backup-download:hover', property: 'background-color' },
+        { id: '23', selector: '#btn-reset:hover', property: 'background-color' },
+        { id: '24', selector: '#btn-delete:hover', property: 'background-color' },
+        { id: '37', selector: '.x-mark', property: 'stroke' },
+      ]
 
-      // Root'tan gelen 6 özel değişken (opacity korunacak)
-      const VAR_FIELDS = {
-        'main-frame:bg': '--main-frame-bg',
-        'main-frame:border': '--main-frame-b',
-        'ring-number-box:bg': '--count-frame-bg',
-        'ring-number-box:border': '--count-frame-b',
-        'chain:bg': '--chain-frame-bg',
-        'chain:border': '--chain-frame-b'
-      };
+      const STORAGE_KEY = 'theme_css_overrides_v1';
 
-      // border için özel property gerektirenler
-      const BORDER_PROP_FIELDS = {
-        'month-break-left:border': 'border-left-color',
-        'year-break-left:border': 'border-left-color'
-      };
+      /* ---------------- UTIL: Color parse/format ---------------- */
+      function clamp255(n) { n = Number(n); return Number.isFinite(n) ? Math.max(0, Math.min(255, Math.round(n))) : 0; }
+      function clamp01(n) { n = Number(n); return Number.isFinite(n) ? Math.max(0, Math.min(1, n)) : 1; }
 
-      const THEME_STORAGE_KEY = 'colorThemeConfig_v1';
-
-      let themeData = null;      // { defaults: {id:{field:cssColor}}, current: {...} }
-      let workingTheme = null;   // panel açıkken kullanılan geçici kopya
-
-      // ------------- YARDIMCI FONKSİYONLAR -------------
-
-      function ensureStyleTag(id) {
-        let tag = document.getElementById(id);
-        if (!tag) {
-          tag = document.createElement('style');
-          tag.id = id;
-          document.head.appendChild(tag);
-        }
-        return tag;
-      }
-
-      function loadThemeData() {
-        try {
-          const raw = localStorage.getItem(THEME_STORAGE_KEY);
-          if (!raw) return null;
-          return JSON.parse(raw);
-        } catch (e) {
-          console.warn('Tema verisi parse edilemedi:', e);
-          return null;
-        }
-      }
-
-      function saveThemeData(data) {
-        try {
-          localStorage.setItem(THEME_STORAGE_KEY, JSON.stringify(data));
-        } catch (e) {
-          console.warn('Tema verisi kaydedilemedi:', e);
-        }
-      }
-
-      function deepClone(obj) {
-        return JSON.parse(JSON.stringify(obj));
-      }
-
-      // rgb(a) / #rrggbb -> {r,g,b,a}
-      function parseCssColorToRgba(color) {
-        if (!color) return null;
-        color = color.trim();
-
-        // hex
-        if (color[0] === '#') {
-          if (color.length === 4) {
-            const r = parseInt(color[1] + color[1], 16);
-            const g = parseInt(color[2] + color[2], 16);
-            const b = parseInt(color[3] + color[3], 16);
-            return { r, g, b, a: 1 };
-          } else if (color.length === 7) {
-            const r = parseInt(color.slice(1, 3), 16);
-            const g = parseInt(color.slice(3, 5), 16);
-            const b = parseInt(color.slice(5, 7), 16);
-            return { r, g, b, a: 1 };
-          }
-          return null;
-        }
-
-        // rgb / rgba
-        const m = color.match(/rgba?\s*\(\s*(\d+)[ ,]+(\d+)[ ,]+(\d+)(?:[ ,/]+([\d.]+))?\s*\)/i);
-        if (m) {
-          return {
-            r: parseInt(m[1], 10),
-            g: parseInt(m[2], 10),
-            b: parseInt(m[3], 10),
-            a: m[4] !== undefined ? parseFloat(m[4]) : 1
-          };
-        }
-
-        // bilinmeyen format, uğraşma
-        return null;
-      }
-
-      function rgbaToHex(r, g, b) {
-        const toHex = (v) => {
-          const h = v.toString(16);
-          return h.length === 1 ? '0' + h : h;
-        };
-        return '#' + toHex(r) + toHex(g) + toHex(b);
-      }
-
-      // CSS string -> #rrggbb (alpha'yı burada görmezden geliyoruz)
-      function cssColorToHex(color) {
-        const rgba = parseCssColorToRgba(color);
-        if (!rgba) return '#000000';
-        return rgbaToHex(rgba.r, rgba.g, rgba.b);
-      }
-
-      // #rrggbb -> {r,g,b}
       function hexToRgb(hex) {
-        if (!hex) return null;
-        hex = hex.trim();
-        if (hex[0] === '#') hex = hex.slice(1);
-        if (hex.length === 3) {
-          const r = parseInt(hex[0] + hex[0], 16);
-          const g = parseInt(hex[1] + hex[1], 16);
-          const b = parseInt(hex[2] + hex[2], 16);
-          return { r, g, b };
-        }
-        if (hex.length === 6) {
-          const r = parseInt(hex.slice(0, 2), 16);
-          const g = parseInt(hex.slice(2, 4), 16);
-          const b = parseInt(hex.slice(4, 6), 16);
-          return { r, g, b };
-        }
-        return null;
+        const h = String(hex).trim().replace('#', '');
+        if (h.length !== 6) return { r: 0, g: 0, b: 0 };
+        return {
+          r: parseInt(h.slice(0, 2), 16),
+          g: parseInt(h.slice(2, 4), 16),
+          b: parseInt(h.slice(4, 6), 16)
+        };
+      }
+      function rgbToHex({ r, g, b }) {
+        const rr = clamp255(r).toString(16).padStart(2, '0');
+        const gg = clamp255(g).toString(16).padStart(2, '0');
+        const bb = clamp255(b).toString(16).padStart(2, '0');
+        return `#${rr}${gg}${bb}`;
       }
 
-      // Belirli id+field için varsayılan rengi oku
-      function readDefaultColor(row, field) {
-        const key = row.id + ':' + field;
-        const varName = VAR_FIELDS[key];
+      // Returns { rgb:{r,g,b}, a:number, kind:'rgb'|'rgba'|'transparent'|'nonRGB'|'undefined' }
+      function parseCssColor(value) {
+        if (value == null) return { rgb: { r: 0, g: 0, b: 0 }, a: 1, kind: 'undefined' };
+        const v = String(value).trim().toLowerCase();
+        if (!v) return { rgb: { r: 0, g: 0, b: 0 }, a: 1, kind: 'undefined' };
+        if (v === 'transparent') return { rgb: { r: 0, g: 0, b: 0 }, a: 0, kind: 'transparent' };
 
-        if (varName) {
-          // root var
-          const value = getComputedStyle(document.documentElement)
-            .getPropertyValue(varName)
-            .trim();
-          if (value) return value;
-          // fallback: elementten okumayı deneyebilirsin ama genelde gerek yok
+        const rgbaMatch = v.match(/^rgba\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*\)$/);
+        if (rgbaMatch) {
+          const r = clamp255(rgbaMatch[1]);
+          const g = clamp255(rgbaMatch[2]);
+          const b = clamp255(rgbaMatch[3]);
+          const a = clamp01(rgbaMatch[4]);
+          return { rgb: { r, g, b }, a, kind: 'rgba' };
         }
 
-        const el = document.querySelector(row.selector);
-        if (!el) return null;
+        const rgbMatch = v.match(/^rgb\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)\s*\)$/);
+        if (rgbMatch) {
+          const r = clamp255(rgbMatch[1]);
+          const g = clamp255(rgbMatch[2]);
+          const b = clamp255(rgbMatch[3]);
+          return { rgb: { r, g, b }, a: 1, kind: 'rgb' };
+        }
 
-        const cs = getComputedStyle(el);
-        switch (field) {
-          case 'bg':
-            return cs.backgroundColor;
-          case 'border': {
-            const borderProp = BORDER_PROP_FIELDS[key] || 'border-color';
-            const val = cs.getPropertyValue(borderProp);
-            return val || cs.borderColor;
+        // canvastext/currentColor/others: UI’de siyah göstereceğiz ama semantiği "other/undefined" olarak tutacağız
+        return { rgb: { r: 0, g: 0, b: 0 }, a: 1, kind: 'nonRGB' };
+      }
+
+      function formatCssColor(rgb, a) {
+        if (a == null) a = 1;
+        a = clamp01(a);
+        const r = clamp255(rgb.r), g = clamp255(rgb.g), b = clamp255(rgb.b);
+        if (a < 1) return `rgba(${r}, ${g}, ${b}, ${a})`;
+        return `rgb(${r}, ${g}, ${b})`;
+      }
+
+      function sameRgb(a, b) {
+        return clamp255(a.r) === clamp255(b.r) && clamp255(a.g) === clamp255(b.g) && clamp255(a.b) === clamp255(b.b);
+      }
+
+      /* ---------------- UTIL: CSSOM parse from style element ---------------- */
+      function normalizeSelectorText(s) {
+        // minimal normalization: trim + collapse spaces + normalize comma spacing
+        return String(s)
+          .trim()
+          .replace(/\s+/g, ' ')
+          .replace(/\s*,\s*/g, ', ');
+      }
+
+      // Parse a <style> element into map: selector -> { prop: value }
+      function parseStyleElement(styleEl) {
+        const map = new Map();
+        if (!styleEl) return map;
+
+        // Create a temporary stylesheet by injecting text to a new <style> to reliably access cssRules
+        const tmp = document.createElement('style');
+        tmp.textContent = styleEl.textContent || '';
+        document.head.appendChild(tmp);
+
+        let rules = [];
+        try { rules = Array.from(tmp.sheet?.cssRules || []); } catch { rules = []; }
+        for (const rule of rules) {
+          if (!rule || rule.type !== CSSRule.STYLE_RULE) continue;
+          const sel = normalizeSelectorText(rule.selectorText || '');
+          if (!sel) continue;
+          const decl = {};
+          for (let i = 0; i < rule.style.length; i++) {
+            const prop = rule.style[i];
+            decl[prop] = rule.style.getPropertyValue(prop).trim();
           }
-          case 'text':
-            return cs.color;
-          case 'fill':
-            return cs.fill;
-          case 'stroke':
-            return cs.stroke;
-          default:
-            return null;
+          // FIX (bd): border-color bazen CSSOM enumerate edilmez; yine de varsayılanı doğru okumak için manuel çek
+          const bc = rule.style.getPropertyValue('border-color').trim();
+          if (bc && !decl['border-color']) {
+            decl['border-color'] = bc;
+          }
+
+          // merge if repeated selectors
+          const prev = map.get(sel) || {};
+          map.set(sel, { ...prev, ...decl });
         }
+
+        tmp.remove();
+        return map;
       }
 
-      // Verilen themeState (current veya workingTheme) -> CSS string üret
-      function buildThemeCss(themeState) {
-        const varAssignments = {};      // varName -> cssColor
-        const selectorAssignments = {}; // selector -> {prop: value}
+      // Parse raw CSS text (theme overrides) into map
+      function parseCssText(cssText) {
+        const styleEl = document.createElement('style');
+        styleEl.textContent = cssText || '';
+        document.head.appendChild(styleEl);
+        const map = parseStyleElement(styleEl);
+        styleEl.remove();
+        return map;
+      }
 
-        COLOR_ROWS.forEach((row) => {
-          const rowValues = themeState[row.id];
-          if (!rowValues) return;
+      // Build CSS text from map: selector -> {prop: value}
+      function buildCssText(map) {
+        const blocks = [];
+        for (const [selector, decl] of map.entries()) {
+          const props = Object.entries(decl)
+            .filter(([_, v]) => v != null && String(v).trim() !== '')
+            .map(([k, v]) => `  ${k}: ${v};`);
+          if (!props.length) continue;
+          blocks.push(`${selector} {\n${props.join('\n')}\n}`);
+        }
+        return blocks.join('\n\n');
+      }
 
-          row.fields.forEach((field) => {
-            const value = rowValues[field];
-            if (!value) return;
+      /* ---------------- PROPERTY RESOLUTION ---------------- */
+      /* ---------------- TARGET RESOLUTION (selector + property) ---------------- */
 
-            const key = row.id + ':' + field;
-            const varName = VAR_FIELDS[key];
+      // sabit field->property map (bg/border/text)
+      function defaultPropForField(field) {
+        if (field === 'bg') return 'background-color';
+        if (field === 'bd') return 'border-color';
+        if (field === 'text') return 'color';
+        return field; // gelecekte yeni bir field gelirse doğrudan property sayılabilir
+      }
 
-            if (varName) {
-              // root var
-              varAssignments[varName] = value;
-            } else {
-              let cssProp;
-              if (field === 'bg') {
-                cssProp = 'background-color';
-              } else if (field === 'border') {
-                const borderProp = BORDER_PROP_FIELDS[key] || 'border-color';
-                cssProp = borderProp;
-              } else if (field === 'text') {
-                cssProp = 'color';
-              } else if (field === 'fill') {
-                cssProp = 'fill';
-              } else if (field === 'stroke') {
-                cssProp = 'stroke';
-              } else {
-                return;
-              }
+      function getExceptionById(id) {
+        return Exceptions.find(e => e.id === id) || null;
+      }
 
-              if (!selectorAssignments[row.selector]) {
-                selectorAssignments[row.selector] = {};
-              }
-              selectorAssignments[row.selector][cssProp] = value;
-            }
-          });
-        });
-
-        let css = '';
-
-        // Root var'lar (3 elemanın 6 değeri)
-        const varNames = Object.keys(varAssignments);
-        if (varNames.length > 0) {
-          css += ':root {\n';
-          varNames.forEach((vn) => {
-            css += '  ' + vn + ': ' + varAssignments[vn] + ';\n';
-          });
-          css += '}\n\n';
+      /**
+       * Tüm sistemin tek kaynağı:
+       * - bg/bd/text => row.selector + sabit map
+       * - excp          => Exceptions[id] => {selector, property}
+       */
+      function resolveTargetForCell(row, field) {
+        if (field === 'excp') {
+          const ex = getExceptionById(row.id);
+          if (!ex) return null;
+          return { selector: ex.selector, prop: ex.property };
         }
 
-        // Normal selector'ler
-        Object.keys(selectorAssignments).forEach((selector) => {
-          css += selector + ' {\n';
-          const props = selectorAssignments[selector];
-          Object.keys(props).forEach((p) => {
-            css += '  ' + p + ': ' + props[p] + ';\n';
-          });
-          css += '}\n\n';
-        });
+        if (!row.selector) return null;
+        return { selector: row.selector, prop: defaultPropForField(field) };
+      }
 
+
+      /* ---------------- THEME STYLE LAYERS ---------------- */
+      function ensureStyleEl(id) {
+        let el = document.getElementById(id);
+        if (!el) {
+          el = document.createElement('style');
+          el.id = id;
+          document.head.appendChild(el);
+        }
+        return el;
+      }
+
+      const themeStyleEl = ensureStyleEl('theme-overrides-style');
+      const previewStyleEl = ensureStyleEl('theme-preview-style');
+
+      function loadThemeFromStorage() {
+        const css = localStorage.getItem(STORAGE_KEY) || '';
+        themeStyleEl.textContent = css;
         return css;
       }
-
-      // Belirli themeState'i belirli style tag'ine uygula
-      function applyTheme(themeState, styleTagId) {
-        const tag = ensureStyleTag(styleTagId);
-        tag.textContent = buildThemeCss(themeState);
+      function saveThemeToStorage(css) {
+        localStorage.setItem(STORAGE_KEY, css);
+      }
+      function clearThemeStorage() {
+        localStorage.removeItem(STORAGE_KEY);
       }
 
-      // ------------- INITIALIZE: DEFAULTS/CURRENT OLUŞTUR -------------
+      /* ---------------- PANEL UI ---------------- */
+      let panelEl = null;
+      let tableEl = null;
+      let bodyEl = null;
 
-      function initThemeData() {
-        let data = loadThemeData();
-        if (data) {
-          themeData = data;
+      let baseMap = null;     // original CSS map
+      let themeMap = null;    // current theme overrides map
+      let previewMap = new Map();
+
+      let initialThemeCssSnapshot = ''; // varsayılanlara dön iptali için
+      let pendingResetAll = false;
+
+      // per-cell state: key = `${rowId}::${field}`
+      const cellState = new Map();
+
+      function cellKey(rowId, field) { return `${rowId}::${field}`; }
+
+      function getDecl(map, selector) {
+        return map.get(normalizeSelectorText(selector)) || null;
+      }
+      function getEffectiveRawValue(row, field) {
+        const target = resolveTargetForCell(row, field);
+        if (!target) return ''; // hedef yoksa tanımsız
+
+        const selector = normalizeSelectorText(target.selector);
+        const prop = target.prop;
+
+        // Preview > Theme > Base > semantic default
+        const pDecl = getDecl(previewMap, selector);
+        if (pDecl && prop in pDecl) return pDecl[prop];
+
+        const tDecl = getDecl(themeMap, selector);
+        if (tDecl && prop in tDecl) return tDecl[prop];
+
+        const bDecl = getDecl(baseMap, selector);
+        if (bDecl && prop in bDecl) return bDecl[prop];
+
+        // semantic defaults (string)
+        if (prop === 'background-color') return 'transparent';
+        if (prop === 'border-color') return 'currentColor';
+        if (prop === 'color') return 'canvastext';
+        return '';
+      }
+      function initCellState(row, field) {
+        const key = cellKey(row.id, field);
+
+        const target = resolveTargetForCell(row, field);
+        if (!target) return null;
+
+        const raw = getEffectiveRawValue(row, field);
+        const parsed = parseCssColor(raw);
+
+        const baseRgb = { ...parsed.rgb };
+
+        let a = parsed.a;
+        if (parsed.kind === 'nonRGB') a = 1;
+
+        const st = {
+          rowId: row.id,
+          selector: normalizeSelectorText(target.selector),
+          field,
+          prop: target.prop,
+          baseRgb,
+          rgb: { ...parsed.rgb },
+          a,
+          touched: false
+        };
+
+        cellState.set(key, st);
+        return st;
+      }
+      function setPreviewValue(row, field, rgb) {
+        const target = resolveTargetForCell(row, field);
+        if (!target) return;
+
+        const selector = normalizeSelectorText(target.selector);
+        const prop = target.prop;
+
+        const st = cellState.get(cellKey(row.id, field));
+        const a = st?.a ?? 1;
+
+        const decl = previewMap.get(selector) || {};
+        decl[prop] = formatCssColor(rgb, a);
+        previewMap.set(selector, decl);
+
+        previewStyleEl.textContent = buildCssText(previewMap);
+      }
+
+      function clearPreview() {
+        previewMap = new Map();
+        previewStyleEl.textContent = '';
+      }
+
+      function applyResetAllPreview() {
+        // ResetAll: preview temiz, UI theme yokmuş gibi görünmeli
+        clearPreview();
+        pendingResetAll = true;
+        // UI’de effective değer artık base+semantic olacak; inputları o hale getir
+        refreshInputsFromEffective();
+      }
+
+      function refreshInputsFromEffective() {
+        // tüm inputları effective değere (pendingResetAll varsa theme yok sayılarak) döndür
+        for (const row of COLOR_ROWS) {
+          for (const field of row.fields) {
+            const key = cellKey(row.id, field);
+            const input = document.querySelector(`input[data-cell="${key}"]`);
+            const codeSpan = document.querySelector(`span[data-code="${key}"]`);
+            if (!input) continue;
+
+            // pendingResetAll true ise Theme katmanı yok sayılır: geçici olarak themeMap'i boş map gibi düşün
+            const savedThemeMap = themeMap;
+            const tempThemeMap = pendingResetAll ? new Map() : themeMap;
+            const target = resolveTargetForCell(row, field);
+            if (!target) continue;
+
+            const selector = normalizeSelectorText(target.selector);
+            const prop = target.prop;
+
+            const pDecl = getDecl(previewMap, selector);
+            const raw =
+              (pDecl && prop in pDecl) ? pDecl[prop] :
+                (() => {
+                  const tDecl = getDecl(tempThemeMap, selector);
+                  if (tDecl && prop in tDecl) return tDecl[prop];
+                  const bDecl = getDecl(baseMap, selector);
+                  if (bDecl && prop in bDecl) return bDecl[prop];
+                  if (prop === 'background-color') return 'transparent';
+                  if (prop === 'border-color') return 'currentColor';
+                  if (prop === 'color') return 'canvastext';
+                  return '';
+                })();
+
+            // restore
+            themeMap = savedThemeMap;
+
+            const parsed = parseCssColor(raw);
+            const rgb = parsed.rgb;
+            input.value = rgbToHex(rgb);
+            if (codeSpan) codeSpan.textContent = formatCssColor(rgb, (parsed.kind === 'rgba' || parsed.kind === 'transparent') ? parsed.a : 1);
+
+            // state’i de güncelle (touched false’a çekmeden sadece “görünen”i düzeltelim)
+            const st = cellState.get(key);
+            if (st) {
+              st.rgb = { ...rgb };
+              // alpha: transparent ->0, rgba->a, diğer->1
+              st.a = (parsed.kind === 'rgba' || parsed.kind === 'transparent') ? parsed.a : 1;
+            }
+          }
+        }
+      }
+
+      /* ---------------- COMMIT LOGIC ---------------- */
+      function commitChanges() {
+        // pendingResetAll: theme tamamen temizlenecek (Tamam ile)
+        if (pendingResetAll) {
+          // theme katmanını sil
+          themeMap = new Map();
+          themeStyleEl.textContent = '';
+          saveThemeToStorage('');
+          clearThemeStorage(); // isterseniz boş string yerine remove
+          pendingResetAll = false;
+          clearPreview();
           return;
         }
 
-        const defaults = {};
-        COLOR_ROWS.forEach((row) => {
-          const rowObj = {};
-          row.fields.forEach((field) => {
-            const val = readDefaultColor(row, field);
-            if (val) {
-              rowObj[field] = val;
-            }
-          });
-          defaults[row.id] = rowObj;
-        });
+        // normal commit: touched + rgb changed -> write
+        const nextThemeMap = parseCssText(themeStyleEl.textContent || '');
+        let didChange = false;
 
-        const current = deepClone(defaults);
-        themeData = { defaults, current };
-        saveThemeData(themeData);
+        for (const [key, st] of cellState.entries()) {
+          if (!st.touched) continue;
+
+          // sadece RGB karşılaştır
+          if (sameRgb(st.rgb, st.baseRgb)) continue;
+
+          const selector = st.selector;
+          const decl = nextThemeMap.get(selector) || {};
+
+          // alpha korunur (st.a)
+          decl[st.prop] = formatCssColor(st.rgb, st.a);
+          nextThemeMap.set(selector, decl);
+          didChange = true;
+        }
+
+        if (didChange) {
+          // Boş property temizliği (opsiyonel)
+          const cssText = buildCssText(nextThemeMap);
+          themeStyleEl.textContent = cssText;
+          saveThemeToStorage(cssText);
+        }
+
+        clearPreview();
       }
 
-      // ------------- UI: TABLOYU OLUŞTUR, INPUTLARI DOLDUR -------------
+      /* ---------------- CANCEL / RESET ---------------- */
+      function cancelChanges() {
+        // pending reset geri al
+        if (pendingResetAll) {
+          pendingResetAll = false;
+          // theme snapshot geri yükle
+          themeStyleEl.textContent = initialThemeCssSnapshot;
+          saveThemeToStorage(initialThemeCssSnapshot);
+          // themeMap güncelle
+          themeMap = parseCssText(initialThemeCssSnapshot);
+        }
+        clearPreview();
+      }
 
-      function createThemeEditorTable() {
-        const tbody = document.getElementById('theme-editor-rows');
+      /* ---------------- PANEL BUILD ---------------- */
+      function buildPanel() {
+        if (panelEl) return;
+
+        panelEl = document.createElement('div');
+        panelEl.id = 'theme-panel';
+
+        panelEl.innerHTML = `
+    <div id="theme-panel-header">
+      <div class="title">Tema Ayarları</div>
+      <div class="hint">Sürükleyin • Dikey boyutlandırın • RGB değiştirin</div>
+    </div>
+    <div id="theme-panel-body"></div>
+    <div id="theme-panel-footer">
+      <button id="btn-theme-reset-all" type="button">Varsayılanlara dön!</button>
+      <div class="right">
+        <button id="btn-theme-cancel" type="button">İptal</button>
+        <button id="btn-theme-ok" class="primary" type="button">Tamam</button>
+      </div>
+    </div>
+  `;
+
+        document.body.appendChild(panelEl);
+        bodyEl = panelEl.querySelector('#theme-panel-body');
+
+        tableEl = document.createElement('table');
+        tableEl.id = 'theme-table';
+        tableEl.innerHTML = `
+    <thead>
+      <tr>
+        <th class="col-label">Alan Adı</th>
+        <th>Arkaplan</th>
+        <th>Çerçeve / Çizgi</th>
+        <th>Metin / İkon </th>
+        <th>Diğer</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+        bodyEl.appendChild(tableEl);
+
+        // Drag logic
+        makeDraggable(panelEl, panelEl.querySelector('#theme-panel-header'));
+
+        // Buttons
+        panelEl.querySelector('#btn-theme-ok').addEventListener('click', () => {
+          commitChanges();
+          closePanel();
+        });
+        panelEl.querySelector('#btn-theme-cancel').addEventListener('click', () => {
+          cancelChanges();
+          closePanel();
+        });
+        panelEl.querySelector('#btn-theme-reset-all').addEventListener('click', () => {
+          applyResetAllPreview();
+        });
+      }
+
+      function renderTable() {
+        const tbody = tableEl.querySelector('tbody');
         tbody.innerHTML = '';
 
-        COLOR_ROWS.forEach((row) => {
+        // dynamic extra columns (geleceğe hazırlık)
+        const baseCols = new Set(['bg', 'bd', 'text', 'excp']);
+        const extraFields = new Set();
+        for (const row of COLOR_ROWS) {
+          for (const f of row.fields) if (!baseCols.has(f)) extraFields.add(f);
+        }
+        // Eğer extra field gelirse, ileride thead’e de eklemeniz gerekir.
+        // Şu anlık yok dediniz, o yüzden sadece body tarafında dikkate almıyoruz.
+
+        for (const row of COLOR_ROWS) {
           const tr = document.createElement('tr');
 
-          // 1. sütun: Alan (label)
           const tdLabel = document.createElement('td');
+          tdLabel.className = 'col-label';
           tdLabel.textContent = row.label;
-          tdLabel.className = 'theme-editor-row-label';
           tr.appendChild(tdLabel);
 
-          // Yardımcı: belirli field için input hücresi
-          function createColorCell(fieldNameForColumn) {
-            const td = document.createElement('td');
-            td.className = 'theme-editor-color-cell';
-
-            let fieldKey = null;
-
-            if (fieldNameForColumn === 'bg' && row.fields.includes('bg')) {
-              fieldKey = 'bg';
-            } else if (fieldNameForColumn === 'border' && row.fields.includes('border')) {
-              fieldKey = 'border';
-            } else if (fieldNameForColumn === 'text' && row.fields.includes('text')) {
-              fieldKey = 'text';
-            } else if (fieldNameForColumn === 'fillstroke') {
-              if (row.fields.includes('fill')) {
-                fieldKey = 'fill';
-              } else if (row.fields.includes('stroke')) {
-                fieldKey = 'stroke';
-              }
-            }
-
-            if (fieldKey) {
-              const input = document.createElement('input');
-              input.type = 'color';
-              input.className = 'theme-editor-color-input';
-              input.dataset.rowId = row.id;
-              input.dataset.field = fieldKey;
-              td.appendChild(input);
-            }
-
-            return td;
-          }
-
-          // 2. sütun: Arkaplan (bg)
-          tr.appendChild(createColorCell('bg'));
-
-          // 3. sütun: Çizgi (border)
-          tr.appendChild(createColorCell('border'));
-
-          // 4. sütun: Yazı (text)
-          tr.appendChild(createColorCell('text'));
-
-          // 5. sütun: Dolgu rengi (fill veya stroke)
-          tr.appendChild(createColorCell('fillstroke'));
-
+          // 3 ana sütun
+          tr.appendChild(makeCellTd(row, 'bg'));
+          tr.appendChild(makeCellTd(row, 'bd'));
+          tr.appendChild(makeCellTd(row, 'text'));
+          tr.appendChild(makeCellTd(row, 'excp'));
           tbody.appendChild(tr);
+        }
+      }
+
+      function makeCellTd(row, field) {
+        const td = document.createElement('td');
+
+        if (!row.fields.includes(field)) {
+          td.textContent = '';
+          return td;
+        }
+
+        const st = initCellState(row, field);
+        if (!st) {
+          td.textContent = '';
+          return td;
+        }
+        const key = cellKey(row.id, field);
+
+        const wrap = document.createElement('div');
+        wrap.className = 'theme-cell';
+
+        const input = document.createElement('input');
+        input.type = 'color';
+        input.value = rgbToHex(st.rgb);
+        input.dataset.cell = key;
+
+
+
+        input.addEventListener('input', (e) => {
+          const rgb = hexToRgb(e.target.value);
+          const state = cellState.get(key);
+          if (!state) return;
+
+          state.rgb = { ...rgb };
+          state.touched = true;
+
+          // preview apply (pending reset olsa bile preview yazabilir; reset anlamı iptal değil, bekleyen işlem)
+          setPreviewValue(row, field, rgb);
+
         });
+
+        wrap.appendChild(input);
+        td.appendChild(wrap);
+        return td;
       }
 
-      function populateInputsFromTheme(themeState) {
-        const inputs = document.querySelectorAll('.theme-editor-color-input');
-        inputs.forEach((input) => {
-          const id = input.dataset.rowId;
-          const field = input.dataset.field;
-          const rowValues = themeState[id];
-          const cssColor = rowValues && rowValues[field];
-          if (cssColor) {
-            input.value = cssColorToHex(cssColor);
-          } else {
-            input.value = '#000000';
-          }
-        });
-      }
-
-      // ------------- PANEL AÇ/KAPAT VE EVENTLER -------------
-
-      function openThemeEditor() {
-        // Çalışma kopyasını oluştur
-        workingTheme = deepClone(themeData.current);
-
-        // Tabloyu bir kere oluştur (ilk sefer) — oluşturulmuşsa tekrar yaratmaya gerek yok
-        const tbody = document.getElementById('theme-editor-rows');
-        if (!tbody.dataset.initialized) {
-          createThemeEditorTable();
-          tbody.dataset.initialized = '1';
-
-          // Input change eventleri
-          document
-            .getElementById('theme-editor-rows')
-            .addEventListener('input', onColorInputChange);
-        }
-
-        // Input değerlerini güncel tema ile doldur
-        populateInputsFromTheme(workingTheme);
-
-        // Canlı önizleme: o anki workingTheme'i preview'a bas
-        applyTheme(workingTheme, 'theme-preview');
-
-        // Paneli göster
-        const backdrop = document.getElementById('theme-editor-backdrop');
-        backdrop.style.display = 'block';
-
-        // Açılırken konumunu resetle (merkez civarı)
-        const modal = backdrop.querySelector('.theme-editor-modal');
-        if (modal) {
-          modal.style.top = '15%';
-          modal.style.left = '50%';
-          modal.style.transform = 'translateX(-50%)';
-        }
-      }
-
-      function closeThemeEditor() {
-        // Preview temizle (kalıcı olan overrides kalsın)
-        ensureStyleTag('theme-preview').textContent = '';
-        workingTheme = null;
-        document.getElementById('theme-editor-backdrop').style.display = 'none';
-      }
-
-      function onColorInputChange(e) {
-        const input = e.target;
-        if (input.tagName !== 'INPUT' || input.type !== 'color') return;
-
-        const id = input.dataset.rowId;
-        const field = input.dataset.field;
-        const hex = input.value;
-        const rgb = hexToRgb(hex);
-        if (!rgb) return;
-
-        const key = id + ':' + field;
-        const isVar = !!VAR_FIELDS[key];
-
-        let oldCss = (workingTheme[id] && workingTheme[id][field]) || null;
-        let oldRgba = parseCssColorToRgba(oldCss || '');
-        if (!oldRgba) {
-          oldRgba = { r: rgb.r, g: rgb.g, b: rgb.b, a: 1 };
-        }
-
-        let newCss;
-        if (isVar) {
-          // Opacity korunacak
-          newCss = 'rgba(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ', ' + oldRgba.a + ')';
-        } else {
-          // Normalde alpha önemli değil, rgb yeter
-          newCss = 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
-        }
-
-        if (!workingTheme[id]) {
-          workingTheme[id] = {};
-        }
-        workingTheme[id][field] = newCss;
-
-        // Canlı önizleme
-        applyTheme(workingTheme, 'theme-preview');
-      }
-
-      function onThemeOk() {
-        // Çalışma kopyasını kalıcı current'a yaz
-        themeData.current = deepClone(workingTheme);
-        saveThemeData(themeData);
-
-        // Kalıcı overrides'ı yeniden üret (sırayla hepsi yazılacak)
-        applyTheme(themeData.current, 'theme-overrides');
-
-        // Preview temizle ve paneli kapat
-        closeThemeEditor();
-      }
-
-      function onThemeCancel() {
-        // Her şeyi eski haline bırakmak için sadece preview'ı temizleyip kapatıyoruz
-        closeThemeEditor();
-      }
-
-      function onThemeResetToDefaults() {
-        // defaults -> workingTheme
-        workingTheme = deepClone(themeData.defaults);
-
-        // Inputları defaults'a göre set et
-        populateInputsFromTheme(workingTheme);
-
-        // Canlı önizleme
-        applyTheme(workingTheme, 'theme-preview');
-      }
-
-      // ------------- DRAG ÖZELLİĞİ -------------
-      function initThemeEditorDrag() {
-        const backdrop = document.getElementById('theme-editor-backdrop');
-        const modal = document.getElementById('theme-editor-modal') || document.querySelector('.theme-editor-modal');
-        const header =
-          document.getElementById('theme-editor-header') ||
-          document.querySelector('.theme-editor-header');
-
-        if (!backdrop || !modal || !header) return;
-
-        let isDragging = false;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        function onMouseDown(e) {
-          // Kapatma butonuna basıldıysa drag başlatma
-          if (e.target.closest('.theme-editor-close') || e.target.id === 'theme-editor-close') return;
-
-          // Resize handle üstünden basıldıysa drag başlatma
-          if (e.target.closest('.resize-right') || e.target.closest('.resize-bottom')) return;
-
-          e.preventDefault();
-
-          const rect = modal.getBoundingClientRect();
-
-          // Zıplamayı kesin çözüm:
-          // transform ne olursa olsun, o an görünen pixel konumunu left/top'a kilitle
-          modal.style.left = rect.left + 'px';
-          modal.style.top = rect.top + 'px';
-          modal.style.transform = '';
-
-          offsetX = e.clientX - rect.left;
-          offsetY = e.clientY - rect.top;
-
-          isDragging = true;
-          document.addEventListener('mousemove', onMouseMove);
-          document.addEventListener('mouseup', onMouseUp);
-        }
-
-        function onMouseMove(e) {
-          if (!isDragging) return;
-
-          const viewportW = window.innerWidth;
-          const viewportH = window.innerHeight;
-
-          const rect = modal.getBoundingClientRect();
-          const w = rect.width;
-          const h = rect.height;
-
-          let left = e.clientX - offsetX;
-          let top = e.clientY - offsetY;
-
-          // Ekrandan taşmasın (opsiyonel ama genelde istenir)
-          left = Math.max(8, Math.min(left, viewportW - w - 8));
-          top = Math.max(8, Math.min(top, viewportH - h - 8));
-
-          modal.style.left = left + 'px';
-          modal.style.top = top + 'px';
-        }
-
-        function onMouseUp() {
-          isDragging = false;
-          document.removeEventListener('mousemove', onMouseMove);
-          document.removeEventListener('mouseup', onMouseUp);
-        }
-
-        header.addEventListener('mousedown', onMouseDown);
-      }
-      function initThemeEditorResize() {
-        const modal = document.getElementById('theme-editor-modal') || document.querySelector('.theme-editor-modal');
-        if (!modal) return;
-
-        const right = modal.querySelector('.resize-right');
-        const bottom = modal.querySelector('.resize-bottom');
-        if (!right || !bottom) return;
-
-        // CSS’teki min değerlerle uyumlu tut
-        const minW = 640;
-        const minH = 320;
-
+      /* ---------------- DRAG ---------------- */
+      function makeDraggable(panel, handle) {
+        let isDown = false;
         let startX = 0, startY = 0;
-        let startW = 0, startH = 0;
-        let mode = null; // 'x' | 'y'
+        let startLeft = 0, startTop = 0;
 
-        const clamp = (v, min, max) => Math.max(min, Math.min(v, max));
-
-        function startResizeX(e) {
-          e.preventDefault();
-          e.stopPropagation(); // drag tetiklemesin
-          mode = 'x';
+        function onDown(e) {
+          isDown = true;
+          const rect = panel.getBoundingClientRect();
           startX = e.clientX;
-          startW = modal.getBoundingClientRect().width;
-
-          document.addEventListener('mousemove', onMove);
-          document.addEventListener('mouseup', stop);
-        }
-
-        function startResizeY(e) {
-          e.preventDefault();
-          e.stopPropagation(); // drag tetiklemesin
-          mode = 'y';
           startY = e.clientY;
-          startH = modal.getBoundingClientRect().height;
+          startLeft = rect.left;
+          startTop = rect.top;
+
+          // transform center -> switch to left/top absolute to allow dragging precisely
+          panel.style.transform = 'none';
+          panel.style.left = `${rect.left}px`;
+          panel.style.top = `${rect.top}px`;
+          panel.style.right = 'auto';
+          panel.style.bottom = 'auto';
 
           document.addEventListener('mousemove', onMove);
-          document.addEventListener('mouseup', stop);
+          document.addEventListener('mouseup', onUp);
         }
 
         function onMove(e) {
-          const maxW = window.innerWidth - 24;
-          const maxH = window.innerHeight - 24;
+          if (!isDown) return;
+          const dx = e.clientX - startX;
+          const dy = e.clientY - startY;
 
-          if (mode === 'x') {
-            const dx = e.clientX - startX;
-            const w = clamp(startW + dx, minW, maxW);
-            modal.style.width = w + 'px';
-          } else if (mode === 'y') {
-            const dy = e.clientY - startY;
-            const h = clamp(startH + dy, minH, maxH);
-            modal.style.height = h + 'px';
-          }
+          // constrain to viewport a bit
+          const newLeft = Math.max(8, Math.min(window.innerWidth - 40, startLeft + dx));
+          const newTop = Math.max(8, Math.min(window.innerHeight - 40, startTop + dy));
+
+          panel.style.left = `${newLeft}px`;
+          panel.style.top = `${newTop}px`;
         }
 
-        function stop() {
+        function onUp() {
+          isDown = false;
           document.removeEventListener('mousemove', onMove);
-          document.removeEventListener('mouseup', stop);
-          mode = null;
+          document.removeEventListener('mouseup', onUp);
         }
 
-        right.addEventListener('mousedown', startResizeX);
-        bottom.addEventListener('mousedown', startResizeY);
+        handle.addEventListener('mousedown', onDown);
       }
 
-      // ------------- GLOBAL INIT -------------
+      /* ---------------- OPEN/CLOSE ---------------- */
+      function openPanel() {
+        buildPanel();
 
-      function initThemeSystem() {
-        // 1) Tema verisini hazırla
-        initThemeData();
+        // Load base + theme
+        const baseStyleEl = document.getElementById('base-theme-style');
+        baseMap = parseStyleElement(baseStyleEl);
 
-        // 2) Sayfa açılışında current tema overrides'a uygulansın
-        applyTheme(themeData.current, 'theme-overrides');
-        ensureStyleTag('theme-preview').textContent = '';
+        const themeCss = loadThemeFromStorage();
+        themeMap = parseCssText(themeCss);
 
-        // 3) Buton ve panel eventleri
-        const openBtn = document.getElementById('btn-theme-settings');
-        if (openBtn) {
-          openBtn.addEventListener('click', openThemeEditor);
-        }
+        // snapshot for reset-all cancel
+        initialThemeCssSnapshot = themeCss;
+        pendingResetAll = false;
 
-        document.getElementById('theme-editor-close')
-          .addEventListener('click', onThemeCancel);
-        document.getElementById('theme-editor-cancel')
-          .addEventListener('click', onThemeCancel);
-        document.getElementById('theme-editor-ok')
-          .addEventListener('click', onThemeOk);
-        document.getElementById('theme-editor-reset')
-          .addEventListener('click', onThemeResetToDefaults);
+        // reset state
+        cellState.clear();
+        clearPreview();
 
-        // 4) Drag özelliğini başlat
-        initThemeEditorDrag();
-        initThemeEditorResize();
+        renderTable();
+
+        // body height: panelin kalan alanına göre esnesin
+        // (panel resize vertical olduğu için body doğal şekilde scroll alır)
+        panelEl.classList.add('is-open');
+        bodyEl.style.maxHeight = 'calc(100vh - 160px)';
       }
 
-      // DOM hazır olduğunda başlat
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initThemeSystem);
-      } else {
-        initThemeSystem();
+      function closePanel() {
+        if (!panelEl) return;
+        panelEl.classList.remove('is-open');
       }
+
+      /* ---------------- INIT BUTTON ---------------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        // theme’i sayfa açılışında uygula
+        loadThemeFromStorage();
+
+        const btn = document.getElementById('btn-theme-settings');
+        if (!btn) return;
+        btn.addEventListener('click', () => {
+          openPanel();
+        });
+      });
+
+
+
+
 
       // Seçici yardımcı fonksiyon
       // root parametresi verilirse o element içinde arama yapar
@@ -3994,6 +3873,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
               td.addEventListener('click', onCellClick);
             } else {
               // Boş hücreler (satır sonu dolsun diye)
+              td.classList.remove('cell');
               td.classList.add('empty-cell');
             }
 
@@ -4122,6 +4002,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
                 }
               }
             } else {
+              td.classList.remove('cell');
               td.classList.add('empty-cell');
             }
 
@@ -4647,21 +4528,28 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           var s = getStore();
           var hasChains = s && Array.isArray(s.order) && s.order.length > 0;
 
-          if (!hasChains) {
-            backupError.textContent = 'Yedeği alınacak zincir(ler) bulunamadı.';
+          // Tema var mı? (localStorage’da kayıtlı override css)
+          var themeCss = (localStorage.getItem(STORAGE_KEY) || '').trim();
+          var hasTheme = themeCss.length > 0;
+
+          // Ne zincir var ne tema -> indirme yok
+          if (!hasChains && !hasTheme) {
+            backupError.textContent = 'Yedeği alınacak zincir veya tema bulunamadı.';
             backupError.style.display = 'inline-block';
             scheduleErrorAutoHide();
-            alert('İndirilecek zincir yok.');
+            alert('İndirilecek zincir / tema yok.');
             return;
           }
 
-          if (backupError) {
-            backupError.style.display = 'none';
-            backupError.textContent = '';
+          // Buradan sonrası: payload üretip indirme (zincir yoksa bile tema için indirebilecek)
+          var payload = JSON.parse(JSON.stringify(s || { order: [], items: {} }));
+
+          if (hasTheme) {
+            payload.theme = { css: themeCss };
           }
 
-          // Mevcut store'u JSON dosyası olarak indirir
-          var dataStr = JSON.stringify(s, null, 2);
+          var dataStr = JSON.stringify(payload, null, 2);
+
           var blob = new Blob([dataStr], { type: 'application/json' });
           var url = URL.createObjectURL(blob);
           var a = document.createElement('a');
@@ -4744,6 +4632,19 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
             var current = getStore();
             var merged = mergeStores(current, imported);
             setStore(merged);
+            // Tema varsa uygula (backup içinden)
+            try {
+              var importedThemeCss = imported && imported.theme && imported.theme.css ? imported.theme.css : '';
+              if (importedThemeCss && String(importedThemeCss).trim()) {
+                localStorage.setItem(STORAGE_KEY, importedThemeCss);
+                themeStyleEl.textContent = importedThemeCss;
+                themeMap = parseCssText(importedThemeCss);
+                clearPreview(); // varsa preview çakışmasını temizle
+              }
+            } catch (e2) {
+              // tema hatası zincir yüklemeyi bozmasın
+            }
+
             renderAll();
 
             if (backupError) {
