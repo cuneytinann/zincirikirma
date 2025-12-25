@@ -4,13 +4,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Zinciri Kırma Metodolojisi (Takvimli veya Tablolu Sayaç)</title>
+  <title>Zinciri Kırma Metodolojisi</title>
+
   <style id="base-theme-style">
     :root {
+      /* tablonun hücre boyutu, tüm 'halkalar' buradan referans alır */
+      --cell-size: 80px;
+      /* 6 adet input ve gaplar, bu değeri kendine göre oranlar */
       --input-width: 480px;
-      /* 6 adet input ve gaplar, bu değeri kendine göre oranlar*/
-      --cell-size: 72px;
-      /* tablonun hücre boyutu, hücreler kare */
+      /* tablo çizgisi genel ayar */
+      --chain-border: 1.5px solid var(--chain-border-color);
+      /* tablo çizgisi rengi - tema paneli için ayrı tanımlandı */
+      --chain-border-color: rgb(0, 0, 0);
+      /* zincir kartı ve açık sekme stili */
+      --chain-month-label: rgb(0, 0, 0);
+      /* zincir kartı ve açık sekme stili */
+      --chain-month-label-bg: rgb(180, 150, 150);
+      --application-card-bg: rgba(45, 182, 17, 0.575);
+      --application-card-bd: rgba(37, 107, 10, 0.644);
+      /* butonların hover veya active efektleri  */
+      --btn-view-effect: rgba(105, 53, 5, 0.5);
+      --btn-color-settings-effect: rgba(201, 84, 201, 0.5);
+      --btn-add-chain-effect: rgba(32, 29, 29, 0.5);
+      --btn-load-file-effect: rgba(138, 183, 224, 0.5);
+      --btn-backup-download-effect: rgba(155, 221, 149, 0.5);
+      --btn-reset-effect: rgba(224, 247, 19, 0.5);
+      --btn-delete-effect: rgba(224, 85, 85, 0.5);
+      /* butonların genel arkplanı */
+      --button-background: rgb(255, 255, 255);
+      /* zincir svgsi ve diğer arkaplan ikonları */
+      --background-icons: rgba(0, 0, 0, 0.1);
     }
 
     * {
@@ -19,45 +42,556 @@
 
     body {
       background-color: rgb(207, 207, 207);
-      margin: 8px;
-      padding: 0;
+      margin: 0;
+      padding: 0 12px;
     }
 
-    #btn-theme-settings {
-      color: rgb(212, 71, 212);
-      border: 2px ridge rgb(192, 85, 192);
-      border-radius: 50%;
+    /* ZİNCİR KISMI İLE İLGİLİ GENEL AYARLAR*/
+
+    .x-mark {
+      stroke: rgba(214, 5, 5, 0.85);
+      stroke-width: 7px;
       position: absolute;
-      z-index: 1;
-      padding: 6px;
+      pointer-events: none;
+      width: 115%;
+      height: 115%;
+      top: -7%;
+      left: -7%;
+    }
+
+    /* ilk hücre */
+    .chain tr:first-child>th:first-child {
+      background-color: transparent;
+      border: 0;
+      color: rgb(13, 94, 30);
+    }
+
+    /* sütun başlıkları */
+    .chain tr:first-child>th:not(:first-child) {
+      height: calc(var(--cell-size) * 0.5);
+      /* başlık satırı normal bir hücrenin %50 yüksekliğinde ayarlanmıştır */
+      background-color: rgb(158, 158, 214);
+      color: rgb(0, 0, 0);
+      padding: 4px 0;
+    }
+
+    /* satır başlıkları */
+    .chain tr:not(:first-child)>th:first-child {
+      width: calc(var(--cell-size)*0.75);
+      white-space: wrap;
+      background-color: var(--chain-month-label-bg);
+      color: var(--chain-month-label);
+      padding: 0 4px;
+      /* çok fazla ay adı içeren başlıklar yüzünden sabit yükseklik artabilir. */
+      /* white-space: nowrap yapılarak ve line-height sıfırlanarak önüne geçilebilir*/
+    }
+
+    /* veri içeren halkalar için ortak çatı */
+    /* normal kareli tablo + çemberli yılan görünüm modu */
+    .chain td,
+    .circle-cell {
+      background-color: rgb(255, 255, 255);
+      color: rgb(5, 5, 5);
+      border: var(--chain-border);
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .chain td.month-break-left {
+      border-left: 2px dashed rgb(74, 50, 179);
+    }
+
+    .chain td.year-break-left {
+      border-left: 6px double rgb(190, 2, 134);
+    }
+
+    .chain td.empty-cell {
+      background-color: rgb(127, 127, 127);
+      cursor: default;
+    }
+
+    /* ANA FORUM KARTI */
+    /* GİRDİ VE AYARLARIN GENEL STİLİ */
+
+    .main-title {
+      color: rgb(230, 4, 4);
+      font-size: 32px;
+      font-weight: 700;
+      font-family: 'Pacifico', cursive;
+    }
+
+    hr {
+      border-color: rgb(126, 173, 170);
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+    }
+
+    .form-titles {
+      color: rgb(45, 15, 82);
+      font-weight: 700;
+      font-size: 18px;
+      text-shadow: 0 0 1px;
+      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+      display: inline-flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .selections label {
+      border: 1px solid rgb(75, 53, 67);
+      color: rgb(0, 0, 0);
+      border-radius: 14px;
+      padding: 6px 12px;
+    }
+
+    input {
+      background-color: rgb(255, 255, 255);
+      border: 2px solid rgb(0, 0, 0);
+      border-radius: 6px;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    /* input:focus {
+      box-shadow: 0 0 0 2px rgb(140, 255, 155);
+    } */
+
+    .input-error {
+      box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.8);
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      /* modern tarz*/
+    }
+
+    label:has(input:checked) {
+      border-style: inset;
+      border-width: 2px;
+      border-radius: 4px;
+    }
+
+    .radio-type label:has(input:checked) {
+      background-color: rgba(107, 189, 221, 0.5);
+      color: rgb(255, 255, 255);
+    }
+
+    #weekdays label:has(input:checked) {
+      background-color: rgba(0, 200, 0, 0.5);
+      color: rgb(255, 255, 255);
+    }
+
+    .helper-info {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgb(238, 245, 138);
+    }
+
+    .pad12 {
+      padding: 12px !important;
+      /* dekoratif spacer çemberler çapı */
+    }
+
+    .size-box>* {
+      border: 1px solid rgb(75, 53, 67);
+      border-radius: 16px;
+      padding: 8px;
+    }
+
+    /* DOSYA İŞLEM BUTONLARI BU GENEL STİLİ KULLANIR */
+    button {
+      border: outset rgb(0, 0, 0);
+      border-width: 0 5px 5px 0;
+      border-radius: 0 5px;
+      background-color: var(--button-background);
+      padding: 8px 12px;
+      cursor: pointer;
       font-size: 16px;
-      top: 24px;
-      right: 40px;
+      gap: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    #btn-theme-settings:hover {
-      background-color: rgba(201, 84, 201, 0.5);
+    .error-info {
+      color: rgb(204, 0, 0);
+      background-color: rgb(223, 223, 113);
+      border: 1px solid rgb(204, 0, 0);
+      font-size: 16px;
+      font-weight: 700;
+      position: absolute;
+      padding: 4px;
     }
 
-    /* Modal panel container */
+    /* GENEL LAYOUT, Mimari */
+    /* Element oluşum sırası */
+    .main-frame {
+      background-color: rgba(88, 133, 124, 0.734);
+      border: outset rgba(34, 80, 100, 0.62);
+      border-width: 0 16px 16px 0;
+      border-radius: 4px 16px;
+      padding: 0 48px 8px;
+      position: relative;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    /* arka plan soluk zincir görseli */
+    .chain-bg {
+      fill: var(--background-icons);
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      /* kullanım esnekliği için svg'den değerler çekilmiştir */
+    }
+
+    /* toggle buton ile görsel kirlilik azaltılır, kullanım kolaylaşır */
+    .main-frame.collapsed>* {
+      display: none;
+    }
+
+    .main-frame.collapsed>.head-box,
+    .head-box {
+      display: flex;
+    }
+
+    .description-part {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      align-items: flex-end;
+      gap: 8px;
+      text-wrap: nowrap;
+    }
+
+    .question-mark {
+      font-size: 16px;
+      text-decoration-line: none;
+      color: var(--background-icons);
+      /* a elementinden gelen çizgi silinir */
+    }
+
+    .visual-buttons {
+      display: flex;
+      flex: 3;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 8px 0;
+    }
+
+    div.form-titles {
+      margin-bottom: 24px;
+    }
+
+    .selections {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      font-size: 17px;
+      font-weight: normal;
+      font-family: 'Times New Roman', Times, serif;
+      width: fit-content;
+      height: fit-content;
+    }
+
+    .basic-box {
+      display: inline-flex;
+      flex-wrap: wrap;
+      column-gap: calc(var(--input-width)*0.2);
+      row-gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    #chain-name {
+      width: calc(var(--input-width)*0.8);
+    }
+
+    #ring-count-input {
+      width: calc(var(--input-width) * 0.25);
+    }
+
+    .date-together {
+      display: inline-flex;
+      column-gap: calc(var(--input-width)*0.2);
+    }
+
+    #start-date,
+    #end-date {
+      width: calc(var(--input-width) * 0.3);
+    }
+
+    .ring-number-box {
+      background-color: rgba(91, 59, 231, 0.34);
+      border: 2px groove rgba(136, 108, 214, 0.62);
+      border-radius: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 8px 16px;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      margin: 24px auto;
+    }
+
+    .text-total-ring {
+      color: rgb(32, 218, 25);
+      font-size: 28px;
+      text-shadow: 0 0 8px;
+    }
+
+    #show-count {
+      color: rgb(241, 241, 1);
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+      font-size: 28px;
+      font-weight: 600;
+      text-shadow: 0 0 16px;
+    }
+
+    .parenthesis {
+      font-size: 20px;
+      color: rgb(199, 255, 192);
+    }
+
+    .size-box {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    #rows-input,
+    #cols-input {
+      width: calc(var(--input-width) * 0.2);
+    }
+
+    .button-box {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      margin-top: 32px;
+    }
+
+    #backup-error {
+      bottom: 48px;
+    }
+
+    .about-me {
+      position: absolute;
+      margin-top: 4px;
+      color: var(--background-icons);
+      font-size: 28px;
+      z-index: -1;
+      right: 40%;
+    }
+
+    .tab-box {
+      display: flex;
+      flex-wrap: wrap-reverse;
+      /* oluşturulan sonraki sekmeler, yukarıda birikir */
+      margin-top: 8px;
+    }
+
+    .chain-tab {
+      padding: 6px 12px;
+      background-color: rgba(0, 0, 0, 0);
+      /* renklerini body background'dan alır, aynı şekilde hover efektini de */
+      border: 2px solid rgba(0, 0, 0, 0.6);
+      border-bottom: none;
+      border-radius: 9px;
+      font-size: 14px;
+      color: rgb(56, 40, 19);
+    }
+
+    .chain-tab:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    /* hoverdan sonra tanımlanması daha iyi olur .active */
+    .chain-tab.active {
+      background-color: var(--application-card-bg);
+      border: 2px ridge var(--application-card-bd);
+      border-bottom: transparent;
+      font-weight: 700;
+      border-radius: 6px 6px 0 0;
+    }
+
+    .chain {
+      background-color: var(--application-card-bg);
+      border: 8px ridge var(--application-card-bd);
+      padding: 20px 4px;
+      align-items: center;
+    }
+
+    .chain-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: nowrap;
+      padding: 0 16px;
+      margin-bottom: 16px;
+    }
+
+    /* child elementler istenen şekilde, satır başı yapar ya da aynı satırda kalır */
+    .chain-head>div:first-child {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    /* ekstra responsive ayarından tasarruf sağlar, bu ayar küçük ekranlara dönüktür */
+    .chain-head>div:last-child {
+      flex: 0 0 auto;
+    }
+
+    .chain-title {
+      font-weight: 800;
+      font-size: 21px;
+      color: rgb(11, 7, 80);
+      margin: 0 0 8px 32px;
+      overflow-wrap: break-word;
+      /* çok uzun kelimeler taşmaz, scroll-barı engeller güvenlik amaçlı */
+    }
+
+    .chain-info {
+      color: rgb(39, 80, 114);
+      font-size: 18px;
+    }
+
+    .table-container {
+      display: flex;
+      flex-direction: column;
+      max-width: 100%;
+      padding: 0 20px;
+      font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+    }
+
+    .grid-wrap,
+    .grid-scroll-bottom {
+      overflow-x: auto;
+      overflow-y: hidden;
+      max-width: 100%;
+    }
+
+    .grid-scroll-inner {
+      height: 1px;
+    }
+
+    .chain table {
+      border-collapse: collapse;
+      width: max-content;
+      table-layout: fixed;
+    }
+
+    /* genel başlık düzeni */
+    .chain th {
+      border: var(--chain-border);
+      line-height: 1.6;
+      text-align: center;
+      vertical-align: middle;
+      font-size: 14px;
+      overflow: hidden;
+    }
+
+    /* veri hücreleri */
+    .chain td {
+      width: var(--cell-size);
+      height: var(--cell-size);
+      vertical-align: center;
+      /* üst */
+      text-align: center;
+      /* sol */
+      font-size: 28px;
+    }
+
+    /* ------------------------------
+       SNAKE (YILAN) GÖRÜNÜMÜ
+       - Sadece görünüm düzenler: veri/iş mantığı aynı kalır
+    ------------------------------ */
+    .snake-container {
+      --snake-gap: 0px;
+      /* halkalar arası boşluk */
+      gap: var(--snake-gap);
+      /* satırlar (row) arası boşluk */
+      display: grid;
+      max-width: 100%;
+      margin: 0;
+      padding: 0 16px;
+      /* düzenin konteynır ayarları buradan */
+    }
+
+    .snake-row {
+      display: flex;
+      /* yatay boşluk (kolonlar arası - row) boşluğu */
+      gap: var(--snake-gap);
+      flex-wrap: nowrap;
+    }
+
+    .circle-cell {
+      width: calc(var(--cell-size)*1.25);
+      /* kare ve daire alan farkı kapatılır ~= 4/π */
+      height: calc(var(--cell-size)*1.25);
+      /* boyut değişimi hassastır, scriptle de paralel olmalıdır */
+      border-radius: 50%;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* YILAN MODU: Ay etiketi */
+    .month-label {
+      position: absolute;
+      white-space: nowrap;
+      display: inline-block;
+      font-weight: 700;
+      color: var(--chain-month-label);
+      background-color: var(--chain-month-label-bg);
+      border: var(--chain-border);
+      border-radius: 7px;
+      width: max-content;
+      padding: 6px;
+      pointer-events: none;
+      user-select: none;
+      transform: translateX(-100%) rotate(270deg);
+      /* yazı bitiş ucu */
+      transform-origin: 100% 0%;
+      left: 35%;
+      top: 106%;
+      font-size: 14px;
+    }
+
+    /* X işareti dairenin içine otursun */
+    .circle-cell .x-mark {
+      top: 0;
+      left: 0;
+      /* boyut ayarlaması eklenebilir */
+      width: auto;
+      height: auto;
+    }
+
+    /* TEMA ÜRETME / RENK AYARLAMA PANELİ */
+    /* KAPSAMLI TABLO */
     #theme-panel {
       position: fixed;
       left: 50%;
       top: 50%;
       transform: translate(-50%, -50%);
-      background: rgb(0, 0, 0);
-      color: rgb(255, 255, 255);
+      background-color: rgb(0, 0, 0);
       box-shadow: 0 0 0 4px rgba(184, 178, 202, 0.6);
       border-radius: 10px;
-      width: max-content;
-      /* içerik kadar */
-      min-height: 240px;
+      /* width: max-content; */
+      min-height: 300px;
       height: 480px;
       max-height: calc(100vh - 24px);
       display: none;
       /* sadece dikey resize */
-      resize: vertical;
       overflow: hidden;
+      resize: vertical;
       font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -67,20 +601,46 @@
     }
 
     #theme-panel-header {
-      user-select: none;
-      cursor: move;
-      padding: 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      white-space: nowrap;
+    }
+
+    #theme-panel-draggable {
+      user-select: none;
+      cursor: move;
+      touch-action: none;
+      /* mobilde sürükleme için kritik */
+      display: flex;
+      flex: auto;
+      padding: 8px 24px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #theme-panel-header .close {
+      display: flex;
+      width: max-content;
+      padding: 8px;
+    }
+
+    #btn-theme-close {
+      color: rgb(255, 0, 0);
+      background-color: rgb(0, 0, 0);
+      border: 2px solid rgb(255, 0, 0);
+      font-weight: bolder;
+      opacity: 0.7;
+      border-radius: 50%;
+      padding: 6px;
+      width: calc(var(--cell-size)/3);
+      height: calc(var(--cell-size)/3);
     }
 
     #theme-panel-header .title {
       font-weight: 600;
       color: rgb(212, 71, 212);
       font-size: 16px;
-      text-shadow: 0 0 16px;
+      text-shadow: 3px 3px 6px;
     }
 
     #theme-panel-header .hint {
@@ -94,61 +654,84 @@
       /* yatay scroll yok */
     }
 
-    #theme-table {
-      border-collapse: collapse;
-      table-layout: fixed;
+    #theme-panel table {
+      max-width: min-content;
     }
 
-    #theme-table thead th {
-      position: sticky;
-      top: 1px;
-      padding: 12px;
-      background-color: rgb(31, 3, 3, 0.8);
-      border: 1.5px solid rgb(196, 22, 22);
+    /* modern sticky başlık */
+    #theme-panel thead th {
       color: rgba(245, 245, 220, 0.50);
-      z-index: 1;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    #theme-table th.col-label,
-    #theme-table td.col-label {
-      width: 200px;
-      /* sabit label sütunu */
-      text-align: left;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    /* sadece input değerleri */
-    #theme-table td,
-    #theme-table tr {
-      border: 1px solid rgb(127, 127, 127);
-      border-collapse: collapse;
+      border: 1.5px solid rgb(196, 22, 22);
+      background-color: rgb(31, 3, 3, 0.8);
       padding: 12px;
-      height: max-content;
-      text-align: center;
+      font-size: 16px;
+      line-height: 1.6;
+      position: sticky;
+      z-index: 1;
+      top: 1px;
+      /* mobilde wrap açılsın */
+      white-space: nowrap;
     }
 
-    .theme-cell input {
+    /* sabit label sütunu (ilk kolondaki tüm thler) */
+    .col-label {
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    /* etiketler, yani başlık kolonu */
+    #theme-panel tbody th {
+      border: 1px solid rgb(127, 127, 127);
+      padding: 16px;
+      font-size: 14px;
+      color: rgb(245, 255, 219);
+    }
+
+    /* sadece input ve bilgi hücreleri */
+    #theme-panel td {
+      border: 1px solid rgb(127, 127, 127);
+      text-shadow: 1px 1px 3px;
+      text-align: center;
+      padding: 12px;
+      /* üsttekiler ortak, alttakiler sadece yazı için */
+      color: rgb(212, 230, 245);
+      font-size: 16px;
+      font-weight: bolder;
+    }
+
+    #theme-panel td input {
       padding: 0;
       border: none;
-      height: 24px;
+      background-color: transparent;
       width: 32px;
-      background: transparent;
+      height: 24px;
+    }
+
+    /* tekli info hücreleri */
+    #theme-panel tbody tr>td:first-child {
+      background-color: rgb(32, 8, 8);
+    }
+
+    #theme-panel tr:nth-child(34) td {
+      font-size: 12px;
+      font-weight: normal;
+      text-shadow: 0 0 0;
+      text-decoration: underline;
+      text-align: left;
+      line-height: 1.5;
+      color: rgba(255, 255, 155, 0.685);
+      letter-spacing: 0.6px;
     }
 
     #theme-panel-footer {
-      position: sticky;
-      bottom: 0;
       padding: 8px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-top: 1px solid rgb(192, 192, 192);
+      border-top: 1px solid rgb(233, 232, 232);
     }
 
-    #theme-panel-footer .right {
+    #theme-panel-footer .rightside {
       display: flex;
       gap: 16px;
     }
@@ -159,7 +742,6 @@
       background-color: rgb(48, 45, 45);
       font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
       text-shadow: 0 0 16px;
     }
 
@@ -175,264 +757,53 @@
       color: rgb(75, 255, 105);
     }
 
-    .main-frame {
-      background-color: rgba(88, 133, 124, 0.734);
-      border: 0 outset rgba(34, 80, 100, 0.62);
-      border-bottom-width: 16px;
-      border-right-width: 16px;
-      border-radius: 4px;
-      border-bottom-left-radius: 16px;
-      border-top-right-radius: 16px;
-      padding: 8px 48px;
-      position: relative;
-      overflow: hidden;
-      z-index: 0;
-    }
+    /* BUTONLAR */
 
-    /* toggle buton ile görsel kirlilik azaltılır, kullanım kolaylaşır */
-    .main-frame.collapsed>* {
-      display: none;
-    }
-
-    .main-frame.collapsed>.main-title {
-      display: inline;
-    }
-
-    .chain-bg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: -1;
-      width: 100%;
-      height: 100%;
-      opacity: 0.12;
-      fill: rgb(0, 0, 0);
-      /* kullanım kolaylığı için svgden değer çekilmiştir */
-    }
-
-    .question-mark {
-      font-size: 16px;
-      text-decoration-line: none;
-      color: rgba(82, 76, 76, 0.5);
-      /* a elementinin default çizgisini silerek temiz görüntü elde edilir */
-    }
-
-    .main-title {
-      color: rgb(230, 4, 4);
-      font-size: 32px;
-      font-weight: 700;
-      font-family: cursive;
-      gap: 8px;
-      margin-left: calc(var(--cell-size)*1.5);
-      /* empirical responsivity */
-    }
-
-    .btn-toggle-menu {
+    #btn-toggle-menu {
       font-size: 16px;
       color: rgb(221, 29, 29);
-      border: 1.5px solid rgb(184, 18, 18);
+      border: 2px ridge rgb(255, 38, 38);
       border-radius: 4px;
       width: 50px;
       height: 20px;
       background-color: transparent;
-      cursor: pointer;
     }
 
-    .hr-line {
-      width: 100vw;
-      margin: 8px calc(50% - 50vw) 24px;
-      border-color: rgb(34, 34, 34);
-    }
-
-    .form-titles {
-      display: inline-flex;
-      color: rgb(45, 15, 82);
-      text-shadow: 0 0 1px;
-      flex-direction: column;
-      gap: 8px;
-      font-weight: 700;
-      font-size: 18px;
-      font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    }
-
-    div[class="form-titles"] {
-      margin-bottom: 24px;
-    }
-
-    .selections {
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-items: center;
-      font-size: 17px;
-      font-weight: normal;
-      font-family: 'Times New Roman', Times, serif;
-      width: fit-content;
-      height: fit-content;
-    }
-
-    .selections label {
-      border: 1px solid rgb(75, 53, 67);
-      border-radius: 14px;
-      padding: 6px 12px;
-      color: rgb(0, 0, 0);
-    }
-
-    .pad12 {
-      padding: 12px !important;
-    }
-
-    label:has(input:checked) {
-      background-color: rgba(0, 200, 0, 0.5);
-      color: rgb(255, 255, 255);
-    }
-
-    input[type="radio"],
-    input[type="checkbox"] {
-      position: absolute;
-      opacity: 0;
-    }
-
-    .basic-box {
-      display: inline-flex;
-      flex-wrap: wrap;
-      column-gap: calc(var(--input-width)*0.2);
-      row-gap: 24px;
-      margin-bottom: 24px;
-    }
-
-    .date-together {
-      display: inline-flex;
-      column-gap: calc(var(--input-width)*0.2);
-    }
-
-    #chain-name {
-      width: calc(var(--input-width)*0.8);
-    }
-
-    #ring-count-input {
-      width: calc(var(--input-width) * 0.25);
-    }
-
-    #start-date,
-    #end-date {
-      width: calc(var(--input-width) * 0.3);
-    }
-
-    input {
-      border-radius: 6px;
-      border: 2px solid rgb(0, 0, 0);
-      background-color: rgb(255, 255, 255);
-      padding: 8px;
-      font-size: 14px;
-    }
-
-    input:focus {
-      box-shadow: 0 0 0 2px rgb(140, 255, 155);
-    }
-
-    .input-error {
-      box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.8) !important;
-    }
-
-    .error-info {
-      color: rgb(204, 0, 0);
-      background-color: rgb(223, 223, 113);
-      border: 1px solid rgb(204, 0, 0);
-      font-size: 16px;
-      font-weight: 700;
-      position: absolute;
-      padding: 4px;
-    }
-
-    .extra-info {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
-      color: rgb(238, 245, 138);
-    }
-
-    .ring-number-box {
-      background-color: rgba(91, 59, 231, 0.34);
-      border: 2px groove rgba(136, 108, 214, 0.62);
-      border-radius: 32px;
-      padding: 16px;
+    #btn-view {
+      width: 52px;
+      height: 28px;
+      padding: 2px;
+      border-radius: 99px;
+      background-color: transparent;
+      color: rgb(136, 86, 21);
+      border: 2px ridge rgb(168, 81, 30);
       display: flex;
-      justify-self: center;
-      width: fit-content;
-      justify-content: space-evenly;
-      margin-right: 240px;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 16px;
+      text-align: center;
     }
 
-    .text-total-chain {
-      color: rgb(77, 204, 83);
-      font-size: 22px;
-      text-shadow: 0 0 8px;
+    #btn-view .knob {
+      width: 24px;
+      height: 24px;
+      display: grid;
+      place-items: center;
+      background-color: var(--button-background);
+      border-radius: 50%;
+      transform: translateX(-12px);
+      /* transition: transform 0.3s ease; animasyonu eklenebilir */
     }
 
-    #show-count {
-      color: rgb(175, 134, 46);
-      font-family: Verdana, Geneva, Tahoma, sans-serif;
-      font-size: 24px;
-      font-weight: 600;
-      text-shadow: 0 0 16px;
+    #btn-view.alt .knob {
+      transform: translateX(12px);
     }
 
-    .parenthesis {
-      font-size: 20px;
-      color: rgb(199, 255, 192);
-    }
-
-    .size-box {
-      display: inline-flex;
-      flex-wrap: wrap;
-      align-items: center;
-      margin: 32px 0;
-    }
-
-    .size-box>* {
-      border: 1px solid rgb(75, 53, 67);
-      border-radius: 16px;
-      padding: 8px;
-    }
-
-    #rows-input,
-    #cols-input {
-      width: calc(var(--input-width) * 0.2);
-    }
-
-    .button-box {
-      display: flex;
-      width: 100%;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-
-    button {
-      border: 5px outset rgb(0, 0, 0);
-      border-left: none;
-      border-top: none;
-      border-bottom-left-radius: 5px;
-      border-top-right-radius: 5px;
-      background-color: rgb(255, 255, 255);
-      padding: 8px 12px;
-      cursor: pointer;
+    #btn-color-settings {
+      color: var(--button-background);
+      border: 2px ridge rgb(172, 57, 172);
+      border-radius: 50%;
+      padding: 6px;
       font-size: 16px;
-      gap: 4px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    button:hover {
-      background-color: rgba(231, 163, 163, 0.4);
-    }
-
-    #btn-add-chain:hover {
-      /* tema değişiklikiği debug'ı. a a=0 dan farklı olsun diye*/
-      background-color: rgba(167, 151, 151, 0.5);
+      background-color: transparent;
     }
 
     #btn-load-file {
@@ -440,17 +811,9 @@
       border-color: rgb(69, 71, 187);
     }
 
-    #btn-load-file:hover {
-      background-color: rgba(138, 183, 224, 0.5);
-    }
-
     #btn-backup-download {
       color: rgb(63, 189, 38);
       border-color: rgb(102, 170, 57);
-    }
-
-    #btn-backup-download:hover {
-      background-color: rgba(155, 221, 149, 0.5);
     }
 
     #btn-reset {
@@ -458,201 +821,81 @@
       border-color: rgb(245, 210, 56);
     }
 
-    #btn-reset:hover {
-      background-color: rgba(187, 206, 23, 0.5);
-    }
-
-    .tab-box {
-      display: flex;
-      flex-wrap: wrap-reverse;
-      /* oluşturulan sonraki sekmeler, yukarıda birikir */
-      margin-top: 8px;
-    }
-
-    .chain-tab {
-      padding: 6px 12px;
-      border: 2px solid rgba(0, 0, 0, 0.6);
-      border-bottom: none;
-      /* renklerini body background'dan alır */
-      background-color: rgba(0, 0, 0, 0);
-      cursor: pointer;
-      border-radius: 9px;
-      font-size: 14px;
-      color: rgb(56, 40, 19);
-    }
-
-    .chain-tab:hover {
-      background-color: rgba(0, 0, 0, 0.2);
-    }
-
-    .chain,
-    .chain-tab.active {
-      background-color: rgba(45, 182, 17, 0.575);
-      border-color: rgba(57, 146, 22, 0.644);
-    }
-
-    .chain {
-      border-width: 10px;
-      border-style: ridge;
-      padding: 24px;
-      align-items: center;
-    }
-
-    .chain-tab.active {
-      border-width: 1px;
-      border-style: solid;
-      border-bottom: none;
-      font-weight: 700;
-      border-radius: 6px 6px 0 0;
-    }
-
-    .chain-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: nowrap;
-    }
-
-    /* child elementler istenen şekilde, satır başı yapar ya da aynı satırda kalır */
-    .chain-head>div:first-child {
-      flex: 1 1 auto;
-      min-width: 0;
-    }
-
-    /* ekstra responsive ayarından tasarruf sağlar, bu ayar küçük ekranlar içindir */
-    .chain-head>div:last-child {
-      flex: 0 0 auto;
-    }
-
-    .chain-title {
-      font-weight: 800;
-      font-size: 21px;
-      color: rgb(11, 7, 80);
-      margin-bottom: 8px;
-      overflow-wrap: break-word;
-      /* çok uzun kelimeler taşmaz, scroll-barı engeller güvenlik amaçlı*/
-    }
-
-    .chain-info {
-      color: rgb(39, 80, 114);
-      margin-bottom: 16px;
-      font-size: 18px;
-    }
-
     #btn-delete {
       color: rgb(235, 25, 25);
       border-color: rgb(214, 32, 32);
     }
 
-    #btn-delete:hover {
-      background-color: rgba(224, 85, 85, 0.5);
+    #btn-toggle-menu:active {
+      background-color: var(--button-background);
     }
 
-    table {
-      border-collapse: collapse;
-      width: max-content;
-      table-layout: fixed;
+    #btn-view:active {
+      background-color: var(--btn-view-effect);
     }
 
-    th,
-    td {
-      border: 1.5px solid rgb(0, 0, 0);
-      /* tüm tablonun çizgi rengidir */
-      width: var(--cell-size);
-      height: var(--cell-size);
-      position: relative;
-      text-align: center;
-      vertical-align: middle;
-      padding: 0;
-      overflow: hidden;
+    #btn-color-settings:active {
+      background-color: var(--btn-color-settings-effect);
     }
 
-    /* buradan başlık sütunu ayarı yapılabilir */
-    .chain table th:first-child {
-      width: calc(0.75 * var(--cell-size));
-      /* başlık sütunu normal bir hücrenin %75 genişliğinde ayarlanmıştır */
-      padding: 0 8px;
-      white-space: wrap;
-      /* çok fazla ay adı içerene thler yüzünden sabit yükseklik artabilir. */
-      /* white-space: nowrap yapılarak ve line-height silinerek önüne geçilebilir*/
-      line-height: 1.6;
-      font-size: 14px;
-      background-color: rgb(150, 150, 180);
-      color: rgb(0, 0, 0);
+    #btn-add-chain:active {
+      background-color: var(--btn-add-chain-effect);
+      /* background defaultu rgba(0,0,0,0), opacity tema vermeyi engeller */
+      /* tema değişikliği debug etmek içni ekstra (opacity 0'dan farklı) */
     }
 
-    /* başlık satırı ayarı */
-    .chain table tr:first-child th {
-      height: calc(0.5 * var(--cell-size));
-      /* başlık satırı normal bir hücrenin %50 yüksekliğinde ayarlanmıştır */
-      font-size: 12px;
-      background-color: rgb(180, 150, 150);
-      color: rgb(0, 0, 0);
+    #btn-load-file:active {
+      background-color: var(--btn-load-file-effect);
     }
 
-    .cell-badge {
-      position: absolute;
-      /* hücre numaralarının konumu */
-      left: 4px;
-      top: 4px;
+    #btn-backup-download:active {
+      background-color: var(--btn-backup-download-effect);
     }
 
-    #first-cell {
-      background-color: transparent;
-      border-left: transparent;
-      border-top: transparent;
-      color: rgb(13, 94, 30);
+    #btn-reset:active {
+      background-color: var(--btn-reset-effect);
     }
 
-    .cell {
-      background-color: rgb(255, 255, 255);
-      color: rgb(5, 5, 5);
-      font-size: 11px;
-      cursor: pointer;
-      user-select: none;
+    #btn-delete:active {
+      background-color: var(--btn-delete-effect);
     }
 
-    .empty-cell {
-      /* border-color: transparent;  isteğe bağlı background ve border transparent yapılabilir*/
-      background-color: rgb(127, 127, 127);
-    }
+    /* active efektleri dokunmatik cihazlarda kapatılan hover efektleri için */
+    @media (hover: hover) {
 
-    .month-break-left {
-      border-left: 2px dashed rgb(74, 50, 179);
-    }
+      #btn-toggle-menu:hover {
+        background-color: var(--button-background);
+      }
 
-    .year-break-left {
-      border-left: 4px double rgb(202, 24, 24);
-    }
+      #btn-view:hover {
+        background-color: var(--btn-view-effect);
+      }
 
-    .x-mark {
-      stroke: rgb(0, 0, 0);
-      opacity: 0.85;
-      stroke-width: 8px;
-      position: absolute;
-      left: 8px;
-      top: 8px;
-      pointer-events: none;
-      display: block;
-    }
+      #btn-color-settings:hover {
+        background-color: var(--btn-color-settings-effect);
+      }
 
-    .grid-wrap,
-    .grid-scroll-top {
-      overflow-x: auto;
-      overflow-y: hidden;
-      max-width: 100%;
-    }
+      #btn-add-chain:hover {
+        background-color: var(--btn-add-chain-effect);
+      }
 
-    .grid-scroll-inner {
-      height: 1px;
-    }
+      #btn-load-file:hover {
+        background-color: var(--btn-load-file-effect);
+      }
 
-    .grid-outer {
-      display: flex;
-      flex-direction: column;
-      max-width: 100%;
-    }
+      #btn-backup-download:hover {
+        background-color: var(--btn-backup-download-effect);
+      }
 
+      #btn-reset:hover {
+        background-color: var(--btn-reset-effect);
+      }
+
+      #btn-delete:hover {
+        background-color: var(--btn-delete-effect);
+      }
+
+    }
 
 
     /* ========================================
@@ -662,11 +905,11 @@
 ======================================== */
     @media (max-width: 900px) {
       :root {
+        --cell-size: 70px;
         --input-width: 400px;
-        --cell-size: 64px;
       }
 
-      /* arkaplan svg resmi dikey döndürülüp, büyütülür */
+      /* arka plan svg resmi dikey döndürülüp, büyütülür */
       .chain-bg {
         top: 50%;
         left: 50%;
@@ -676,7 +919,7 @@
         height: 100vw;
       }
 
-      /* sadece masaüstüne özel olan spacerlar kaybolur*/
+      /* masaüstüne özel olan spacerlar, kaybolur*/
       .only-for-desktop {
         display: none;
       }
@@ -686,59 +929,8 @@
         height: 0px;
       }
 
-      #btn-theme-settings {
-        font-size: 14px;
-        top: 24px;
-        padding: 5px;
-        right: 32px;
-      }
-
-      #theme-panel {
-        min-height: 160px;
-        height: 240px;
-      }
-
-      #theme-panel-header {
-        padding: 11px;
-      }
-
-      #theme-panel-header .title {
-        font-size: 15px;
-        padding: 0 8px;
-      }
-
-      #theme-panel-header .hint {
-        font-size: 12px;
-      }
-
-      #theme-table thead th {
-        padding: 10px;
-        font-size: 13px;
-      }
-
-      #theme-table th.col-label,
-      #theme-table td.col-label {
-        width: 160px;
-        font-size: 12px;
-      }
-
-      #theme-table td,
-      #theme-table tr {
-        padding: 10px;
-      }
-
-      #theme-panel-footer {
-        padding: 8px 10px;
-      }
-
-      #theme-panel-footer button {
-        padding: 8px 9px;
-        font-size: 12px;
-      }
-
       .main-frame {
-        border-right-width: 12px;
-        border-bottom-width: 12px;
+        border-width: 0 12px 12px 0;
         border-bottom-left-radius: 12px;
         padding: 8px 24px;
       }
@@ -748,14 +940,7 @@
       }
 
       .main-title {
-        font-size: 30px;
-        gap: 6px;
-      }
-
-      .btn-toggle-menu {
-        font-size: 14px;
-        width: 40px;
-        height: 20px;
+        font-size: 28px;
       }
 
       .form-titles {
@@ -772,17 +957,11 @@
         font-size: 12px;
       }
 
-      .extra-info {
+      .helper-info {
         font-size: 14px;
       }
 
-      .ring-number-box {
-        gap: 12px;
-        margin-right: 0px;
-        /* merkezi görünüm sadece masaüstü için*/
-      }
-
-      .text-total-chain {
+      .text-total-ring {
         font-size: 20px;
       }
 
@@ -800,6 +979,14 @@
         gap: 3px;
       }
 
+      #backup-error {
+        bottom: 42px;
+      }
+
+      .about-me {
+        font-size: 24px;
+      }
+
       .chain-tab {
         padding: 5px 10px;
         font-size: 13px;
@@ -811,11 +998,13 @@
 
       .chain {
         border-width: 8px;
-        padding: 20px;
+      }
+
+      .chain-head {
+        padding: 0 14px;
       }
 
       .chain-title {
-        font-weight: 720;
         font-size: 18px;
       }
 
@@ -823,18 +1012,113 @@
         font-size: 16px;
       }
 
-      .chain table th:first-child {
+      .table-container {
+        padding: 0 16px;
+      }
+
+      .chain th {
         font-size: 12px;
-        padding: 0 6px;
       }
 
-      .chain table tr:first-child th {
+      .chain tr:first-child>th:not(:first-child) {
+        padding: 3px 0;
+      }
+
+      .chain tr:not(:first-child)>th:first-child {
+        padding: 0 3px;
+      }
+
+      .chain td {
+        font-size: 24px;
+      }
+
+      .circle-cell {
+        font-size: 28px;
+      }
+
+      .circle-cell .month-label {
+        font-size: 12px;
+      }
+
+      #btn-toggle-menu {
+        font-size: 14px;
+        width: 40px;
+        height: 20px;
+      }
+
+      #btn-view {
+        width: 54px;
+        height: 28px;
+      }
+
+      #btn-view .knob {
+        height: 22px;
+        width: 22px;
+        transform: translateX(-13px);
+        font-size: 12px;
+      }
+
+      #btn-view.alt .knob {
+        transform: translateX(13px);
+      }
+
+      #btn-color-settings {
+        font-size: 14px;
+        padding: 5px;
+      }
+
+      #theme-panel {
+        min-height: 240px;
+        height: 360px;
+      }
+
+      #theme-panel-draggable {
+        padding: 8px 20px;
+      }
+
+      #btn-theme-close {
+        padding: 5px;
+      }
+
+      #theme-panel-header .hint {
+        font-size: 12px;
+      }
+
+      #theme-panel thead th {
+        padding: 10px;
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .col-label {
+        white-space: wrap;
+        /* width: fit-content; */
+      }
+
+      #theme-panel tbody th {
+        padding: 12px;
+        font-size: 12px;
+      }
+
+      #theme-panel td {
+        font-size: 14px;
+        padding: 10px;
+      }
+
+
+      #theme-panel tr:nth-child(34) td {
         font-size: 10px;
       }
 
-      .cell {
-        font-size: 10px;
+      #theme-panel-footer {
+        padding: 8px 10px;
       }
+
+      #theme-panel-footer button {
+        padding: 8px;
+        font-size: 12px;
+      }
+
 
     }
 
@@ -845,102 +1129,47 @@
 ======================================== */
     @media (max-width:600px) {
       :root {
+        --cell-size: 56px;
         --input-width: 320px;
-        --cell-size: 48px;
       }
 
       body {
-        margin: 6px 2px;
+        padding: 2px;
       }
 
-      #btn-theme-settings {
+      button {
+        flex-direction: column;
+        /* buton dikeyleşir, ikon ve kelimeler satır-satır konumlanır */
+        border-width: 0 3px 3px 0;
+        border-radius: 0 3px;
+        padding: 3px;
+        font-weight: 500;
         font-size: 12px;
-        top: 22px;
-        padding: 4px;
-        right: 16px;
+        gap: 2px;
       }
 
-      #theme-panel {
-        border-width: 1.5px;
-        min-height: 200px;
-        height: 280px;
-      }
-
-      #theme-panel-header {
-        padding: 8px 2px;
-      }
-
-      #theme-panel-header .title {
-        font-size: 12px;
-        padding: 0 16px;
-      }
-
+      /* panel sağ-üst ek bilgi kaybolur */
       #theme-panel-header .hint {
         display: none;
       }
 
-      #theme-table thead th {
-        padding: 8px 4px;
-        border-width: 1px;
-        font-size: 10px;
-      }
-
-      #theme-table th.col-label,
-      #theme-table td.col-label {
-        width: 80px;
-        font-size: 10px;
-        padding: 8px;
-        padding-right: 0;
-      }
-
-      /* sadece input değerleri */
-      #theme-table td,
-      #theme-table tr {
-        padding: 8px 2px;
-      }
-
-      .theme-cell input {
-        width: 24px;
-        height: 20px;
-      }
-
-      #theme-panel-footer {
-        padding: 2px 8px;
-      }
-
-      #theme-panel-footer .right {
-        gap: 12px;
-      }
-
-      #theme-panel-footer button {
-        padding: 4px 6px;
-        font-size: 10px;
-      }
-
       .main-frame {
         padding: 16px;
-        border-bottom-width: 8px;
-        border-right-width: 0;
-        border-bottom-left-radius: 8px;
-        border-top-right-radius: 8px;
+        border-width: 0 0 8px 0;
+        /* sağ border silinip daha geniş alan elde edilir */
+        border-radius: 0 8px;
       }
 
       .question-mark {
-        font-size: 10px;
+        font-size: 12px;
       }
 
       .main-title {
         font-size: 24px;
-        font-weight: 620;
-        gap: 4px;
-        margin-left: 16px;
       }
 
-      .btn-toggle-menu {
-        border-width: 1px;
-        font-size: 12px;
-        width: 32px;
-        height: 16px;
+      .visual-buttons {
+        padding: 8px 4px 0;
       }
 
       .form-titles {
@@ -948,8 +1177,12 @@
       }
 
       .selections label {
-        padding: 8px 11px;
+        padding: 6px 9px;
         font-size: 12px;
+      }
+
+      .date-together {
+        column-gap: 57px;
       }
 
       input {
@@ -958,20 +1191,19 @@
 
       .error-info {
         padding: 3px;
-        font-size: 14px;
+        font-size: 12px;
       }
 
-      .extra-info {
+      .helper-info {
         font-size: 12px;
       }
 
       .ring-number-box {
+        padding: 4px 8px;
         gap: 8px;
-        justify-content: center;
-        /* childler yatay ortalanarak daha temiz görüntü elde edilir*/
       }
 
-      .text-total-chain {
+      .text-total-ring {
         font-size: 18px;
       }
 
@@ -983,35 +1215,30 @@
         font-size: 16px;
       }
 
-      button {
-        border-width: 3px;
-        border-bottom-left-radius: 3px;
-        border-top-right-radius: 3px;
-        flex-direction: column;
-        /* buton dikeyleşir, icon ve kelimeler satır-satır konumlanır */
-        padding: 3px;
-        font-weight: 500;
-        font-size: 12px;
-        gap: 2px;
+      #backup-error {
+        bottom: 69px;
       }
 
-      .chain {
-        border-width: 6px;
-        padding: 16px;
+      .about-me {
+        font-size: 20px;
+        right: 16px;
       }
 
       .chain-tab {
         padding: 4px 8px;
-        border-width: 1.5px;
         font-size: 12px;
       }
 
-      .chain-tab.active {
-        border-radius: 4px 4px 0 0;
+      .chain {
+        border-width: 6px;
+        padding: 16px 4px;
+      }
+
+      .chain-head {
+        padding: 0 12px;
       }
 
       .chain-title {
-        font-weight: 660;
         font-size: 16px;
       }
 
@@ -1019,35 +1246,127 @@
         font-size: 14px;
       }
 
-      th,
-      td {
-        border-width: 1px;
+      .table-container {
+        padding: 0 12px;
       }
 
-      .chain table th:first-child {
-        padding: 0 4px;
-        font-size: 10px;
-      }
-
-      .chain table tr:first-child th {
+      .chain th {
         font-size: 8px;
       }
 
-      .cell {
-        font-size: 9px;
+      .chain tr:first-child>th:not(:first-child) {
+        padding: 2px 0;
       }
 
-      .month-break-left {
+      .chain tr:not(:first-child)>th:first-child {
+        padding: 0 2px;
+      }
+
+      .chain td {
+        font-size: 20px;
+      }
+
+      .circle-cell {
+        font-size: 24px;
+      }
+
+      .circle-cell .month-label {
+        font-size: 10px;
+        padding: 3px;
+        top: 100%;
+      }
+
+      .chain td.month-break-left {
         border-left-width: 1.5px;
       }
 
-      .year-break-left {
-        border-left-width: 3px;
+      .chain td.year-break-left {
+        border-left-width: 4px;
       }
 
-      .x-mark {
-        stroke-width: 7px;
+      #btn-toggle-menu {
+        font-size: 12px;
+        width: 32px;
+        height: 16px;
       }
+
+      #btn-view {
+        width: 40px;
+        height: 22px;
+        padding: 1px;
+      }
+
+      #btn-view .knob {
+        width: 16px;
+        transform: translateX(-9px);
+        font-size: 10px;
+      }
+
+      #btn-view.alt .knob {
+        transform: translateX(9px);
+      }
+
+      #btn-color-settings {
+        font-size: 12px;
+        padding: 4px;
+      }
+
+      #theme-panel {
+        min-height: 200px;
+        height: 280px;
+      }
+
+      #theme-panel-draggable {
+        padding: 8px;
+        justify-content: center;
+      }
+
+      #btn-theme-close {
+        padding: 4px;
+        border-width: 1px;
+      }
+
+      #theme-panel-header .title {
+        font-size: 14px;
+        padding-left: 16px;
+      }
+
+      #theme-panel thead th {
+        padding: 8px;
+        font-size: 12px;
+        line-height: 1.2;
+        white-space: wrap;
+      }
+
+      #theme-panel tbody th {
+        padding: 8px;
+        font-size: 10px;
+      }
+
+      #theme-panel td {
+        font-size: 12px;
+        padding: 8px;
+      }
+
+      #theme-panel td input {
+        width: 24px;
+        height: 18px;
+      }
+
+      #theme-panel tr:nth-child(34) td {
+        font-size: 8px;
+        letter-spacing: 0.3px;
+      }
+
+      #theme-panel-footer {
+        padding: 8px;
+      }
+
+      #theme-panel-footer button {
+        padding: 6px;
+        font-size: 10px;
+      }
+
     }
 
     /* ========================================
@@ -1057,53 +1376,8 @@
 ======================================== */
     @media (max-width:300px) {
       :root {
+        --cell-size: 40px;
         --input-width: 240px;
-        --cell-size: 32px;
-      }
-
-      #btn-theme-settings {
-        font-size: 8px;
-        top: 18px;
-        right: 16px;
-        padding: 3px;
-      }
-
-      #theme-panel {
-        border-width: 1px;
-        min-height: 160px;
-        height: 240px;
-      }
-
-      #theme-panel-header {
-        padding: 8px 0px;
-      }
-
-      #theme-panel-header .title {
-        font-size: 12px;
-        padding: 0 16px;
-      }
-
-      #theme-table thead th {
-        padding: 6px 2px;
-        border-width: 1px;
-        font-size: 10px;
-      }
-
-      #theme-table th.col-label,
-      #theme-table td.col-label {
-        width: 60px;
-        font-size: 10px;
-        padding: 8px 4px;
-        padding-right: 0;
-      }
-
-      .theme-cell input {
-        width: 20px;
-        height: 16px;
-      }
-
-      #theme-panel-footer button {
-        font-size: 8px;
       }
 
       .main-frame {
@@ -1116,20 +1390,11 @@
       }
 
       .main-title {
-        font-size: 18px;
-        font-weight: 540;
-        gap: 2px;
-      }
-
-      .btn-toggle-menu {
-        font-size: 10px;
-        width: 24px;
-        height: 12px;
+        font-size: 20px;
       }
 
       .form-titles {
         font-size: 12px;
-        font-weight: 600;
         gap: 6px;
       }
 
@@ -1142,15 +1407,16 @@
         font-size: 8px;
       }
 
-      .extra-info {
+      .error-info {
+        padding: 2px;
+        font-size: 9px;
+      }
+
+      .helper-info {
         font-size: 10px;
       }
 
-      .ring-number-box {
-        gap: 4px;
-      }
-
-      .text-total-chain {
+      .text-total-ring {
         font-size: 14px;
       }
 
@@ -1163,22 +1429,35 @@
       }
 
       button {
+        font-size: 9px;
+        border-width: 0 2px 2px 0;
+        border-radius: 0 2px;
+        padding: 2px;
+        gap: 1px;
+      }
+
+      #backup-error {
+        bottom: 45px;
+      }
+
+      .about-me {
+        font-size: 16px;
+      }
+
+      .chain-tab {
+        padding: 3px 6px;
         font-size: 10px;
       }
 
       .chain {
         border-width: 4px;
-        padding: 12px;
       }
 
-      .chain-tab {
-        padding: 3px 6px;
-        border-width: 1px;
-        font-size: 10px;
+      .chain-head {
+        padding: 0 8px;
       }
 
       .chain-title {
-        font-weight: 600;
         font-size: 13px;
       }
 
@@ -1186,22 +1465,104 @@
         font-size: 12px;
       }
 
-      .chain table th:first-child {
-        padding: 0 2px;
-        font-size: 8px;
+      .table-container {
+        padding: 0 8px;
       }
 
-      .chain table tr:first-child th {
+      .chain th {
         font-size: 6px;
       }
 
-      .cell {
+      .chain tr:first-child>th:not(:first-child) {
+        padding: 1px 0;
+      }
+
+      .chain tr:not(:first-child)>th:first-child {
+        padding: 0 1px;
+      }
+
+      .chain td {
+        font-size: 16px;
+      }
+
+      .circle-cell {
+        font-size: 20px;
+      }
+
+      .circle-cell .month-label {
         font-size: 8px;
       }
 
-      .x-mark {
-        stroke-width: 6px;
+      #btn-toggle-menu {
+        font-size: 10px;
+        width: 24px;
+        height: 12px;
       }
+
+      #btn-view {
+        width: 28px;
+        height: 16px;
+      }
+
+      #btn-view .knob {
+        width: 10px;
+        height: 10px;
+        transform: translateX(-6px);
+        font-size: 8px;
+      }
+
+      #btn-view.alt .knob {
+        transform: translateX(6px);
+      }
+
+      #btn-color-settings {
+        font-size: 8px;
+        padding: 3px;
+      }
+
+      #theme-panel {
+        min-height: 140px;
+        height: 200px;
+      }
+
+      #btn-theme-close {
+        padding: 3px;
+      }
+
+      #theme-panel-header .title {
+        font-size: 12px;
+        padding-left: 12px;
+      }
+
+      #theme-panel thead th {
+        padding: 6px;
+        font-size: 10px;
+        line-height: 1;
+      }
+
+      #theme-panel tbody th {
+        padding: 4px;
+        font-size: 8px;
+      }
+
+      #theme-panel td {
+        padding: 6px;
+        font-size: 10px;
+      }
+
+      #theme-panel tr:nth-child(34) td {
+        font-size: 6px;
+      }
+
+      #theme-panel-footer {
+        padding: 8px 4px;
+      }
+
+      #theme-panel-footer button {
+        padding: 4px;
+        font-size: 8px;
+      }
+
     }
 
     /* ========================================
@@ -1230,15 +1591,12 @@
       }
     }
   </style>
-
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
     crossorigin="anonymous" />
 
 </head>
 
 <body>
-  <button type="button" id="btn-theme-settings"><i class="fa-solid fa-palette"></i></button>
   <div class="main-frame" id="main-frame">
     <svg class="chain-bg" aria-hidden="true"> <!--inline svg, 35 kB civarı yer kaplar, isteğe bağlı silinebilir-->
       <?xml version="1.0" standalone="no"?>
@@ -1726,17 +2084,30 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         </g>
       </svg>
     </svg>
-    <div class="main-title">
-      <a href=""
-        title="“Zinciri kırma” metodolojisi, hem yeni bir ALIŞKANLIK oluşturmayı hem de zararlı alışkanlıkları bırakmayı destekleyen; bir hedefi her gün küçük adımlarla ilerleterek süreklilik alışkanlığı oluşturmaya odaklanan bir yaklaşımdır. Temeli, yapılan her günlük adımı takvimde bir “X” ile işaretleyip zamanla ortaya çıkan çizgiyi, yani zinciri bozmamaya çalışmak üzerine kuruludur. Psikolojik olarak, beynimiz tamamlanmış işleri görmekten haz duyar ve bu görsel ilerleme motivasyonumuzu artırır. Ayrıca, büyük ve göz korkutucu hedefleri küçük ve yönetilebilir parçalara bölmek; erteleme döngüsünü kırar, BAŞARI hissini sıklaştırır ve süreci daha SÜRDÜRÜLEBİLİR hâle getirir. Bu yüzden yöntem, hem kişisel hem profesyonel hedeflerde odaklanmayı artıran ve alışkanlık kazandırmada oldukça etkili bir sistem olarak bilinir."
-        class="question-mark"> <i class="fa-solid fa-clipboard-question"></i>
-        <!--uzun title açıklaması yerine href ya da inline page eklenebilir--></a>
-      Zinciri Kırma!
-      <button id="toggle-menu" class="btn-toggle-menu" title="Ayarları gizle / göster.">▲</button>
+    <div class="head-box">
+      <div class="description-part">
+        <a href=""
+          title="“Zinciri kırma” metodolojisi, hem yeni bir ALIŞKANLIK oluşturmayı hem de zararlı alışkanlıkları bırakmayı destekleyen; bir hedefi her gün küçük adımlarla ilerleterek süreklilik alışkanlığı oluşturmaya odaklanan bir yaklaşımdır. Temeli, yapılan her günlük adımı takvimde bir “X” ile işaretleyip zamanla ortaya çıkan çizgiyi, yani zinciri bozmamaya çalışmak üzerine kuruludur. Psikolojik olarak, beynimiz tamamlanmış işleri görmekten haz duyar ve bu görsel ilerleme motivasyonumuzu artırır. Ayrıca, büyük ve göz korkutucu hedefleri küçük ve yönetilebilir parçalara bölmek; erteleme döngüsünü kırar, BAŞARI hissini sıklaştırır ve süreci daha SÜRDÜRÜLEBİLİR hâle getirir. Bu yüzden yöntem, hem kişisel hem profesyonel hedeflerde odaklanmayı artıran ve alışkanlık kazandırmada oldukça etkili bir sistem olarak bilinir."
+          class="question-mark"> <i class="fa-solid fa-clipboard-question"></i>
+          <!--uzun title açıklaması yerine href ya da inline page eklenecek--></a>
+        <span class="main-title">
+          Zinciri Kırma!
+        </span>
+      </div>
+      <div class="visual-buttons">
+        <button id="btn-toggle-menu" title="Ayarları gizle / göster.">▲</button>
+        <button id="btn-view" class="switch" title="Görünüm değiştir">
+          <span class="knob">
+            <i class="fa-solid fa-table-cells"></i>
+          </span>
+        </button>
+        <button type="button" id="btn-color-settings"><i class="fa-solid fa-palette"></i></button>
+      </div>
     </div>
-    <hr class="hr-line">
+    <hr>
+    <br>
     <div class="form-titles">Zincir türü:
-      <div class="selections">
+      <div class="selections radio-type">
         <label data-aesthetics class="only-for-desktop pad12"></label>
         <label>
           <input type="radio" name="chain-kind" value="dated" checked />
@@ -1774,7 +2145,6 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         </label>
       </div>
     </div>
-
     <div class="form-titles" id="weekdays-label">Haftada hangi günler?
       <span id="weekdays-error" class="error-info" style="display: none;"></span>
       <div class="selections" id="weekdays">
@@ -1815,7 +2185,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         </label>
         <label data-aesthetics class="only-for-desktop pad12"></label>
         <label>
-          <span id="all-selected-note" class="extra-info">
+          <span id="all-selected-note" class="helper-info">
             Varsayılan olarak
             <span style="text-decoration-line: underline">tüm günler</span>
             seçili.
@@ -1823,10 +2193,9 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         </label>
       </div>
     </div>
-    <div break-block></div>
-    <hr class="hr-line">
+    <hr>
     <div class="ring-number-box">
-      <strong class="text-total-chain">
+      <strong class="text-total-ring">
         Toplam halka:
       </strong>
       <span id="show-count">
@@ -1847,7 +2216,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       <span data-aesthetics class="only-for-desktop"></span>
       <span data-spacer class="pad12"></span>
       <span data-aesthetics class="only-for-desktop"></span>
-      <span class="extra-info" id="layout-info"></span>
+      <span class="helper-info" id="layout-info"></span>
     </div>
     <div class="button-box">
       <button id="btn-add-chain" title="Seçtiğiniz niteliklere göre zincir oluşturmak için hemen tıklayın!">
@@ -1870,12 +2239,9 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         Temizle
       </button>
       <span data-spacer class="only-for-desktop"></span>
-      <span data-spacer class="only-for-desktop"></span>
-      <span data-spacer class="only-for-desktop"></span>
     </div>
-
   </div>
-
+  <div class="about-me"> <i class="fa-brands fa-github"></i>/<i class="fa-brands fa-instagram"></i>:cuneytinann </div>
   <div id="chain-list"></div> <!-- zincir eklendiğinde sekmelerle, tabloyla her şeyle birlikte burada görünür-->
   <input type="file" id="file-input" accept=".json,application/json" style="display: none" />
   <script>
@@ -1886,7 +2252,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       // Ana frame ve form elemanları
       var mainFrame = qs('#main-frame');
       var modeRadios = document.getElementsByName('chain-kind');
-      var toggleMenu = qs('#toggle-menu');
+      var toggleMenu = qs('#btn-toggle-menu');
       var chainName = qs('#chain-name');
       var nameError = qs('#name-error');
       var chainCountLabel = qs('#chain-count-label');
@@ -1906,12 +2272,16 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       var btnBackupDownload = qs('#btn-backup-download');
       var backupError = qs('#backup-error');
       var btnReset = qs('#btn-reset');
+      var btnView = qs('#btn-view');
+
       var chainList = qs('#chain-list');
       var fileInput = qs('#file-input');
 
       // Global durum değişkenleri
       var activeChainId = null;
       var currentKind = 'dated'; // 'dated' | 'count'
+      // Görünüm modu: 'table' | 'snake'
+      var viewMode = 'table';
       var MAX_RINGS = 10080;     // Global halka üst limiti
       var n = 0;                 // Toplam halka sayısı
       var cols = 1;
@@ -1932,61 +2302,85 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         'Pazar',
       ];
 
-
       /* ---------------- CONFIG ---------------- */
+      /* IDLER satır sırasını belirlemez, Aynı ID çakışma yaratmaz. Sadece override için ID önem taşır */
+      /* IDLER override yaparken önem taşır. O yüzden override tablosuyla birebir eşleşmelidir */
+      /* fieldslar text,bd,bg ve info anlamlıdır. infoyla diğer özellikler aynı anda bulunamaz */
+      // Ara başlık veya bilgilendirmeler fieldsa 'info' flagı ile eklenebilir
       const COLOR_ROWS = [
-        { id: '00', label: 'En Dış Katman', selector: 'body', fields: ['bg'] },
-        { id: '01', label: 'Soluk Zincir Görseli', fields: ['excp'] },
-        { id: '02', label: 'Menü Kartı', selector: '.main-frame', fields: ['bg', 'bd'] },
-        { id: '03', label: 'Bilgi İkonu', selector: '.question-mark', fields: ['text'] },
-        { id: '04', label: 'Ana Başlık', selector: '.main-title', fields: ['text'] },
-        { id: '05', label: 'Menü Daraltma Düğmesi', selector: '.btn-toggle-menu', fields: ['bd', 'text'] },
-        { id: '06', label: 'Menü Bölme Çizgileri', selector: '.hr-line', fields: ['bd'] },
-        { id: '07', label: 'Form Başlıkları', selector: '.form-titles', fields: ['text'] },
-        { id: '08', label: 'Seçmeli Girdiler', selector: '.selections label', fields: ['bd', 'text'] },
-        { id: '09', label: 'Seçilmiş Hali', selector: 'label:has(input:checked)', fields: ['bg', 'text'] },
-        { id: '10', label: 'Form Girdileri', selector: 'input', fields: ['bg', 'bd', 'text'] },
-        { id: '11', label: 'Hata Kutucukları', selector: '.error-info', fields: ['bg', 'bd', 'text'] },
-        { id: '12', label: 'Ek Bilgi Kutusu', selector: '.extra-info', fields: ['text'] },
-        { id: '13', label: 'Halka Sayacı', selector: '.ring-number-box', fields: ['bg', 'bd'] },
-        { id: '14', label: 'Toplam Halka Yazısı', selector: '.text-total-chain', fields: ['text'] },
-        { id: '15', label: 'Sayı Göstergesi', selector: '#show-count', fields: ['text'] },
-        { id: '16', label: 'Parantez Bilgi', selector: '.parenthesis', fields: ['text'] },
-        { id: '17', label: 'Satır / Sütun Girdileri', selector: '.size-box > *', fields: ['bd'] },
-        { id: '18', label: 'Butonlar Arkaplan', selector: 'button', fields: ['bg', 'excp'] },
-        { id: '19', label: 'Renk Ayarı Butonu ;)', selector: '#btn-theme-settings', fields: ['bd', 'text', 'excp'] },
-        { id: '20', label: 'Zinciri oluştur butonu', selector: '#btn-add-chain', fields: ['bd', 'text', 'excp'] },
-        { id: '21', label: 'Karşıya yükle butonu', selector: '#btn-load-file', fields: ['bd', 'text', 'excp'] },
-        { id: '22', label: 'Yedek indir butonu', selector: '#btn-backup-download', fields: ['bd', 'text', 'excp'] },
-        { id: '23', label: 'Temizle butonu', selector: '#btn-reset', fields: ['bd', 'text', 'excp'] },
-        { id: '24', label: 'Zinciri sil butonu', selector: '#btn-delete', fields: ['bd', 'text', 'excp'] },
-        { id: '25', label: 'Zincir Kartı', selector: '.chain, .chain-tab.active', fields: ['bg', 'bd'] },
-        { id: '26', label: 'Zincir Sekmesi', selector: '.chain-tab', fields: ['text'] },
-        { id: '27', label: 'Zincir Başlığı', selector: '.chain-title', fields: ['text'] },
-        { id: '28', label: 'Zincir Bilgileri', selector: '.chain-info', fields: ['text'] },
-        { id: '29', label: 'Tablo Çizgisi', selector: 'th, td', fields: ['bd'] },
-        { id: '30', label: 'Başlık Sütunu', selector: '.chain table th:first-child', fields: ['bg', 'text'] },
-        { id: '31', label: 'Başlık Satırı', selector: '.chain table tr:first-child th', fields: ['bg', 'text'] },
-        { id: '32', label: 'Yıl Metni', selector: '#first-cell', fields: ['text'] },
-        { id: '33', label: 'Hücre', selector: '.cell', fields: ['bg', 'text'] },
-        { id: '34', label: 'Boş Hücre', selector: '.empty-cell', fields: ['bg'] },
-        { id: '35', label: 'Ay Geçişi Belirteç', fields: ['excp'] },
-        { id: '36', label: 'Yıl Geçişi Belirteç', fields: ['excp'] },
-        { id: '37', label: 'X İşareti Dolgusu', fields: ['excp'] },
+        { id: '01', label: 'Uygulama Kartı Renk Düzeni', fields: 'info' },
+        { id: '02', label: 'X İşareti Dolgusu', selector: '.x-mark', fields: ['text'] },
+        { id: '03', label: 'Tüm Halkalar', selector: '.chain td, .circle-cell', fields: ['text', 'bd', 'bg'] },
+        { id: '04', label: 'Sütun Başlıkları', selector: ':root', fields: ['text', 'bg'] },
+        { id: '05', label: 'Satır Başlıkları', selector: '.chain tr:not(:first-child) > th:first-child', fields: ['text', 'bg'] },
+        { id: '06', label: 'Yıl Metni', selector: '.chain tr:first-child > th:first-child', fields: ['text'] },
+        { id: '07', label: 'Boş Hücre', selector: '.chain td.empty-cell', fields: ['bg'] },
+        { id: '08', label: 'Ay Geçişi Belirteç', selector: '.chain td.month-break-left', fields: ['bd'] },
+        { id: '09', label: 'Yıl Geçişi Belirteç', selector: '.chain td.year-break-left', fields: ['bd'] },
+        { id: '10', label: 'Zincir Başlığı', selector: '.chain-title', fields: ['text'] },
+        { id: '11', label: 'Zincir Bilgileri', selector: '.chain-info', fields: ['text'] },
+        { id: '12', label: 'Uygulama Kartı', selector: ':root', fields: ['bd', 'bg'] },
+        { id: '13', label: 'Zincir Sekmesi', selector: '.chain-tab', fields: ['text'] },
+
+        { id: '14', label: 'Menü Forum Kartı Renk Düzeni', fields: 'info' },
+        { id: '15', label: 'En Dış Katman', selector: 'body', fields: ['bg'] },
+        { id: '16', label: 'Menü Kartı', selector: '.main-frame', fields: ['bd', 'bg'] },
+        { id: '17', label: 'Arka Plan İkonları', selector: ':root', fields: ['text'] },
+        { id: '18', label: 'Ana Başlık', selector: '.main-title', fields: ['text'] },
+        { id: '19', label: 'Menü Bölme Çizgileri', selector: 'hr', fields: ['bd'] },
+        { id: '20', label: 'Form Başlıkları', selector: '.form-titles', fields: ['text'] },
+        { id: '21', label: 'Seçmeli Girdiler (GENEL)', selector: '.selections label', fields: ['text', 'bd'] },
+        { id: '22', label: 'Türün Seçilmiş Hali', selector: '.radio-type label:has(input:checked)', fields: ['text', 'bg'] },
+        { id: '23', label: 'Form Girdileri', selector: 'input', fields: ['text', 'bd', 'bg'] },
+        { id: '24', label: 'Günlerin Seçilmiş Hali', selector: '#weekdays label:has(input:checked)', fields: ['text', 'bg'] },
+        { id: '25', label: 'Halka Sayacı', selector: '.ring-number-box', fields: ['bd', 'bg'] },
+        { id: '26', label: 'Toplam Halka Yazısı', selector: '.text-total-ring', fields: ['text'] },
+        { id: '27', label: 'Sayı Göstergesi', selector: '#show-count', fields: ['text'] },
+        { id: '28', label: 'Parantez Bilgi', selector: '.parenthesis', fields: ['text'] },
+        { id: '29', label: 'Satır / Sütun Girdileri', selector: '.size-box > *', fields: ['bd'] },
+        { id: '30', label: 'Ek Bilgi Kutusu', selector: '.helper-info', fields: ['text'] },
+        { id: '31', label: 'Hata Kutucukları', selector: '.error-info', fields: ['text', 'bd', 'bg'] },
+
+        { id: '32', label: 'Tüm Butonlar', fields: 'info' },
+        { id: '33', label: 'Butonlar Arka Plan', selector: ':root', fields: ['bg'] },
+
+        { id: '34', label: 'Not: Özel butonlar için arka plan rengi demek, tıklama veya üzerine gelince beliren efekttir. Değişikliğin gözlemi için ilgili butonla işlem yapın.', fields: 'info' },
+
+        { id: '35', label: 'Menü Daraltma Düğmesi', selector: '#btn-toggle-menu', fields: ['text', 'bd'] },
+        { id: '36', label: 'Görünüm Düğmesi', selector: '#btn-view', fields: ['text', 'bd', 'bg'] },
+        // Renk ayarı butonu ikonu - butonların genel arka planından geldiği için harici edildi.
+        { id: '37', label: 'Renk Ayarı Butonu ;)', selector: '#btn-color-settings', fields: ['bd', 'bg'] },
+        { id: '38', label: 'Zinciri Oluştur Butonu', selector: '#btn-add-chain', fields: ['text', 'bd', 'bg'] },
+        { id: '39', label: 'Karşıya Yükle Butonu', selector: '#btn-load-file', fields: ['text', 'bd', 'bg'] },
+        { id: '40', label: 'Yedek İndir Butonu', selector: '#btn-backup-download', fields: ['text', 'bd', 'bg'] },
+        { id: '41', label: 'Temizle Butonu', selector: '#btn-reset', fields: ['text', 'bd', 'bg'] },
+        { id: '42', label: 'Zinciri Sil Butonu', selector: '#btn-delete', fields: ['text', 'bd', 'bg'] },
       ];
-      // buton hoverları (kalabalık azaltsın diye), svg attributeları, tek taraflı borderlar
-      const Exceptions = [
-        { id: '01', selector: '.chain-bg', property: 'fill' },
-        { id: '19', selector: '#btn-theme-settings:hover', property: 'background-color' },
-        { id: '20', selector: '#btn-add-chain:hover', property: 'background-color' },
-        { id: '21', selector: '#btn-load-file:hover', property: 'background-color' },
-        { id: '22', selector: '#btn-backup-download:hover', property: 'background-color' },
-        { id: '23', selector: '#btn-reset:hover', property: 'background-color' },
-        { id: '24', selector: '#btn-delete:hover', property: 'background-color' },
-        { id: '35', selector: '.month-break-left', property: 'border-left-color' },
-        { id: '36', selector: '.year-break-left', property: 'border-left-color' },
-        { id: '37', selector: '.x-mark', property: 'stroke' },
-      ]
+
+      // id → field → partial override
+      const FIELD_OVERRIDES = {
+        // svg rengi farklı attribute
+        '02': { text: { prop: 'stroke' } },
+        // th hücrelerini de kapsaması için override edilmiştir 
+        '03': { bd: { selector: ':root', prop: '--chain-border-color' } },
+        '04': { text: { prop: '--chain-month-label' }, bg: { prop: '--chain-month-label-bg' } },
+        '08': { bd: { prop: 'border-left-color' } },
+        // --- TEK TARAFLI BORDERLAR ---
+        '09': { bd: { prop: 'border-left-color' } },
+        '12': { bd: { prop: '--application-card-bd' }, bg: { prop: '--application-card-bg' } },
+        '17': { text: { prop: '--background-icons' } },
+
+        '33': { bg: { prop: '--button-background' } },
+        // BUTON EFEKTLERİ - :active veya :hover
+        '36': { bg: { selector: ':root', prop: '--btn-view-effect' } },
+        '37': { bg: { selector: ':root', prop: '--btn-color-settings-effect' } },
+        '38': { bg: { selector: ':root', prop: '--btn-add-chain-effect' } },
+        '39': { bg: { selector: ':root', prop: '--btn-load-file-effect' } },
+        '40': { bg: { selector: ':root', prop: '--btn-backup-download-effect' } },
+        '41': { bg: { selector: ':root', prop: '--btn-reset-effect' } },
+        '42': { bg: { selector: ':root', prop: '--btn-delete-effect' } },
+
+      };
 
       const STORAGE_KEY = 'theme_css_overrides_v1';
 
@@ -2128,9 +2522,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         if (field === 'text') return 'color';
         return field; // gelecekte yeni bir field gelirse doğrudan property sayılabilir
       }
-
-      function getExceptionById(id) {
-        return Exceptions.find(e => e.id === id) || null;
+      function getFieldOverride(rowId, field) {
+        return FIELD_OVERRIDES[rowId]?.[field] || null;
       }
 
       /**
@@ -2139,14 +2532,17 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
        * - excp          => Exceptions[id] => {selector, property}
        */
       function resolveTargetForCell(row, field) {
-        if (field === 'excp') {
-          const ex = getExceptionById(row.id);
-          if (!ex) return null;
-          return { selector: ex.selector, prop: ex.property };
-        }
+        const baseSelector = row.selector || null;
+        const baseProp = defaultPropForField(field);
 
-        if (!row.selector) return null;
-        return { selector: row.selector, prop: defaultPropForField(field) };
+        const ov = getFieldOverride(row.id, field);
+
+        if (!baseSelector && !ov) return null;
+
+        return {
+          selector: ov?.selector ?? baseSelector,
+          prop: ov?.prop ?? baseProp
+        };
       }
 
 
@@ -2203,7 +2599,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         const selector = normalizeSelectorText(target.selector);
         const prop = target.prop;
 
-        // Preview > Theme > Base > semantic default
+        // Preview > Added > Base > semantic default
         const pDecl = getDecl(previewMap, selector);
         if (pDecl && prop in pDecl) return pDecl[prop];
 
@@ -2394,15 +2790,25 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
         panelEl.innerHTML = `
     <div id="theme-panel-header">
-      <div class="title">Tema Ayarları</div>
-      <div class="hint">Sürükleyin • Dikey boyutlandırın • RGB değiştirin</div>
-    </div>
+
+      <div id="theme-panel-draggable">
+      <div class="title">Renk Ayarları</div>
+      <div class="hint">Sürükleyin • Dikey boyutlandırın • RGB değiştirin</div>     
+      </div>
+     
+      
+      <div class="close">
+      <button id="btn-theme-close" type="button" title="Değişiklikleri kaydetmeden panelden çıkar."> ✕ </button>
+      </div>
+
+      </div>
+
     <div id="theme-panel-body"></div>
     <div id="theme-panel-footer">
       <button id="btn-theme-reset-all" type="button" title="Tüm tema / renk düzenini, uygulama varsayılanına döndürür.">Varsayılanlara dön!</button>
-      <div class="right">
+      <div class="rightside">
         <button id="btn-theme-cancel" type="button" title="Değişiklikleri kaydetmeden panelden çıkar.">İptal</button>
-        <button id="btn-theme-ok" class="primary" type="button" title="Değişiklikleri uygular ve paneli kapatır.">Tamam</button>
+        <button id="btn-theme-ok" type="button" title="Değişiklikleri uygular ve paneli kapatır.">Tamam</button>
       </div>
     </div>
   `;
@@ -2410,26 +2816,30 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         document.body.appendChild(panelEl);
         bodyEl = panelEl.querySelector('#theme-panel-body');
 
+
+
         tableEl = document.createElement('table');
-        tableEl.id = 'theme-table';
         tableEl.innerHTML = `
     <thead>
       <tr>
         <th class="col-label">Alan Adı</th>
-        <th>Arkaplan</th>
+        <th>Metin / İkon</th>
         <th>Çerçeve / Çizgi</th>
-        <th>Metin / İkon </th>
-        <th>Diğer</th>
+        <th>Arka Plan</th>
       </tr>
-    </thead>
+      </thead>
     <tbody></tbody>
   `;
         bodyEl.appendChild(tableEl);
 
         // Drag logic
-        makeDraggable(panelEl, panelEl.querySelector('#theme-panel-header'));
+        makeDraggable(panelEl, panelEl.querySelector('#theme-panel-draggable'));
 
         // Buttons
+        panelEl.querySelector('#btn-theme-close').addEventListener('click', () => {
+          cancelChanges();
+          closePanel();
+        });
         panelEl.querySelector('#btn-theme-ok').addEventListener('click', () => {
           commitChanges();
           closePanel();
@@ -2447,31 +2857,41 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         const tbody = tableEl.querySelector('tbody');
         tbody.innerHTML = '';
 
-        // dynamic extra columns (geleceğe hazırlık)
-        const baseCols = new Set(['bg', 'bd', 'text', 'excp']);
+        // dynamic extra columns , sıralama değişse de verileri doğru sırala
+        const baseCols = new Set(['text', 'bd', 'bg']);
         const extraFields = new Set();
         for (const row of COLOR_ROWS) {
           for (const f of row.fields) if (!baseCols.has(f)) extraFields.add(f);
         }
-        // Eğer extra field gelirse, ileride thead’e de eklemeniz gerekir.
-        // Şu anlık yok dediniz, o yüzden sadece body tarafında dikkate almıyoruz.
 
         for (const row of COLOR_ROWS) {
           const tr = document.createElement('tr');
 
-          const tdLabel = document.createElement('td');
-          tdLabel.className = 'col-label';
-          tdLabel.textContent = row.label;
-          tr.appendChild(tdLabel);
+
+          // INFO SATIRI: tek hücre, colspan=4
+          if (row.fields === 'info') {
+            const td = document.createElement('td');
+            td.colSpan = 4;
+            td.textContent = row.label || '';
+            tr.appendChild(td);
+            tbody.appendChild(tr);
+            continue;                        // <- diğer td’leri üretmez
+          }
+
+          const thLabel = document.createElement('th');
+          thLabel.className = 'col-label';
+          thLabel.textContent = row.label;
+          tr.appendChild(thLabel);
 
           // 3 ana sütun
-          tr.appendChild(makeCellTd(row, 'bg'));
-          tr.appendChild(makeCellTd(row, 'bd'));
           tr.appendChild(makeCellTd(row, 'text'));
-          tr.appendChild(makeCellTd(row, 'excp'));
+          tr.appendChild(makeCellTd(row, 'bd'));
+          tr.appendChild(makeCellTd(row, 'bg'));
           tbody.appendChild(tr);
         }
       }
+
+
 
       function makeCellTd(row, field) {
         const td = document.createElement('td');
@@ -2488,8 +2908,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         }
         const key = cellKey(row.id, field);
 
-        const wrap = document.createElement('div');
-        wrap.className = 'theme-cell';
+
 
         const input = document.createElement('input');
         input.type = 'color';
@@ -2511,8 +2930,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
         });
 
-        wrap.appendChild(input);
-        td.appendChild(wrap);
+
+        td.appendChild(input);
         return td;
       }
 
@@ -2521,46 +2940,72 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         let isDown = false;
         let startX = 0, startY = 0;
         let startLeft = 0, startTop = 0;
+        let activePointerId = null;
+
+        function getPoint(e) {
+          // PointerEvent ise clientX/clientY var
+          return { x: e.clientX, y: e.clientY };
+        }
 
         function onDown(e) {
+          // sadece primary pointer (tek parmak / ana dokunuş) ile sürükle
+          if (e.isPrimary === false) return;
+
           isDown = true;
+          activePointerId = e.pointerId;
+
           const rect = panel.getBoundingClientRect();
-          startX = e.clientX;
-          startY = e.clientY;
+          const p = getPoint(e);
+
+          startX = p.x;
+          startY = p.y;
           startLeft = rect.left;
           startTop = rect.top;
 
-          // transform center -> switch to left/top absolute to allow dragging precisely
+          // ortadan konumlama (transform) -> kesin left/top'a geç
           panel.style.transform = 'none';
           panel.style.left = `${rect.left}px`;
           panel.style.top = `${rect.top}px`;
           panel.style.right = 'auto';
           panel.style.bottom = 'auto';
 
-          document.addEventListener('mousemove', onMove);
-          document.addEventListener('mouseup', onUp);
+          // pointer capture: parmak handle'dan çıksa bile drag devam eder
+          handle.setPointerCapture(activePointerId);
+
+          e.preventDefault();
         }
 
         function onMove(e) {
           if (!isDown) return;
-          const dx = e.clientX - startX;
-          const dy = e.clientY - startY;
+          if (activePointerId !== null && e.pointerId !== activePointerId) return;
 
-          // constrain to viewport a bit
+          const p = getPoint(e);
+          const dx = p.x - startX;
+          const dy = p.y - startY;
+
           const newLeft = Math.max(8, Math.min(window.innerWidth - 40, startLeft + dx));
           const newTop = Math.max(8, Math.min(window.innerHeight - 40, startTop + dy));
 
           panel.style.left = `${newLeft}px`;
           panel.style.top = `${newTop}px`;
+
+          e.preventDefault();
         }
 
-        function onUp() {
+        function onUp(e) {
+          if (activePointerId !== null && e.pointerId !== activePointerId) return;
+
           isDown = false;
-          document.removeEventListener('mousemove', onMove);
-          document.removeEventListener('mouseup', onUp);
+          activePointerId = null;
         }
 
-        handle.addEventListener('mousedown', onDown);
+        // Pointer Events (mobil + desktop)
+        handle.addEventListener('pointerdown', onDown, { passive: false });
+        handle.addEventListener('pointermove', onMove, { passive: false });
+        handle.addEventListener('pointerup', onUp);
+        handle.addEventListener('pointercancel', onUp);
+
+        // İsterseniz mouse fallback’ı kaldırabilirsiniz; pointer events modern tarayıcılarda yeterli.
       }
 
       /* ---------------- OPEN/CLOSE ---------------- */
@@ -2600,16 +3045,12 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         // theme’i sayfa açılışında uygula
         loadThemeFromStorage();
 
-        const btn = document.getElementById('btn-theme-settings');
+        const btn = document.getElementById('btn-color-settings');
         if (!btn) return;
         btn.addEventListener('click', () => {
           openPanel();
         });
       });
-
-
-
-
 
       // Seçici yardımcı fonksiyon
       // root parametresi verilirse o element içinde arama yapar
@@ -3875,19 +4316,19 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
           for (var c2 = 0; c2 < cols; c2++) {
             var td = document.createElement('td');
-            td.className = 'cell';
+
 
             var idx = r * cols + c2;
 
             if (idx < N) {
-              // Hücrenin köşesine küçük bir badge ile sıra numarası yaz
-              var badge = document.createElement('div');
-              badge.className = 'cell-badge';
-              badge.textContent = String(idx + 1);
-              td.appendChild(badge);
+
+
+              td.textContent = String(idx + 1);
+
 
               td.dataset.id = ch.id;
               td.dataset.idx = String(idx);
+              td.title = String(idx + 1) + '. halka';
 
               // Daha önce işaretlendiyse X'i tekrar çiz
               if (ch.marks && ch.marks[idx]) {
@@ -3897,7 +4338,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
               td.addEventListener('click', onCellClick);
             } else {
               // Boş hücreler (satır sonu dolsun diye)
-              td.classList.remove('cell');
+
               td.classList.add('empty-cell');
             }
 
@@ -3955,7 +4396,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         // İlk satır: yıl + sütun başlıklarında seçili gün isimleri
         var tr1 = document.createElement('tr');
         var pad = document.createElement('th');
-        pad.id = 'first-cell';
+
         var firstYear = N > 0 ? new Date(ch.dates[0] + 'T00:00:00').getFullYear() : '';
         pad.textContent = firstYear;
         tr1.appendChild(pad);
@@ -3988,16 +4429,13 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
           for (var c2 = 0; c2 < cols; c2++) {
             var td = document.createElement('td');
-            td.className = 'cell';
+
 
             var idx = r * cols + c2;
             if (idx < N && ch.dates[idx]) {
               var dd = new Date(ch.dates[idx] + 'T00:00:00');
 
-              var badge = document.createElement('div');
-              badge.className = 'cell-badge';
-              badge.textContent = String(dd.getDate());
-              td.appendChild(badge);
+              td.textContent = String(dd.getDate());
 
               // Tooltip olarak tam TR tarih formatı
               td.title = dd.toLocaleDateString('tr-TR', {
@@ -4026,7 +4464,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
                 }
               }
             } else {
-              td.classList.remove('cell');
+
               td.classList.add('empty-cell');
             }
 
@@ -4043,15 +4481,197 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       function buildTable(ch) {
         if (ch.kind === 'dated') return buildTableDated(ch);
         return buildTableCount(ch);
+
+      }
+      // ----------------------------
+      // Görünüme göre grid üretir
+      // ----------------------------
+      function buildGrid(ch, wrapEl) {
+        if (viewMode === 'snake') return buildSnake(ch, wrapEl);
+        return buildTable(ch);
+      }
+
+      // ----------------------------
+      // YILAN: ortak üretici
+      // - wrapEl: grid-wrap (ölçüm için)
+      // ----------------------------
+      function buildSnake(ch, wrapEl) {
+        normalizeChain(ch);
+
+        var snake = document.createElement('div');
+        snake.className = 'snake-container';
+
+        // ring-size: var(--cell-size) ile aynı olsun
+        var rootStyle = getComputedStyle(document.documentElement);
+        var size = parseFloat(rootStyle.getPropertyValue('--cell-size') * 1.25) || 80;
+
+        // gap: CSS'teki --snake-gap
+        var gap = parseFloat(getComputedStyle(snake).getPropertyValue('--snake-gap')) || 0;
+
+        var cellW = (function measureRingCellWidth() {
+          try {
+            var probeWrap = document.createElement('div');
+            probeWrap.className = 'chain';
+            probeWrap.style.position = 'absolute';
+            probeWrap.style.visibility = 'hidden';
+            probeWrap.style.pointerEvents = 'none';
+            probeWrap.style.left = '-10000px';
+            probeWrap.style.top = '-10000px';
+
+            var probe = document.createElement('div');
+            probe.className = 'circle-cell';
+            probeWrap.appendChild(probe);
+            document.body.appendChild(probeWrap);
+
+            var w = probe.getBoundingClientRect().width;
+            probeWrap.remove();
+            return w || (size * 1.25);
+          } catch (e) {
+            return size * 1.25;
+          }
+        })();
+
+        function computeCols(w) {
+          return Math.max(1, Math.floor((w + gap) / (cellW + gap)));
+        }
+
+
+        function fullRowWidth(cols) {
+          return cols * cellW + (cols - 1) * gap;
+        }
+
+        function makeCell(idx) {
+          var el = document.createElement('div');
+          el.className = 'circle-cell';
+
+          el.dataset.id = ch.id;
+          el.dataset.idx = String(idx);
+
+
+          function addMonthLabel(text) {
+            if (!text) return;
+            var lab = document.createElement('div');
+            lab.className = 'month-label';
+            lab.textContent = text;
+            el.appendChild(lab);
+          }
+
+          // COUNT: sayısal değer
+          if (ch.kind !== 'dated') {
+            el.textContent = String(idx + 1);
+            // hover: "3. halka" gibi
+            el.title = String(idx + 1) + '. halka';
+          } else {
+            // DATED: hücrede sadece gün (örn. 14) görünsün; hover'da tam tarih
+            var dd = new Date(ch.dates[idx] + 'T00:00:00');
+
+            // hücre içeriği: sadece gün
+            el.textContent = String(dd.getDate());
+
+            // hover: "14 Aralık 2024 Pazartesi" (tam tarih)
+            el.title = dd.toLocaleDateString('tr-TR', {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            });
+
+            // Yıl / ay geçişlerinde görsel ayraç sınıfları + ay etiketi
+            var isMonthStart = (idx === 0);
+            var includeYear = (idx === 0);
+
+            if (idx > 0 && ch.dates[idx - 1]) {
+              var prevDate = new Date(ch.dates[idx - 1] + 'T00:00:00');
+              if (prevDate.getFullYear() !== dd.getFullYear()) {
+                el.classList.add('year-break-left');
+                isMonthStart = true;
+                includeYear = true;
+              } else if (prevDate.getMonth() !== dd.getMonth()) {
+                el.classList.add('month-break-left');
+                isMonthStart = true;
+              }
+            }
+
+            if (isMonthStart) {
+              var monthName = dd.toLocaleDateString('tr-TR', { month: 'long' });
+              addMonthLabel(includeYear ? (monthName + ' ' + dd.getFullYear()) : monthName);
+            }
+          }
+
+          if (ch.marks && ch.marks[idx]) {
+            el.appendChild(make_Xmark());
+          }
+
+          el.addEventListener('click', onCellClick);
+          return el;
+        }
+
+        function renderSnake() {
+          snake.innerHTML = '';
+
+          var total = (ch.kind === 'dated' && Array.isArray(ch.dates)) ? ch.dates.length : ch.total;
+          total = total || 0;
+
+          var w = wrapEl ? wrapEl.clientWidth : snake.parentElement.clientWidth;
+          var cols = computeCols(w);
+
+          // GAP=0 kopma fix: snake genişliğini satır genişliğine kilitle
+          snake.style.width = Math.min(fullRowWidth(cols), w) + 'px';
+
+
+          var remaining = total;
+          var leftToRight = true;
+          var idx = 0;
+
+
+
+          while (remaining > 0) {
+            // DOLU SATIR
+            var count = Math.min(cols, remaining);
+            var row = document.createElement('div');
+            row.className = 'snake-row';
+            row.style.flexDirection = leftToRight ? 'row' : 'row-reverse';
+
+            for (var i = 0; i < count; i++) {
+              row.appendChild(makeCell(idx++));
+            }
+
+            snake.appendChild(row);
+            remaining -= count;
+            if (remaining <= 0) break;
+
+            // TEKLİ SATIR (bir önceki satırın bittiği uçta)
+            var srow = document.createElement('div');
+            srow.className = 'snake-row';
+            srow.style.justifyContent = leftToRight ? 'flex-end' : 'flex-start';
+            srow.appendChild(makeCell(idx++));
+            snake.appendChild(srow);
+            remaining -= 1;
+
+            leftToRight = !leftToRight;
+          }
+        }
+
+        renderSnake();
+
+        // responsive: wrap genişliği değişince yeniden çiz
+        if (wrapEl && window.ResizeObserver) {
+          var ro = new ResizeObserver(renderSnake);
+          ro.observe(wrapEl);
+        } else {
+          window.addEventListener('resize', renderSnake);
+        }
+
+        return snake;
       }
 
       // Üstteki scroll bar ile alttaki grid scroll'unu senkronize eder
       function setupGridScrollSync(outer) {
         var wrap = outer.querySelector('.grid-wrap');
-        var topScroll = outer.querySelector('.grid-scroll-top');
+        var bottomScroll = outer.querySelector('.grid-scroll-bottom');
         var topInner = outer.querySelector('.grid-scroll-inner');
 
-        if (!wrap || !topScroll || !topInner) return;
+        if (!wrap || !bottomScroll || !topInner) return;
 
         function syncWidth() {
           topInner.style.width = wrap.scrollWidth + 'px';
@@ -4059,10 +4679,10 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         syncWidth();
 
         wrap.addEventListener('scroll', function () {
-          topScroll.scrollLeft = wrap.scrollLeft;
+          bottomScroll.scrollLeft = wrap.scrollLeft;
         });
-        topScroll.addEventListener('scroll', function () {
-          wrap.scrollLeft = topScroll.scrollLeft;
+        bottomScroll.addEventListener('scroll', function () {
+          wrap.scrollLeft = bottomScroll.scrollLeft;
         });
 
         // Grid genişliği değişirse (responsive) üst bar genişliğini de güncelle
@@ -4164,27 +4784,35 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         head.appendChild(actions);
         card.appendChild(head);
 
-        var outer = document.createElement('div');
-        outer.className = 'grid-outer';
 
-        var topScroll = document.createElement('div');
-        topScroll.className = 'grid-scroll-top';
+        if (viewMode === 'table') {
+          var outer = document.createElement('div');
+          outer.className = 'table-container';
 
-        var topInner = document.createElement('div');
-        topInner.className = 'grid-scroll-inner';
-        topScroll.appendChild(topInner);
+          var bottomScroll = document.createElement('div');
+          bottomScroll.className = 'grid-scroll-bottom';
 
-        var wrap = document.createElement('div');
-        wrap.className = 'grid-wrap';
-        wrap.appendChild(buildTable(ch));
+          var topInner = document.createElement('div');
+          topInner.className = 'grid-scroll-inner';
+          bottomScroll.appendChild(topInner);
 
-        outer.appendChild(topScroll);
-        outer.appendChild(wrap);
-        card.appendChild(outer);
+          var wrap = document.createElement('div');
+          wrap.className = 'grid-wrap';
 
-        setupGridScrollSync(outer);
+          wrap.appendChild(buildGrid(ch, wrap));
+
+          outer.appendChild(bottomScroll);
+          outer.appendChild(wrap);
+          card.appendChild(outer);
+
+          setupGridScrollSync(outer);
+        } else {
+          // snake: tablo wrapper'larını tamamen dışla
+          card.appendChild(buildGrid(ch, card));
+        }
 
         return card;
+
       }
 
       // Aktif zincir sekmesini ve kartını seçer, gerekirse scroll yapar
@@ -4751,12 +5379,59 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         btnReset.addEventListener('click', resetCurrentForm);
       }
 
+      if (btnView) {
+        var icon = btnView.querySelector('.knob i'); // knob içindeki <i>
+
+        btnView.addEventListener('click', function () {
+          // Görünüm (Tablo / Yılan) toggle
+          viewMode = (viewMode === 'table') ? 'snake' : 'table';
+
+          // UI: çember kaydır + ikon değiştir
+          btnView.classList.toggle('alt', viewMode === 'snake'); // tablo modunda sağda olsun istiyorsan
+          if (icon) {
+            icon.classList.toggle('fa-worm', viewMode === 'snake');
+            icon.classList.toggle('fa-table-cells', viewMode === 'table');
+            icon.style.transform = 'rotate(270deg)'; // ikisine de uygula (tablo zaten simetrik)
+          }
+          renderAll();
+        });
+      }
+
+      (function () {
+        var busy = false;
+        var lastKey = "";
+
+        function rerenderIfSnake() {
+          if (viewMode !== 'snake') return;
+          if (busy) return;
+
+          var key = window.innerWidth + "x" + window.innerHeight;
+          if (key === lastKey) return;
+          lastKey = key;
+
+          busy = true;
+          requestAnimationFrame(function () {
+            renderAll();
+            setTimeout(function () { busy = false; }, 300);
+          });
+        }
+
+        window.addEventListener('orientationchange', rerenderIfSnake, { passive: true });
+        window.addEventListener('resize', rerenderIfSnake, { passive: true });
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', rerenderIfSnake, { passive: true });
+        }
+      })();
+
+
       // Mobil/desktop'da üst paneli gizle/göster
       if (toggleMenu && mainFrame) {
         toggleMenu.addEventListener('click', function () {
           var collapsed = mainFrame.classList.toggle('collapsed');
           toggleMenu.textContent = collapsed ? '▼' : '▲';
         });
+
       }
 
       // Sayfa yüklenirken başlangıç ayarları
