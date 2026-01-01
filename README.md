@@ -29,10 +29,28 @@ Aşağıdaki görüntüler uygulamanın farklı bölümlerine aittir:
 
 ![Arayüz 5](images/arayuz5-zincirikirma.png)
 
+![Arayüz 1](images/arayuz6-zincirikirma.png)
+
+![Arayüz 2](images/arayuz7-zincirikirma.png)
+
+![Arayüz 3](images/arayuz8-zincirikirma.png)
+
+![Arayüz 4](images/arayuz9-zincirikirma.png)
+
+![Arayüz 5](images/arayuz10-zincirikirma.png)
+
 
 Mobile Cihazlarda: 
 
-![Arayüz 6](images/arayuz6-zincirikirma.jpg)
+![Arayüz 6](images/arayuz11-zincirikirma.jpg)
+
+![Arayüz 6](images/arayuz12-zincirikirma.jpg)
+
+![Arayüz 6](images/arayuz13-zincirikirma.jpg)
+
+![Arayüz 6](images/arayuz14-zincirikirma.jpg)
+
+![Arayüz 6](images/arayuz15-zincirikirma.jpg)
 
 ---
 
@@ -40,6 +58,7 @@ Mobile Cihazlarda:
 
 * Sade grid tasarımı
 * Tarihli / sayı bazlı iki mod
+* Normal tablo / yılan görünümlü (iki farklı render seçeneği)
 * Geliştirilmiş validasyon
 * Akıllı grid hesaplama
 * Mobil uyumlu panel
@@ -81,16 +100,49 @@ Tüm veriler tarayıcı `localStorage` içinde saklanır. Yedekleme JSON format�
 * Üstte her zincir için sekme
 * Zincir silme yalnızca aktif zinciri etkiler
 
-### 2.6. JSON Yedekleme
+### 2.6 Yılan Modu (Alternatif Görünüm)
+
+* Düz grid yerine **çembersel halkalar** ile daha estetik ve farklı bir görünüm
+* Data storage, X işaretleri ve diğer tüm mekanizmalar bu görünümde de aynı şekilde uygulanır.
+* Sadece render (görünüm) farklıdır.
+
+### 2.7. JSON Yedekleme
 
 * Tüm zincirleri JSON olarak indirin
 * Yedekten yüklemede ID çakışmaları çözülür
 
 ---
 
-## 3. Hata ve Validasyon Sistemi
+### 3. Tema, Renk ve Görünüm Sistemi
 
-### 3.1. Hata türleri:
+Uygulama içerisinde arayüzün neredeyse tüm görsel bileşenleri tema sistemi üzerinden yönetilir ve **tema + renk paneli tamamen responsive** olacak şekilde çalışır (mobil / tablet / masaüstü).
+
+#### 3.1. Renk Özelleştirme
+
+* Arka plan, yazılar, hücreler, grid çizgileri ve X işaretleri dahil olmak üzere geniş kapsamlı renk özelleştirme
+* Yapılan değişiklikler otomatik olarak **localStorage** üzerinde saklanır
+* İstenildiği zaman **varsayılan (default) tema ayarlarına geri dönülebilir**
+* Tema ayarları sayfa yenilense dahi korunur
+
+#### 3.2. Hazır Temalar + Özel Tema Üretimi
+
+Uygulama içerisinde 4 adet hazır tema bulunur:
+
+* **Normal**
+* **Karanlık**
+* **Gece**
+* **Matrix**
+
+Bunlara ek olarak kullanıcı;
+
+* İstediği kadar **özel tema (customize)** oluşturabilir,
+* Aşırı esnek şekilde özelleştirip kaydedebilir,
+* Temalarını kolayca paylaşabilir.
+* Tema ayarları da tamamen zincirlerle **aynı mekanima** üzerinden gerçekleşir; ek bir işlem veya zorluk yoktur. Aynı butonlarla aynı JSON dosyasında yedeklenip yüklenebilir.
+
+## 4. Hata ve Validasyon Sistemi
+
+### 4.1. Hata türleri:
 
 * Eksik zincir adı
 * Geçersiz tarih aralığı
@@ -98,14 +150,14 @@ Tüm veriler tarayıcı `localStorage` içinde saklanır. Yedekleme JSON format�
 * Sayı modunda geçersiz toplam değer
 * Hatalı JSON dosyası
 
-### 3.2. Otomatik temizleme
+### 4.2. Otomatik temizleme
 
 * Hata mesajları belirli süre sonra kaybolur
 * Glow durumları düzeltildikçe otomatik temizlenir
 
 ---
 
-## 4. Kullanım Akışı
+## 5. Kullanım Akışı
 
 1. Mod seçin
 2. Zincir adını girin
@@ -118,7 +170,7 @@ Tüm veriler tarayıcı `localStorage` içinde saklanır. Yedekleme JSON format�
 
 ---
 
-## 5. Teknik Mimarinin Özeti
+## 6. Teknik Mimarinin Özeti
 
 * Tek sayfalık HTML–CSS–JS yapı
 * JS tarafında dinamik grid üretimi
@@ -128,7 +180,7 @@ Tüm veriler tarayıcı `localStorage` içinde saklanır. Yedekleme JSON format�
 
 ---
 
-## 6. Number Input Kullanımı (Mobil + Masaüstü)
+## 7. Number Input Kullanımı (Mobil + Masaüstü)
 
 ### Mobilde:
 
@@ -143,19 +195,6 @@ Tüm veriler tarayıcı `localStorage` içinde saklanır. Yedekleme JSON format�
 * Manuel girişlerde otomatik doğrulama aktiftir
 
 ---
-
-### 7. Tema ve Renk Özelleştirme
-
-Uygulama içerisinde arayüzün neredeyse tüm görsel bileşenlerinin rengi kullanıcı tarafından değiştirilebilir.
-
-* Arka plan, yazılar, hücreler, grid çizgileri ve X işaretleri için renk özelleştirme
-* Yapılan renk değişiklikleri **localStorage** üzerinde otomatik olarak saklanır
-* İstenildiği zaman **varsayılan (default) tema ayarlarına geri dönülebilir**
-* Tema ayarları sayfa yenilense dahi korunur
-
-> Notlar:
-> * Bu özellik henüz **responsive değildir** ve **sadece masaüstü (desktop)** görünümünde kullanılabilir.
-
 
 ## 8. Roadmap / Yakında Gelecek Özellikler
 
@@ -177,33 +216,16 @@ yazdırılabilir, boş ve işaretlenmeye hazır tablolar üretimi.
 > Bu yapı, uygulamanın dijital modlarından bağımsızdır ve
 > fiziksel (kağıt) zincir takibi için tasarlanmıştır.
 
-### 8.2. Tema ve Tablo Ayarlarında Responsive Destek
-
-* Tema, renk ve tablo ayar panellerinin mobil ve tablet uyumluluğu
-* Farklı ekran boyutlarında tutarlı ayar deneyimi
-
-### 8.3. Preset Ayar Yönetimi
-
-Uygulama içerisindeki renk, tablo ve yapı ayarlarının preset’ler halinde yönetilmesi.
-
-* Ayarların **preset olarak kaydedilebilmesi**
-* Preset’lerin **aktarılabilir ve paylaşılabilir** hale getirilmesi
-* Preset içe / dışa aktarma desteği
-* Varsayılan ayarlara tek tıkla geri dönüş
-
-
-### 8.4. Full English UI Support
+### 8.2. Full English UI Support
 
 * Tüm arayüzün İngilizce çalışmasını sağlayan tam çeviri modu
 * Hata mesajları, butonlar, açıklamalar, grid metinleri dahil tüm metin seti
 * Dil seçici veya otomatik tarayıcı dil algılama
 * Yedekleme dosyalarına dil bilgisi eklenmesi (opsiyonel)
 
----
-
 ## 9. Kurulum ve Çalıştırma
 
 1. Projeyi indirin veya klonlayın
-2. `zincirikirma.html` dosyasını bir tarayıcıda açın
+2. `index.html` dosyasını bir tarayıcıda açın
 3. Tüm özellikler çevrimdışı çalışır
 4. İsterseniz GitHub Pages, Netlify, Vercel vb. ile yayınlayabilirsiniz
