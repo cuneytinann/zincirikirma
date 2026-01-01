@@ -14,8 +14,8 @@
       --input-width: 480px;
       /* tablo çizgisi genel ayar */
       --chain-border: 1.5px solid var(--chain-border-color);
-      --year-break-border: 6px double var(--year-break-bd-color);
-      --month-break-border: 3px dashed var(--month-break-bd-color);
+      --year-break-border: 3px double var(--year-break-bd-color);
+      --month-break-border: 2px dashed var(--month-break-bd-color);
       /* tablo çizgisi rengi - tema paneli için ayrı tanımlandı */
       --chain-border-color: rgb(0, 0, 0);
       /* zincir kartı ve açık sekme stili */
@@ -23,29 +23,29 @@
       /* zincir kartı ve açık sekme stili */
       --chain-month-label-bg: rgb(150, 150, 180);
       /* ay geçişlerinde, geçiş çizgisi rengi */
-      --month-break-bd-color: rgb(74, 50, 179);
+      --month-break-bd-color: rgb(24, 8, 95);
       /* yıl geçişlerinde, geçiş çizgisi rengi */
-      --year-break-bd-color: rgb(190, 2, 134);
-      --app-card-bg: rgba(45, 182, 17, 0.575);
-      --app-card-bd: rgba(37, 107, 10, 0.644);
+      --year-break-bd-color: rgb(224, 16, 16);
+      --app-card-bg: rgba(60,210,30, 0.575);
+      --app-card-bd: rgba(10,29,2, 0.644);
       /* zincir kartı scrollbarı */
-      --app-card-thumb: rgba(15, 20, 15, 0.603);
+      --app-card-thumb: rgba(10,61,10, 0.603);
       /* track transparent yapılmıştır, isteğe bağlı etkinleştirilebilir */
       --app-card-track: rgba(0, 0, 0, 0);
       /* butonların hover veya active efektleri  */
-      --btn-view-effect: rgba(105, 53, 5, 0.5);
+      --btn-view-effect: rgba(127,67,10, 0.5);
       --btn-color-settings-effect: rgba(201, 84, 201, 0.5);
-      --btn-add-chain-effect: rgba(32, 29, 29, 0.5);
+      --btn-add-chain-effect: rgba(102,102,102, 0.5);
       --btn-load-file-effect: rgba(138, 183, 224, 0.5);
-      --btn-backup-download-effect: rgba(155, 221, 149, 0.5);
-      --btn-reset-effect: rgba(224, 247, 19, 0.5);
-      --btn-delete-effect: rgba(224, 85, 85, 0.5);
+      --btn-backup-download-effect: rgba(110, 204, 102, 0.5);
+      --btn-reset-effect: rgba(236, 255, 61, 0.5);
+      --btn-delete-effect: rgba(243, 68,68, 0.5);
       /* butonların genel arkplanı */
       --button-background: rgb(255, 255, 255);
       /* zincir svgsi ve diğer arkaplan ikonları */
       --background-icons: rgba(0, 0, 0, 0.2);
       /* en dış katman ve scrollbarlar */
-      --outer-layer-bg: rgb(207, 207, 207);
+      --outer-layer-bg: rgb(180,180,180);
       --outer-scroll-track: rgba(128, 154, 177, 0.7);
       --outer-scroll-thumb: rgb(111, 114, 100);
     }
@@ -118,7 +118,7 @@
       user-select: none;
     }
 
-    td.empty-cell {
+    .chain td.empty-cell {
       background-color: rgb(127, 127, 127);
       cursor: default;
     }
@@ -165,12 +165,12 @@
       font-size: 14px;
     }
 
-    /* input:focus {
-      box-shadow: 0 0 0 2px rgb(140, 255, 155);
-    } */
+    input:focus, input:focus-visible {
+      outline: 2px solid rgb(140, 255, 155);
+    }
 
     .input-error {
-      box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.8);
+      outline: 3px solid rgb(223, 73, 73);
     }
 
     input[type="radio"],
@@ -198,9 +198,10 @@
 
     .helper-info {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 600;
-      color: rgb(238, 245, 138);
+      color: rgb(15,15,0);
+      text-shadow: 0 0 0;
     }
 
     .pad12 {
@@ -242,8 +243,8 @@
     /* GENEL LAYOUT, Mimari */
     /* Element oluşum sırası */
     .main-frame {
-      background-color: rgba(88, 133, 124, 0.734);
-      border: outset rgba(34, 80, 100, 0.62);
+      background-color: rgba(124, 172, 162, 0.734);
+      border: outset rgba(92, 149, 173, 0.62);
       border-width: 0 16px 16px 0;
       border-radius: 4px 16px;
       padding: 0 48px 8px;
@@ -321,6 +322,11 @@
       margin-bottom: 24px;
     }
 
+    /* şuanlık sadece input text yani zincir adını etkiliyor */
+    ::placeholder {
+      color: initial;
+    }
+
     #chain-name {
       width: calc(var(--input-width)*0.8);
     }
@@ -340,8 +346,8 @@
     }
 
     .ring-number-box {
-      background-color: rgba(91, 59, 231, 0.34);
-      border: 2px groove rgba(136, 108, 214, 0.62);
+      background-color: rgba(207, 75, 190, 0.34);
+      border: 2px groove rgba(182, 89, 146, 0.62);
       border-radius: 32px;
       display: flex;
       flex-wrap: wrap;
@@ -354,13 +360,12 @@
     }
 
     .text-total-ring {
-      color: rgb(32, 218, 25);
+      color: rgb(93, 38, 9);
       font-size: 28px;
-      text-shadow: 0 0 8px;
     }
 
     #show-count {
-      color: rgb(241, 241, 1);
+      color: rgb(206, 238, 47);
       font-family: Verdana, Geneva, Tahoma, sans-serif;
       font-size: 28px;
       font-weight: 600;
@@ -369,7 +374,7 @@
 
     .parenthesis {
       font-size: 20px;
-      color: rgb(199, 255, 192);
+      color: rgb(153, 0, 148);
     }
 
     .size-box {
@@ -607,9 +612,8 @@
     /* KAPSAMLI TABLO */
     #theme-panel {
       position: fixed;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
+      right: 2.5%;
+      top: 7.5%;
       background-color: rgb(0, 0, 0);
       box-shadow: 0 0 0 4px rgba(184, 178, 202, 0.6);
       border-radius: 10px;
@@ -837,8 +841,8 @@
       padding: 2px;
       border-radius: 99px;
       background-color: transparent;
-      color: rgb(136, 86, 21);
-      border: 2px ridge rgb(168, 81, 30);
+      color: rgb(111, 54, 17);
+      border: 3px ridge rgb(89, 38, 8);
       display: flex;
       align-items: center;
       text-align: center;
@@ -861,7 +865,7 @@
 
     #btn-color-settings {
       color: var(--button-background);
-      border: 2px ridge rgb(172, 57, 172);
+      border: 4px ridge rgb(180, 24, 180);
       border-radius: 50%;
       padding: 6px;
       font-size: 16px;
@@ -869,23 +873,23 @@
     }
 
     #btn-load-file {
-      color: rgb(40, 109, 212);
+      color: rgb(38,39,103);
       border-color: rgb(69, 71, 187);
     }
 
     #btn-backup-download {
-      color: rgb(63, 189, 38);
-      border-color: rgb(102, 170, 57);
+      color: rgb(41,94,5);
+      border-color: rgb(78,178,10);
     }
 
     #btn-reset {
-      color: rgb(255, 208, 0);
-      border-color: rgb(245, 210, 56);
+      color: rgb(171, 160, 0);
+      border-color: rgb(255, 238, 0);
     }
 
     #btn-delete {
-      color: rgb(235, 25, 25);
-      border-color: rgb(214, 32, 32);
+      color: rgb(171,24,24);
+      border-color: rgb(255,36,36);
     }
 
     #btn-toggle-menu:active {
@@ -1205,8 +1209,6 @@
       :root {
         --cell-size: 56px;
         --input-width: 320px;
-        --year-break-border: 4px double var(--year-break-bd-color);
-        --month-break-border: 2px dashed var(--month-break-bd-color);
       }
 
       body {
@@ -2196,7 +2198,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       </div>
       <div class="visual-buttons">
         <button id="btn-toggle-menu" title="Form kartını / gösterir">▲</button>
-        <button id="btn-view" class="switch" title="Zincirin görünüm şeklini (kareli tablo veya kıvrımlı yılan) değiştirir">
+        <button id="btn-view" class="switch"
+          title="Zincirin görünüm şeklini (kareli tablo veya kıvrımlı yılan) değiştirir">
           <span class="knob">
             <i class="fa-solid fa-table-cells"></i>
           </span>
@@ -2347,8 +2350,9 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
   <input type="file" id="file-input" accept=".json,application/json" style="display: none" />
 
   <script type="application/json" id="builtin-themes-json">{
-    "gece": {"label": "Gece", "css": ":root {\n  --button-background: rgb(164, 183, 113);\n  --btn-view-effect: rgba(106, 71, 32, 0.5);\n  --btn-delete-effect: rgba(188, 32, 32, 0.5);\n  --chain-month-label: rgb(207, 199, 89);\n  --chain-month-label-bg: rgb(134, 65, 9);\n  --app-card-bd: rgba(142, 140, 87, 0.644);\n  --app-card-bg: rgba(100, 78, 38, 0.575);\n  --chain-border-color: rgb(58, 43, 3);\n  --btn-color-settings-effect: rgba(95, 53, 94, 0.5);\n  --btn-reset-effect: rgba(169, 186, 13, 0.5);\n  --btn-add-chain-effect: rgba(201, 92, 3, 0.5);\n  --btn-load-file-effect: rgba(95, 120, 140, 0.5);\n  --outer-layer-bg: rgb(0, 0, 0);\n  --outer-scroll-track: rgb(219, 159, 57);\n  --outer-scroll-thumb: rgb(56, 44, 11);\n  --app-card-thumb: rgba(95, 45, 5, 0.8);\n  --btn-backup-download-effect: rgba(34, 162, 22, 0.5);\n  --month-break-bd-color: rgb(38, 104, 8);\n  --year-break-bd-color: rgb(111, 18, 11);\n}\n\n.x-mark {\n  stroke: rgba(38, 34, 34, 0.85);\n}\n\n.chain-title {\n  color: rgb(193, 103, 1);\n}\n\n.chain-tab {\n  color: rgb(186, 198, 93);\n}\n\ninput {\n  background-color: rgb(195, 206, 115);\n  border-color: rgb(169, 99, 20);\n}\n\n.ring-number-box {\n  background-color: rgba(49, 66, 0, 0.34);\n  border-color: rgba(75, 73, 1, 0.62);\n}\n\n#show-count {\n  color: rgb(199, 103, 51);\n}\n\n.parenthesis {\n  color: rgb(187, 162, 93);\n}\n\n.form-titles {\n  color: rgb(0, 0, 0);\n}\n\n#btn-add-chain {\n  color: rgb(149, 65, 9);\n  border-color: rgb(162, 89, 22);\n}\n\n.selections label {\n  color: rgb(13, 12, 12);\n  border-color: rgb(188, 107, 32);\n}\n\n.size-box > * {\n  border-color: rgb(175, 118, 18);\n}\n\n.helper-info {\n  color: rgb(182, 191, 59);\n}\n\n#btn-delete {\n  color: rgb(146, 17, 17);\n  border-color: rgb(148, 10, 10);\n}\n\n.chain td.empty-cell {\n  background-color: rgb(29, 15, 2);\n}\n\n.chain tr:first-child > th:not(:first-child) {\n  color: rgb(225, 246, 121);\n  background-color: rgb(16, 60, 33);\n}\n\n.chain tr:first-child > th:first-child {\n  color: rgb(0, 0, 0);\n}\n\n.chain-info {\n  color: rgb(142, 116, 21);\n}\n\n.main-title {\n  color: rgb(119, 3, 3);\n}\n\n.radio-type label:has(input:checked) {\n  color: rgb(170, 166, 60);\n  background-color: rgba(0, 0, 0, 0.5);\n}\n\n#weekdays label:has(input:checked) {\n  color: rgb(201, 202, 109);\n  background-color: rgba(0, 0, 0, 0.5);\n}\n\n.chain td, .circle-cell {\n  color: rgb(74, 79, 8);\n  background-color: rgb(221, 208, 120);\n}\n\n.text-total-ring {\n  color: rgb(43, 143, 15);\n}\n\n#btn-load-file {\n  color: rgb(89, 107, 115);\n  border-color: rgb(120, 129, 165);\n}\n\n#btn-backup-download {\n  color: rgb(38, 95, 27);\n  border-color: rgb(60, 128, 15);\n}\n\n#btn-reset {\n  color: rgb(141, 136, 7);\n  border-color: rgb(180, 174, 4);\n}\n\n#btn-toggle-menu {\n  color: rgb(119, 3, 3);\n  border-color: rgb(87, 0, 0);\n}\n\n#btn-color-settings {\n  border-color: rgb(75, 53, 75);\n}\n\n#btn-view {\n  color: rgb(100, 72, 32);\n  border-color: rgb(101, 61, 37);\n}\n\n.main-frame {\n  background-color: rgba(136, 155, 85, 0.733);\n  border-color: rgba(72, 96, 42, 0.62);\n}\n\nhr {\n  border-color: rgb(143, 77, 15);\n}\n\ninput:focus, input:focus-visible {\n  outline-style: none;\n  box-shadow: rgba(236, 211, 67, 0.7) 0 0 0 3px;\n}\n\n::-webkit-inner-spin-button {\n  filter: invert(1);\n}\n\n.about-me {\n  color: rgba(231, 201, 65, 0.4);\n}"},
-    "matrix": {"label": "Matrix", "css": ".x-mark {\n  stroke: rgba(0, 255, 0, 0.85);\n}\n\n.chain td, .circle-cell {\n  color: rgb(15, 161, 10);\n  background-color: rgb(0, 0, 0);\n}\n\n:root {\n  --chain-border-color: rgb(21, 202, 18);\n  --background-icons: rgba(50, 255, 50, 0.2);\n  --button-background: rgb(0, 0, 0);\n  --btn-view-effect: rgba(55, 255, 0, 0.5);\n  --btn-color-settings-effect: rgba(55, 255, 0, 0.5);\n  --btn-add-chain-effect: rgba(55, 255, 0, 0.5);\n  --btn-load-file-effect: rgba(55, 255, 0, 0.5);\n  --btn-backup-download-effect: rgba(55, 255, 0, 0.5);\n  --btn-reset-effect: rgba(55, 255, 0, 0.5);\n  --btn-delete-effect: rgba(55, 255, 0, 0.5);\n  --app-card-bd: rgba(52, 215, 20, 0.644);\n  --app-card-bg: rgba(0, 0, 0, 0.575);\n  --chain-month-label-bg: rgb(0, 0, 0);\n  --chain-month-label: rgb(11, 214, 37);\n  --btn-toggle-menu-effect: rgba(55,255,0,0.5);\n  --outer-layer-bg: rgb(0, 0, 0);\n  --outer-scroll-track: rgb(0, 0, 0);\n  --outer-scroll-thumb: rgb(20, 185, 28);\n  --app-card-thumb: rgba(0, 255, 0, 0.6);\n  --month-break-bd-color: rgb(0, 255, 0);\n  --year-break-bd-color: rgb(0, 255, 0);\n}\n\n.main-frame {\n  background-color: rgba(0, 0, 0, 0.733);\n  border-color: rgba(19, 181, 8, 0.62);\n}\n\n.main-title {\n  color: rgb(64, 231, 4);\n}\n\nhr {\n  border-color: rgb(55, 255, 0);\n}\n\n.selections label {\n  color: rgb(10, 103, 4);\n  border-color: rgb(52, 255, 26);\n}\n\n#btn-toggle-menu {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-view {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-color-settings {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-add-chain {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-load-file {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-backup-download {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-reset {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-delete {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n.chain-title {\n  color: rgb(35, 201, 13);\n}\n\n.chain-info {\n  color: rgb(38, 132, 26);\n}\n\n.chain-tab {\n  color: rgb(0, 255, 8);\n}\n\n.chain tr:first-child > th:not(:first-child) {\n  background-color: rgb(0, 0, 0);\n  color: rgb(37, 214, 11);\n}\n\n.chain tr:first-child > th:first-child {\n  color: rgb(17, 120, 17);\n}\n\n.chain td.empty-cell {\n  background-color: rgb(0, 0, 0);\n  border-color: rgb(0, 0, 0);\n}\n\n#show-count {\n  color: rgb(30, 255, 0);\n}\n\n.parenthesis {\n  color: rgb(47, 162, 32);\n}\n\n.ring-number-box {\n  background-color: rgba(0, 0, 0, 0.34);\n  border-color: rgba(61, 214, 31, 0.62);\n}\n\n.helper-info {\n  color: rgb(25, 210, 31);\n}\n\n.size-box > * {\n  border-color: rgb(61, 255, 68);\n}\n\n.radio-type label:has(input:checked) {\n  color: rgb(0, 255, 0);\n  background-color: rgba(10, 75, 0, 0.5);\n}\n\n#weekdays label:has(input:checked) {\n  color: rgb(15, 255, 15);\n  background-color: rgba(3, 10, 0, 0.5);\n}\n\ninput {\n  color: rgb(3, 204, 0);\n  background-color: rgb(3, 10, 0);\n  border-color: rgb(18, 105, 7);\n}\n\n.error-info {\n  color: rgb(0, 255, 0);\n  background-color: rgb(0, 0, 0);\n  border-color: rgb(94, 255, 36);\n}\n\n.form-titles {\n  color: rgb(48, 225, 20);\n}\n\n#btn-toggle-menu:active {\n  background-color: var(--btn-toggle-menu-effect);\n}\n\n#btn-view .knob {\n  background-color: rgb(47, 97, 41);\n}\n\n.input-error {\n  box-shadow: rgba(0, 255, 13, 0.8) 0 0 0 2px;\n}\n\ninput:focus, input:focus-visible {\n  outline: 0;\n  box-shadow: rgba(0, 255, 13, 0.55) 0 0 0 3px;\n  color: rgb(3, 204, 0);\n  background-color: rgb(3, 10, 0);\n  border-color: rgb(0, 218, 91);\n}\n\n::placeholder {\n  color: rgb(16, 214, 16);\n  opacity: 1;\n}\n\n::-webkit-calendar-picker-indicator {\n  filter: invert(48%) sepia(79%) saturate(451%) hue-rotate(90deg) brightness(95%) contrast(95%);\n}\n\n::-webkit-inner-spin-button {\n  filter: invert(1);\n}\n\n:not(i):not(#theme-panel):not(#theme-panel *) {\n  font-family: \"Courier New\", Courier, monospace;\n}\n\n.size-box .form-titles, .month-label, .main-title {\n  letter-spacing: -0.15ch;\n}"}
+    "gece": {"label": "Gece", "css": ":root {\n  --button-background: rgb(164, 183, 113);\n  --btn-view-effect: rgba(106, 71, 32, 0.5);\n  --btn-delete-effect: rgba(188, 32, 32, 0.5);\n  --chain-month-label: rgb(207, 199, 89);\n  --chain-month-label-bg: rgb(134, 65, 9);\n  --app-card-bd: rgba(142, 140, 87, 0.644);\n  --app-card-bg: rgba(100, 78, 38, 0.575);\n  --chain-border-color: rgb(58, 43, 3);\n  --btn-color-settings-effect: rgba(95, 53, 94, 0.5);\n  --btn-reset-effect: rgba(169, 186, 13, 0.5);\n  --btn-load-file-effect: rgba(201, 92, 3, 0.5);\n  --outer-layer-bg: rgb(0, 0, 0);\n  --outer-scroll-track: rgb(219, 159, 57);\n  --outer-scroll-thumb: rgb(56, 44, 11);\n  --app-card-thumb: rgba(95, 45, 5, 0.8);\n  --btn-backup-download-effect: rgba(34, 162, 22, 0.5);\n  --month-break-bd-color: rgb(38, 104, 8);\n  --year-break-bd-color: rgb(111, 18, 11);\n}\n\n.x-mark {\n  stroke: rgba(38, 34, 34, 0.85);\n}\n\n.chain-title {\n  color: rgb(193, 103, 1);\n}\n\n.chain-tab {\n  color: rgb(186, 198, 93);\n}\n\ninput {\n  background-color: rgb(195, 206, 115);\n  border-color: rgb(169, 99, 20);\n}\n\n.ring-number-box {\n  background-color: rgba(49, 66, 0, 0.34);\n  border-color: rgba(75, 73, 1, 0.62);\n}\n\n#show-count {\n  color: rgb(199, 103, 51);\n}\n\n.parenthesis {\n  color: rgb(187, 162, 93);\n}\n\n.form-titles {\n  color: rgb(0, 0, 0);\n}\n\n#btn-load-file {\n  color: rgb(149, 65, 9);\n  border-color: rgb(162, 89, 22);\n}\n\n.selections label {\n  color: rgb(13, 12, 12);\n  border-color: rgb(188, 107, 32);\n}\n\n.size-box > * {\n  border-color: rgb(175, 118, 18);\n}\n\n.helper-info {\n  color: rgb(182, 191, 59);\n}\n\n#btn-delete {\n  color: rgb(146, 17, 17);\n  border-color: rgb(148, 10, 10);\n}\n\n.chain td.empty-cell {\n  background-color: rgb(29, 15, 2);\n}\n\n.chain tr:first-child > th:not(:first-child) {\n  color: rgb(225, 246, 121);\n  background-color: rgb(16, 60, 33);\n}\n\n.chain tr:first-child > th:first-child {\n  color: rgb(0, 0, 0);\n}\n\n.chain-info {\n  color: rgb(142, 116, 21);\n}\n\n.main-title {\n  color: rgb(119, 3, 3);\n}\n\n.radio-type label:has(input:checked) {\n  color: rgb(170, 166, 60);\n  background-color: rgba(0, 0, 0, 0.5);\n}\n\n#weekdays label:has(input:checked) {\n  color: rgb(201, 202, 109);\n  background-color: rgba(0, 0, 0, 0.5);\n}\n\n.chain td, .circle-cell {\n  color: rgb(74, 79, 8);\n  background-color: rgb(221, 208, 120);\n}\n\n.text-total-ring {\n  color: rgb(43, 143, 15);\n}\n\n#btn-backup-download {\n  color: rgb(38, 95, 27);\n  border-color: rgb(60, 128, 15);\n}\n\n#btn-reset {\n  color: rgb(141, 136, 7);\n  border-color: rgb(180, 174, 4);\n}\n\n#btn-toggle-menu {\n  color: rgb(119, 3, 3);\n  border-color: rgb(87, 0, 0);\n}\n\n#btn-color-settings {\n  border-color: rgb(75, 53, 75);\n}\n\n#btn-view {\n  color: rgb(100, 72, 32);\n  border-color: rgb(101, 61, 37);\n}\n\n.main-frame {\n  background-color: rgba(136, 155, 85, 0.733);\n  border-color: rgba(72, 96, 42, 0.62);\n}\n\nhr {\n  border-color: rgb(143, 77, 15);\n}\n\ninput:focus, input:focus-visible {\n  outline-color: rgb(236, 211, 67)\n}\n\n.input-error {\n  outline-color: rgb(169,15,15)\n}\n\n::-webkit-inner-spin-button {\n  filter: invert(1);\n}\n\n.about-me {\n  color: rgba(231, 201, 65, 0.4);\n}"},
+    "matrix": {"label": "Matrix", "css": ".x-mark {\n  stroke: rgba(0, 255, 0, 0.85);\n}\n\n.chain td, .circle-cell {\n  color: rgb(15, 161, 10);\n  background-color: rgb(0, 0, 0);\n}\n\n:root {\n  --chain-border-color: rgb(21, 202, 18);\n  --background-icons: rgba(50, 255, 50, 0.2);\n  --button-background: rgb(0, 0, 0);\n  --btn-view-effect: rgba(55, 255, 0, 0.5);\n  --btn-color-settings-effect: rgba(55, 255, 0, 0.5);\n  --btn-add-chain-effect: rgba(55, 255, 0, 0.5);\n  --btn-load-file-effect: rgba(55, 255, 0, 0.5);\n  --btn-backup-download-effect: rgba(55, 255, 0, 0.5);\n  --btn-reset-effect: rgba(55, 255, 0, 0.5);\n  --btn-delete-effect: rgba(55, 255, 0, 0.5);\n  --app-card-bd: rgba(52, 215, 20, 0.644);\n  --app-card-bg: rgba(0, 0, 0, 0.575);\n  --chain-month-label-bg: rgb(0, 0, 0);\n  --chain-month-label: rgb(11, 214, 37);\n  --btn-toggle-menu-effect: rgba(55,255,0,0.5);\n  --outer-layer-bg: rgb(0, 0, 0);\n  --outer-scroll-track: rgb(0, 0, 0);\n  --outer-scroll-thumb: rgb(20, 185, 28);\n  --app-card-thumb: rgba(0, 255, 0, 0.6);\n  --month-break-bd-color: rgb(0, 255, 0);\n  --year-break-bd-color: rgb(0, 255, 0);\n}\n\n.main-frame {\n  background-color: rgba(0, 0, 0, 0.733);\n  border-color: rgba(19, 181, 8, 0.62);\n}\n\n.main-title {\n  color: rgb(64, 231, 4);\n}\n\nhr {\n  border-color: rgb(55, 255, 0);\n}\n\n.selections label {\n  color: rgb(10, 103, 4);\n  border-color: rgb(52, 255, 26);\n}\n\n#btn-toggle-menu {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-view {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-color-settings {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-add-chain {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-load-file {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-backup-download {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-reset {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n#btn-delete {\n  color: rgb(81, 255, 0);\n  border-color: rgb(85, 242, 28);\n}\n\n.chain-title {\n  color: rgb(35, 201, 13);\n}\n\n.chain-info {\n  color: rgb(38, 132, 26);\n}\n\n.chain-tab {\n  color: rgb(0, 255, 8);\n}\n\n.chain tr:first-child > th:not(:first-child) {\n  background-color: rgb(0, 0, 0);\n  color: rgb(37, 214, 11);\n}\n\n.chain tr:first-child > th:first-child {\n  color: rgb(17, 120, 17);\n}\n\n.chain td.empty-cell {\n  background-color: rgb(0, 0, 0);\n  border-color: rgb(0, 0, 0);\n}\n\n.text-total-ring {\n  color: rgb(85,225,9);\n}\n\n#show-count {\n  color: rgb(30, 255, 0);\n}\n\n.parenthesis {\n  color: rgb(47, 162, 32);\n}\n\n.ring-number-box {\n  background-color: rgba(0, 0, 0, 0.34);\n  border-color: rgba(61, 214, 31, 0.62);\n}\n\n.helper-info {\n  color: rgb(25, 210, 31);\n}\n\n.size-box > * {\n  border-color: rgb(61, 255, 68);\n}\n\n.radio-type label:has(input:checked) {\n  color: rgb(0, 255, 0);\n  background-color: rgba(10, 75, 0, 0.5);\n}\n\n#weekdays label:has(input:checked) {\n  color: rgb(15, 255, 15);\n  background-color: rgba(3, 10, 0, 0.5);\n}\n\ninput {\n  color: rgb(3, 204, 0);\n  background-color: rgb(3, 10, 0);\n  border-color: rgb(18, 105, 7);\n}\n\n.error-info {\n  color: rgb(0, 255, 0);\n  background-color: rgb(0, 0, 0);\n  border-color: rgb(94, 255, 36);\n}\n\n.form-titles {\n  color: rgb(48, 225, 20);\n}\n\n#btn-toggle-menu:active {\n  background-color: var(--btn-toggle-menu-effect);\n}\n\n#btn-view .knob {\n  background-color: rgb(47, 97, 41);\n}\n\n.input-error {\n  outline-color: rgb(0, 255, 13);\n}\n\ninput:focus, input:focus-visible {\n  outline-color: rgb(0, 255, 13);\n  color: rgb(3, 204, 0);\n  background-color: rgb(3, 10, 0);\n  border-color: rgb(0, 218, 91);\n}\n\n::placeholder {\n  color: rgb(16, 214, 16);\n  opacity: 1;\n}\n\n::-webkit-calendar-picker-indicator {\n  filter: invert(48%) sepia(79%) saturate(451%) hue-rotate(90deg) brightness(95%) contrast(95%);\n}\n\n::-webkit-inner-spin-button {\n  filter: invert(1);\n}\n\n:not(i):not(#theme-panel):not(#theme-panel *) {\n  font-family: \"Courier New\", Courier, monospace;\n}\n\n.size-box .form-titles, .month-label, .main-title {\n  letter-spacing: -0.15ch;\n}"},
+    "karanlik": {"label": "Karanlık", "css": ":root {\n  --outer-layer-bg: rgb(39, 37, 37);\n  --chain-border-color: rgb(108, 101, 101);\n  --chain-month-label: rgb(202, 68, 68);\n  --chain-month-label-bg: rgb(0, 0, 0);\n  --app-card-bd: rgba(34, 76, 16, 0.644);\n  --app-card-bg: rgba(17, 70, 6, 0.575);\n  --year-break-bd-color: rgb(240, 112, 112);\n  --month-break-bd-color: rgb(101, 177, 215);\n  --app-card-thumb: rgba(55, 154, 55, 0.603);\n  --outer-scroll-thumb: rgb(62, 84, 101);\n  --outer-scroll-track: rgba(16, 40, 60, 0.7);\n  --background-icons: rgba(203, 175, 175, 0.2);\n  --button-background: rgb(13, 13, 13);\n  --btn-view-effect: rgba(206, 117, 34, 0.5);\n  --btn-color-settings-effect: rgba(210, 65, 210, 0.5);\n  --btn-add-chain-effect: rgba(87, 87, 87, 0.5);\n  --btn-load-file-effect: rgba(41, 64, 87, 0.5);\n  --btn-backup-download-effect: rgba(73, 114, 70, 0.5);\n  --btn-reset-effect: rgba(85, 94, 8, 0.5);\n  --btn-delete-effect: rgba(157, 42, 42, 0.5);\n}\n\n::placeholder {\n  color: rgb(197, 180, 180);\n}\n\n::-webkit-calendar-picker-indicator {\n  filter: invert(1);\n}\n\n.chain td, .circle-cell {\n  color: rgb(205, 193, 193);\n  background-color: rgb(31, 30, 30);\n}\n\n.chain tr:first-child > th:not(:first-child) {\n  color: rgb(104, 104, 223);\n  background-color: rgb(0, 0, 0);\n}\n\nhr {\n  border-color: rgb(126, 134, 133);\n}\n\n.form-titles {\n  color: rgb(255, 255, 240);\n}\n\n.chain td.empty-cell {\n  background-color: rgb(15, 15, 15);\n}\n\n.x-mark {\n  stroke: rgba(102, 0, 0, 0.85);\n}\n\n.chain tr:first-child > th:first-child {\n  color: rgb(92, 155, 75);\n}\n\n.chain-title {\n  color: rgb(105, 176, 206);\n}\n\n.chain-info {\n  color: rgb(77, 128, 124);\n}\n\n.chain-tab {\n  color: rgb(75, 170, 91);\n}\n\n.main-frame {\n  background-color: rgba(63, 85, 80, 0.733);\n  border-color: rgba(74, 85, 94, 0.62);\n}\n\n.main-title {\n  color: rgb(255, 82, 82);\n}\n\n#btn-toggle-menu {\n  color: rgb(255, 82, 82);\n  border-color: rgb(255, 82, 82);\n}\n\n#btn-view {\n  color: rgb(255, 148, 87);\n  border-color: rgb(255, 148, 87);\n}\n\n#btn-color-settings {\n  color: rgb(255, 143, 255);\n  border-color: rgb(255, 143, 255);\n}\n\n#btn-add-chain {\n  color: rgb(171, 171, 171);\n  border-color: rgb(255, 255, 255);\n}\n\n#btn-load-file {\n  color: rgb(99, 100, 171);\n  border-color: rgb(148, 150, 255);\n}\n\n#btn-backup-download {\n  color: rgb(105, 171, 61);\n  border-color: rgb(157, 255, 92);\n}\n\n#btn-reset {\n  color: rgb(171, 164, 65);\n  border-color: rgb(255, 244, 97);\n}\n\n#btn-delete {\n  color: rgb(171, 68, 68);\n  border-color: rgb(255, 102, 102);\n}\n\ninput {\n  color: rgb(197, 180, 180);\n  background-color: rgb(26, 26, 26);\n  border-color: rgb(110, 110, 110);\n}\n\n.selections label {\n  color: rgb(242, 212, 212);\n  border-color: rgb(182, 175, 175);\n}\n\n.size-box > * {\n  border-color: rgb(190, 177, 178);\n}\n\n.ring-number-box {\n  background-color: rgba(154, 200, 208, 0.34);\n  border-color: rgba(146, 193, 217, 0.62);\n}\n\n.text-total-ring {\n  color: rgb(113, 57, 20);\n}\n\n#show-count {\n  color: rgb(0, 0, 0);\n}\n\n.radio-type label:has(input:checked) {\n  color: rgb(112, 177, 194);\n  background-color: rgba(104, 115, 120, 0.5);\n}\n\n#weekdays label:has(input:checked) {\n  color: rgb(93, 205, 71);\n  background-color: rgba(102, 133, 106, 0.5);\n}\n\n.helper-info {\n  color: rgb(207, 212, 140);\n}\n\n.error-info {\n  color: rgb(163, 15, 15);\n  background-color: rgb(219, 219, 107);\n  border-color: rgb(185, 24, 24);\n}\n\n.parenthesis {\n  color: rgb(110, 7, 107);\n}\n\ninput:focus, input:focus-visible {\n  outline-color: rgb(21, 193, 44);\n}\n\n.input-error {\n  outline-color: rgb(170, 3, 3);\n}"}
   }</script>
   <script>
     (function () {
@@ -2420,7 +2424,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         { id: '04', label: 'Satır Başlıkları', selector: ':root', fields: ['text', 'bg'] },
         { id: '05', label: 'Sütun Başlıkları', selector: '.chain tr:first-child > th:not(:first-child)', fields: ['text', 'bg'] },
         { id: '06', label: 'Yıl Metni', selector: '.chain tr:first-child > th:first-child', fields: ['text'] },
-        { id: '07', label: 'Boş Hücre', selector: 'td.empty-cell', fields: ['bg'] },
+        { id: '07', label: 'Boş Hücre', selector: '.chain td.empty-cell', fields: ['bg'] },
         { id: '08', label: 'Ay Geçişi Belirteç', selector: ':root', fields: ['bd'] },
         { id: '09', label: 'Yıl Geçişi Belirteç', selector: ':root', fields: ['bd'] },
         { id: '10', label: 'Zincir Başlığı', selector: '.chain-title', fields: ['text'] },
@@ -2440,28 +2444,30 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         { id: '22', label: 'Seçmeli Girdiler (GENEL)', selector: '.selections label', fields: ['text', 'bd'] },
         { id: '23', label: 'Türün Seçilmiş Hali', selector: '.radio-type label:has(input:checked)', fields: ['text', 'bg'] },
         { id: '24', label: 'Form Girdileri', selector: 'input', fields: ['text', 'bd', 'bg'] },
-        { id: '25', label: 'Günlerin Seçilmiş Hali', selector: '#weekdays label:has(input:checked)', fields: ['text', 'bg'] },
-        { id: '26', label: 'Halka Sayacı', selector: '.ring-number-box', fields: ['bd', 'bg'] },
-        { id: '27', label: 'Toplam Halka Yazısı', selector: '.text-total-ring', fields: ['text'] },
-        { id: '28', label: 'Sayı Göstergesi', selector: '#show-count', fields: ['text'] },
-        { id: '29', label: 'Parantez Bilgi', selector: '.parenthesis', fields: ['text'] },
-        { id: '30', label: 'Satır / Sütun Girdileri', selector: '.size-box > *', fields: ['bd'] },
-        { id: '31', label: 'Ek Bilgi Kutusu', selector: '.helper-info', fields: ['text'] },
-        { id: '32', label: 'Hata Kutucukları', selector: '.error-info', fields: ['text', 'bd', 'bg'] },
+        { id: '25', label: 'Form Girdi Odak Efekti', selector: 'input:focus, input:focus-visible', fields: ['bd'] },
+        { id: '26', label: 'Form Girdi Hata Efekti', selector: '.input-error', fields: ['bd'] },
+        { id: '27', label: 'Hata Kutucukları', selector: '.error-info', fields: ['text', 'bd', 'bg'] },
+        { id: '28', label: 'Ek Bilgi Kutusu', selector: '.helper-info', fields: ['text'] },
+        { id: '29', label: 'Günlerin Seçilmiş Hali', selector: '#weekdays label:has(input:checked)', fields: ['text', 'bg'] },
+        { id: '30', label: 'Halka Sayacı', selector: '.ring-number-box', fields: ['bd', 'bg'] },
+        { id: '31', label: 'Toplam Halka Yazısı', selector: '.text-total-ring', fields: ['text'] },
+        { id: '32', label: 'Sayı Göstergesi', selector: '#show-count', fields: ['text'] },
+        { id: '33', label: 'Parantez Bilgi', selector: '.parenthesis', fields: ['text'] },
+        { id: '34', label: 'Satır / Sütun Girdileri', selector: '.size-box > *', fields: ['bd'] },
 
-        { id: '33', label: 'Tüm Butonlar', fields: 'sub' },
-        { id: '34', label: 'Butonlar Arka Plan', selector: ':root', fields: ['bg'] },
-        { id: '35', label: 'Not: Özel butonlar için arka plan rengi demek, tıklama veya üzerine gelince beliren efekttir. Değişikliğin gözlemi için ilgili butonla işlem yapın.', fields: 'warn' },
+        { id: '35', label: 'Tüm Butonlar', fields: 'sub' },
+        { id: '36', label: 'Butonlar Arka Plan', selector: ':root', fields: ['bg'] },
+        { id: '37', label: 'Not: Özel butonlar için arka plan rengi demek, tıklama veya üzerine gelince beliren efekttir. Değişikliğin gözlemi için ilgili butonla işlem yapın.', fields: 'warn' },
 
-        { id: '36', label: 'Menü Daraltma Düğmesi', selector: '#btn-toggle-menu', fields: ['text', 'bd'] },
-        { id: '37', label: 'Görünüm Düğmesi', selector: '#btn-view', fields: ['text', 'bd', 'bg'] },
+        { id: '38', label: 'Menü Daraltma Düğmesi', selector: '#btn-toggle-menu', fields: ['text', 'bd'] },
+        { id: '39', label: 'Görünüm Düğmesi', selector: '#btn-view', fields: ['text', 'bd', 'bg'] },
         // Renk yarı butonu ikonu - butonların genel arka planından geldiği için harici edildi.
-        { id: '38', label: 'Renk ve Tema Ayarı Butonu ;)', selector: '#btn-color-settings', fields: ['bd', 'bg'] },
-        { id: '39', label: 'Zinciri Oluştur Butonu', selector: '#btn-add-chain', fields: ['text', 'bd', 'bg'] },
-        { id: '40', label: 'Karşıya Yükle Butonu', selector: '#btn-load-file', fields: ['text', 'bd', 'bg'] },
-        { id: '41', label: 'Yedek İndir Butonu', selector: '#btn-backup-download', fields: ['text', 'bd', 'bg'] },
-        { id: '42', label: 'Temizle Butonu', selector: '#btn-reset', fields: ['text', 'bd', 'bg'] },
-        { id: '43', label: 'Zinciri Sil Butonu', selector: '#btn-delete', fields: ['text', 'bd', 'bg'] },
+        { id: '40', label: 'Renk ve Tema Ayarı Butonu ;)', selector: '#btn-color-settings', fields: ['bd', 'bg'] },
+        { id: '41', label: 'Zinciri Oluştur Butonu', selector: '#btn-add-chain', fields: ['text', 'bd', 'bg'] },
+        { id: '42', label: 'Karşıya Yükle Butonu', selector: '#btn-load-file', fields: ['text', 'bd', 'bg'] },
+        { id: '43', label: 'Yedek İndir Butonu', selector: '#btn-backup-download', fields: ['text', 'bd', 'bg'] },
+        { id: '44', label: 'Temizle Butonu', selector: '#btn-reset', fields: ['text', 'bd', 'bg'] },
+        { id: '45', label: 'Zinciri Sil Butonu', selector: '#btn-delete', fields: ['text', 'bd', 'bg'] },
       ];
 
       // id → field → partial override
@@ -2478,19 +2484,22 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         '16': { text: { prop: '--outer-scroll-thumb' }, bd: { prop: '--outer-scroll-track' }, bg: { prop: '--outer-layer-bg' } },
         '18': { text: { prop: '--background-icons' } },
 
-        '34': { bg: { prop: '--button-background' } },
+        '25': { bd: { prop: 'outline-color' } },
+        '26': { bd: { prop: 'outline-color' } },
+
+        '36': { bg: { prop: '--button-background' } },
         // BUTON EFEKTLERİ - :active veya :hover
-        '37': { bg: { selector: ':root', prop: '--btn-view-effect' } },
-        '38': { bg: { selector: ':root', prop: '--btn-color-settings-effect' } },
-        '39': { bg: { selector: ':root', prop: '--btn-add-chain-effect' } },
-        '40': { bg: { selector: ':root', prop: '--btn-load-file-effect' } },
-        '41': { bg: { selector: ':root', prop: '--btn-backup-download-effect' } },
-        '42': { bg: { selector: ':root', prop: '--btn-reset-effect' } },
-        '43': { bg: { selector: ':root', prop: '--btn-delete-effect' } },
+        '39': { bg: { selector: ':root', prop: '--btn-view-effect' } },
+        '40': { bg: { selector: ':root', prop: '--btn-color-settings-effect' } },
+        '41': { bg: { selector: ':root', prop: '--btn-add-chain-effect' } },
+        '42': { bg: { selector: ':root', prop: '--btn-load-file-effect' } },
+        '43': { bg: { selector: ':root', prop: '--btn-backup-download-effect' } },
+        '44': { bg: { selector: ':root', prop: '--btn-reset-effect' } },
+        '45': { bg: { selector: ':root', prop: '--btn-delete-effect' } },
 
       };
 
-      const STORAGE_KEY = 'theme_css_overrides_v1';
+      // STORAGE_KEY moved to THEME STYLE LAYERS (v2)
 
       /* ---------------- UTIL: Color parse/format ---------------- */
       function clamp255(n) { n = Number(n); return Number.isFinite(n) ? Math.max(0, Math.min(255, Math.round(n))) : 0; }
@@ -2620,6 +2629,17 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         return blocks.join('\n\n');
       }
 
+
+function mergeMaps(a, b) {
+  const out = new Map();
+  for (const [k, v] of (a || new Map()).entries()) out.set(k, { ...v });
+  for (const [k, v] of (b || new Map()).entries()) {
+    const prev = out.get(k) || {};
+    out.set(k, { ...prev, ...v });
+  }
+  return out;
+}
+
       /* ---------------- PROPERTY RESOLUTION ---------------- */
       /* ---------------- TARGET RESOLUTION (selector + property) ---------------- */
 
@@ -2655,87 +2675,212 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
 
       /* ---------------- THEME STYLE LAYERS ---------------- */
-      function ensureStyleEl(id) {
-        let el = document.getElementById(id);
-        if (!el) {
-          el = document.createElement('style');
-          el.id = id;
-          document.head.appendChild(el);
-        }
-        return el;
-      }
+function ensureStyleEl(id) {
+  let el = document.getElementById(id);
+  if (!el) {
+    el = document.createElement('style');
+    el.id = id;
+    document.head.appendChild(el);
+  }
+  return el;
+}
 
-      const themeStyleEl = ensureStyleEl('theme-overrides-style');
-      const previewStyleEl = ensureStyleEl('theme-preview-style');
+// Layer order (low -> high):
+// 1) base-theme-style (inline default in HTML)
+// 2) theme-base-style (selected preset base)
+// 3) theme-overrides-style (user overrides, persisted)
+// 4) theme-preview-style (panel live preview)
+const baseThemeStyleEl = ensureStyleEl('theme-base-style');
+const themeStyleEl = ensureStyleEl('theme-overrides-style');
+const previewStyleEl = ensureStyleEl('theme-preview-style');
 
-      function loadThemeFromStorage() {
-        const css = localStorage.getItem(STORAGE_KEY) || '';
-        themeStyleEl.textContent = css;
-        return css;
-      }
-      function saveThemeToStorage(css) {
-        localStorage.setItem(STORAGE_KEY, css);
-      }
-      function clearThemeStorage() {
-        localStorage.removeItem(STORAGE_KEY);
-      }
+// Storage keys (v2)
+const THEME_BASE_KEY = 'theme_base_v2';              // 'default' | 'gece' | 'karanlik' | 'matrix'
+const STORAGE_KEY = 'theme_overrides_css_v2';        // override CSS only
+const LEGACY_OVERRIDES_KEY = 'theme_css_overrides_v1'; // legacy (used to store full preset css)
 
+function getStoredBaseTheme() {
+  const v = (localStorage.getItem(THEME_BASE_KEY) || 'default').trim();
+  return v || 'default';
+}
+function setStoredBaseTheme(baseId) {
+  const b = (baseId || 'default').trim() || 'default';
+  if (b === 'default') localStorage.removeItem(THEME_BASE_KEY);
+  else localStorage.setItem(THEME_BASE_KEY, b);
+}
 
-      // Built-in theme presets (inline JSON in HTML)
-      function readBuiltinThemes() {
-        const el = document.getElementById('builtin-themes-json');
-        if (!el) return {};
-        try {
-          const obj = JSON.parse(el.textContent || '{}');
-          return obj && typeof obj === 'object' ? obj : {};
-        } catch (e) {
-          console.warn('Built-in themes JSON parse error:', e);
-          return {};
-        }
-      }
+function loadThemeFromStorage() {
+  const css = (localStorage.getItem(STORAGE_KEY) || '').trim();
+  themeStyleEl.textContent = css;
+  return css;
+}
+function saveThemeToStorage(css) {
+  localStorage.setItem(STORAGE_KEY, (css || '').trim());
+}
+function clearThemeStorage() {
+  localStorage.removeItem(STORAGE_KEY);
+}
 
-      const BUILTIN_THEMES = readBuiltinThemes();
+// Built-in theme presets (inline JSON in HTML)
+function readBuiltinThemes() {
+  const el = document.getElementById('builtin-themes-json');
+  if (!el) return {};
+  try {
+    const obj = JSON.parse(el.textContent || '{}');
+    return obj && typeof obj === 'object' ? obj : {};
+  } catch (e) {
+    console.warn('Built-in themes JSON parse error:', e);
+    return {};
+  }
+}
+const BUILTIN_THEMES = readBuiltinThemes();
 
-      function applyThemeCss(cssText) {
-        const css = (cssText || '').trim();
-        themeStyleEl.textContent = css;
+function recomputeBaseMap() {
+  // baseMap = inline default + selected preset base
+  const baseInlineEl = document.getElementById('base-theme-style');
+  const basePresetEl = document.getElementById('theme-base-style');
+  baseMap = mergeMaps(
+    parseStyleElement(baseInlineEl),
+    parseStyleElement(basePresetEl)
+  );
+}
 
-        if (css) {
-          saveThemeToStorage(css);
-        } else {
-          // boşsa localStorage temizle
-          clearThemeStorage();
-          saveThemeToStorage(''); // bazı tarayıcılarda key’in boş kalması tercih edilebilir
-        }
+function setPresetSelectToBaseOnly() {
+  // Override yokmuş gibi "baz tema"ya dönmüş görünmeli
+  try {
+    const presetSel = document.getElementById('theme-preset-select');
+    if (!presetSel) return;
+    const baseId = getStoredBaseTheme();
+    if (baseId && baseId !== 'default') presetSel.value = baseId;
+    else presetSel.value = '__default__';
+  } catch { }
+}
 
-        // aktif map’leri güncelle
-        themeMap = parseCssText(css);
+function setPresetSelectToCurrentState() {
+  // Overrides varsa "Mevcut (Özel)", yoksa baz temaya göre.
+  try {
+    const presetSel = document.getElementById('theme-preset-select');
+    if (!presetSel) return;
+    const baseId = getStoredBaseTheme();
+    const hasOverrides = ((themeStyleEl.textContent || '').trim().length > 0);
+    if (hasOverrides) presetSel.value = '__current__';
+    else if (baseId && baseId !== 'default') presetSel.value = baseId;
+    else presetSel.value = '__default__';
+  } catch { }
+}
 
-        // panelin "reset-all cancel" snapshot’ı artık yeni theme olmalı
-        initialThemeCssSnapshot = css;
-        pendingResetAll = false;
+function applyBaseTheme(baseId) {
+  const b = (baseId || 'default').trim() || 'default';
 
-        // state’i sıfırla (yeni theme ile effective değerler değişti)
-        cellState.clear();
-        clearPreview();
-        renderTable();
-        refreshInputsFromEffective();
-      }
+  if (b === 'default') {
+    baseThemeStyleEl.textContent = '';
+    setStoredBaseTheme('default');
+  } else {
+    const entry = BUILTIN_THEMES[b];
+    if (!entry || !entry.css) {
+      // geçersiz bir base id kaldıysa güvenli şekilde varsayılana dön
+      baseThemeStyleEl.textContent = '';
+      setStoredBaseTheme('default');
+    } else {
+      baseThemeStyleEl.textContent = String(entry.css);
+      setStoredBaseTheme(b);
+    }
+  }
 
-      /* ---------------- PANEL UI ---------------- */
-      let panelEl = null;
-      let tableEl = null;
-      let bodyEl = null;
+  // base değişti: baseMap'i yeniden üret ve panel açıksa inputları yeni effective değere çek
+  recomputeBaseMap();
 
-      let baseMap = null;     // original CSS map
-      let themeMap = null;    // current theme overrides map
-      let previewMap = new Map();
+  // state’i sıfırla (baz değişti; eski baseRgb’ler geçersiz)
+  cellState?.clear?.();
+  clearPreview?.();
 
-      let initialThemeCssSnapshot = ''; // varsayılanlara dön iptali için
-      let pendingResetAll = false;
+  if (typeof tableEl !== 'undefined' && tableEl) {
+    renderTable();
+    refreshInputsFromEffective();
+  }
+}
+
+function migrateLegacyThemeIfNeeded() {
+  // Legacy: v1 key'de bazen preset css komple saklanıyordu.
+  // v2 yoksa, legacy varsa ve eşleşen preset bulunursa onu base'e çevir.
+  const hasV2 = (localStorage.getItem(STORAGE_KEY) || '').trim().length > 0 || localStorage.getItem(THEME_BASE_KEY);
+  if (hasV2) return;
+
+  const legacyCss = (localStorage.getItem(LEGACY_OVERRIDES_KEY) || '').trim();
+  if (!legacyCss) return;
+
+  let matchedBase = null;
+  for (const [k, v] of Object.entries(BUILTIN_THEMES)) {
+    if (!v || !v.css) continue;
+    if (String(v.css).trim() === legacyCss) {
+      matchedBase = k;
+      break;
+    }
+  }
+
+  if (matchedBase) {
+    applyBaseTheme(matchedBase);
+    // overrides boş kalsın
+    saveThemeToStorage('');
+    themeStyleEl.textContent = '';
+  } else {
+    // match edemedik: varsayılan base + overrides olarak taşı
+    applyBaseTheme('default');
+    saveThemeToStorage(legacyCss);
+    themeStyleEl.textContent = legacyCss;
+  }
+
+  // legacy key'i temizle (isterseniz tutabilirsiniz)
+  try { localStorage.removeItem(LEGACY_OVERRIDES_KEY); } catch { }
+}
+
+function applyThemeFromStorage() {
+  migrateLegacyThemeIfNeeded();
+  applyBaseTheme(getStoredBaseTheme());
+  const css = loadThemeFromStorage();
+  // aktif map’leri güncelle
+  themeMap = parseCssText(css);
+}
+
+function applyThemeOverridesCss(cssText) {
+  const css = (cssText || '').trim();
+  themeStyleEl.textContent = css;
+
+  if (css) saveThemeToStorage(css);
+  else {
+    clearThemeStorage();
+    saveThemeToStorage(''); // bazı tarayıcılarda key’in boş kalması tercih edilebilir
+  }
+
+  // aktif map’leri güncelle
+  themeMap = parseCssText(css);
+
+  // panelin "reset-all cancel" snapshot’ı artık yeni override olmalı
+  initialThemeCssSnapshot = css;
+  pendingResetAll = false;
+
+  // state’i sıfırla (yeni override ile effective değerler değişti)
+  cellState.clear();
+  clearPreview();
+  renderTable();
+  refreshInputsFromEffective();
+  setPresetSelectToCurrentState();
+}
+
+/* ---------------- PANEL UI ---------------- */
+      var panelEl = null;
+      var tableEl = null;
+      var bodyEl = null;
+
+      var baseMap = null;     // original CSS map
+      var themeMap = null;    // current theme overrides map
+      var previewMap = new Map();
+
+      var initialThemeCssSnapshot = ''; // varsayılanlara dön iptali için
+      var pendingResetAll = false;
 
       // per-cell state: key = `${rowId}::${field}`
-      const cellState = new Map();
+      var cellState = new Map();
 
       function cellKey(rowId, field) { return `${rowId}::${field}`; }
 
@@ -2816,12 +2961,17 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       }
 
       function applyResetAllPreview() {
-        // ResetAll: preview temiz, UI theme yokmuş gibi görünmeli
-        clearPreview();
-        pendingResetAll = true;
-        // UI’de effective değer artık base+semantic olacak; inputları o hale getir
-        refreshInputsFromEffective();
-      }
+  // "Varsayılanlara dön": mevcut baz temaya (varsayılan/gece/karanlık/matrix) dönmek demek.
+  // Yani override’ları yokmuş gibi davranacağız; base değişmeyecek.
+  clearPreview();
+  pendingResetAll = true;
+
+  // UI: artık "Özel" değil, baz tema seçili görünsün
+  setPresetSelectToBaseOnly();
+
+  // UI’de effective değer base+semantic olacak; inputları o hale getir
+  refreshInputsFromEffective();
+}
 
       function refreshInputsFromEffective() {
         // tüm inputları effective değere (pendingResetAll varsa theme yok sayılarak) döndür
@@ -2876,15 +3026,18 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
       /* ---------------- COMMIT LOGIC ---------------- */
       function commitChanges() {
-        // pendingResetAll: theme tamamen temizlenecek (Tamam ile)
+        // pendingResetAll: "baz tema"ya dön (override'ları temizle) (Tamam ile)
         if (pendingResetAll) {
-          // theme katmanını sil
+          // base aynı kalır; sadece overrides temizlenir.
           themeMap = new Map();
           themeStyleEl.textContent = '';
           saveThemeToStorage('');
-          clearThemeStorage(); // isterseniz boş string yerine remove
+          clearThemeStorage();
           pendingResetAll = false;
           clearPreview();
+
+          // panel açıksa select'i state'e göre düzelt
+          setPresetSelectToCurrentState();
           return;
         }
 
@@ -2959,6 +3112,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
       <select id="theme-preset-select" title="Hazır tema seçimi. Seçilen tema, mevcut tema override’larını tamamen değiştirir">
         <option value="__current__">Mevcut (Özel)</option>
         <option value="__default__">Varsayılan</option>
+        <option value="karanlik">Karanlık</option>
         <option value="gece">Gece</option>
         <option value="matrix">Matrix</option>
       </select>
@@ -3027,8 +3181,12 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
             if (key === '__current__') return;
 
+            // Base seçimi: preset seçince base değişir, overrides temizlenir.
             if (key === '__default__') {
-              applyThemeCss('');
+              applyBaseTheme('default');
+              applyThemeOverridesCss('');
+              // UI: artık özel değil, varsayılan
+              presetSel.value = '__default__';
               return;
             }
 
@@ -3038,7 +3196,10 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
               return;
             }
 
-            applyThemeCss(entry.css);
+            applyBaseTheme(key);
+            applyThemeOverridesCss('');
+            // UI: artık özel değil, seçili base
+            presetSel.value = key;
           });
         }
 
@@ -3120,6 +3281,12 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
           // preview apply (pending reset olsa bile preview yazabilir; reset anlamı iptal değil, bekleyen işlem)
           setPreviewValue(row, field, rgb);
+
+          // En ufak değişiklikte artık "Özel" olarak işaretle
+          const presetSel = document.getElementById('theme-preset-select');
+          if (presetSel && presetSel.value !== '__current__') {
+            presetSel.value = '__current__';
+          }
 
         });
 
@@ -3206,11 +3373,22 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         buildPanel();
 
         // Load base + theme
-        const baseStyleEl = document.getElementById('base-theme-style');
-        baseMap = parseStyleElement(baseStyleEl);
+        recomputeBaseMap();
 
         const themeCss = loadThemeFromStorage();
         themeMap = parseCssText(themeCss);
+
+        // Preset seçimi: overrides varsa "Mevcut (Özel)", yoksa base'e göre seç.
+        try {
+          const presetSel = document.getElementById('theme-preset-select');
+          const baseId = getStoredBaseTheme();
+          const hasOverrides = (themeCss || '').trim().length > 0;
+          if (presetSel) {
+            if (hasOverrides) presetSel.value = '__current__';
+            else if (baseId && baseId !== 'default') presetSel.value = baseId;
+            else presetSel.value = '__default__';
+          }
+        } catch { }
 
         // snapshot for reset-all cancel
         initialThemeCssSnapshot = themeCss;
@@ -3235,8 +3413,8 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
 
       /* ---------------- INIT BUTTON ---------------- */
       document.addEventListener('DOMContentLoaded', () => {
-        // theme’i sayfa açılışında uygula
-        loadThemeFromStorage();
+        // theme’i sayfa açılışında uygula (base + overrides)
+        applyThemeFromStorage();
 
         const btn = document.getElementById('btn-color-settings');
         if (!btn) return;
@@ -5379,9 +5557,12 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           var s = getStore();
           var hasChain = s && Array.isArray(s.order) && s.order.length > 0;
 
-          // Tema var mı? (localStorage’da kayıtlı override css)
+          // Tema var mı?
+          // - overrides varsa mutlaka var
+          // - overrides olmasa bile base varsayılan değilse var (istenen davranış)
+          var baseTheme = (localStorage.getItem(THEME_BASE_KEY) || 'default').trim() || 'default';
           var themeCss = (localStorage.getItem(STORAGE_KEY) || '').trim();
-          var hasTheme = themeCss.length > 0;
+          var hasTheme = themeCss.length > 0 || baseTheme !== 'default';
 
           // Ne zincir var ne tema -> indirme yok
           if (!hasChain && !hasTheme) {
@@ -5396,7 +5577,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
           var payload = JSON.parse(JSON.stringify(s || { order: [], items: {} }));
 
           if (hasTheme) {
-            payload.theme = { css: themeCss };
+            payload.theme = { base: baseTheme, overridesCss: themeCss };
           }
 
           var dataStr = JSON.stringify(payload, null, 2);
@@ -5485,11 +5666,23 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
             setStore(merged);
             // Tema varsa uygula (backup içinden)
             try {
-              var importedThemeCss = imported && imported.theme && imported.theme.css ? imported.theme.css : '';
-              if (importedThemeCss && String(importedThemeCss).trim()) {
-                localStorage.setItem(STORAGE_KEY, importedThemeCss);
-                themeStyleEl.textContent = importedThemeCss;
-                themeMap = parseCssText(importedThemeCss);
+              // Yeni format: { base, overridesCss }
+              // Eski format: { css }
+              var t = imported && imported.theme ? imported.theme : null;
+              var importedBase = t && t.base ? String(t.base).trim() : '';
+              var importedOverrides = t && t.overridesCss != null ? String(t.overridesCss).trim() : '';
+              var legacyCss = t && t.css ? String(t.css).trim() : '';
+
+              if (legacyCss && !importedBase && !importedOverrides) {
+                // legacy: sadece css
+                importedOverrides = legacyCss;
+              }
+
+              if (importedBase || importedOverrides) {
+                applyBaseTheme(importedBase || 'default');
+                localStorage.setItem(STORAGE_KEY, importedOverrides);
+                themeStyleEl.textContent = importedOverrides;
+                themeMap = parseCssText(importedOverrides);
                 clearPreview(); // varsa preview çakışmasını temizle
               }
             } catch (e2) {
@@ -5552,12 +5745,12 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         currentKind = 'dated';
         syncModeUI();
 
-        // Varsayılan tarih aralığı: bugün + 36 gün
+        // Varsayılan tarih aralığı: bugün + 364 gün = yani 1 yıl
         if (startDate && endDate) {
           var today = new Date();
           startDate.value = toISO(today);
           var later = new Date(today);
-          later.setDate(later.getDate() + 36);
+          later.setDate(later.getDate() + 364);
           endDate.value = toISO(later);
         }
 
@@ -5643,7 +5836,7 @@ c0 -21 -4 -41 -9 -45 -12 -7 -26 59 -17 81 10 26 26 5 26 -36z m650 14 c0 -32
         var today = new Date();
         startDate.value = toISO(today);
         var later = new Date(today);
-        later.setDate(later.getDate() + 36);
+        later.setDate(later.getDate() + 364);
         endDate.value = toISO(later);
       }
 
