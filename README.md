@@ -184,7 +184,7 @@ Bunlara ek olarak kullanıcı;
 
 ### Mobilde:
 
-* `input[type="number"]` okları görünmeyebilir
+* Sayısal girdi kutularında arttırma ve azaltma okları görünmeyebilir
 * Kullanıcı numerik klavyeden değer girer
 * Sistem girilen değeri **en yakın geçerli grid değerine** yuvarlar
 * Büyük değerlerde grid bozulmaz
