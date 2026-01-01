@@ -29,28 +29,28 @@ Aşağıdaki görüntüler uygulamanın farklı bölümlerine aittir:
 
 ![Arayüz 5](images/arayuz5-zincirikirma.png)
 
-![Arayüz 1](images/arayuz6-zincirikirma.png)
+![Arayüz 6](images/arayuz6-zincirikirma.png)
 
-![Arayüz 2](images/arayuz7-zincirikirma.png)
+![Arayüz 7](images/arayuz7-zincirikirma.png)
 
-![Arayüz 3](images/arayuz8-zincirikirma.png)
+![Arayüz 8](images/arayuz8-zincirikirma.png)
 
-![Arayüz 4](images/arayuz9-zincirikirma.png)
+![Arayüz 9](images/arayuz9-zincirikirma.png)
 
-![Arayüz 5](images/arayuz10-zincirikirma.png)
+![Arayüz 10](images/arayuz10-zincirikirma.png)
 
 
 Mobile Cihazlarda: 
 
-![Arayüz 6](images/arayuz11-zincirikirma.jpg)
+![Arayüz 11](images/arayuz11-zincirikirma.jpg)
 
-![Arayüz 6](images/arayuz12-zincirikirma.jpg)
+![Arayüz 12](images/arayuz12-zincirikirma.jpg)
 
-![Arayüz 6](images/arayuz13-zincirikirma.jpg)
+![Arayüz 13](images/arayuz13-zincirikirma.jpg)
 
-![Arayüz 6](images/arayuz14-zincirikirma.jpg)
+![Arayüz 14](images/arayuz14-zincirikirma.jpg)
 
-![Arayüz 6](images/arayuz15-zincirikirma.jpg)
+![Arayüz 15](images/arayuz15-zincirikirma.jpg)
 
 ---
 
