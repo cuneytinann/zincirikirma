@@ -42,15 +42,15 @@ Aşağıdaki görüntüler uygulamanın farklı bölümlerine aittir:
 
 Mobile Cihazlarda: 
 
-![Arayüz 11](images/arayuz11-zincirikirma.jpg)
+![Arayüz 11](images/arayuz1-mobil.jpg)
 
-![Arayüz 12](images/arayuz12-zincirikirma.jpg)
+![Arayüz 12](images/arayuz2-mobil.jpg)
 
-![Arayüz 13](images/arayuz13-zincirikirma.jpg)
+![Arayüz 13](images/arayuz3-mobil.jpg)
 
-![Arayüz 14](images/arayuz14-zincirikirma.jpg)
+![Arayüz 14](images/arayuz4-mobil.jpg)
 
-![Arayüz 15](images/arayuz15-zincirikirma.jpg)
+![Arayüz 15](images/arayuz5-mobil.jpg)
 
 ---
 
