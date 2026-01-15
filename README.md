@@ -1,4 +1,5 @@
-
+Eğer deploy edilmişse, indirmeden görüntülemek için:
+https://cuneytinann.github.io/zincirikirma/
 
 # Zinciri Kırma (Alışkanlık Takip Aracı)
 
