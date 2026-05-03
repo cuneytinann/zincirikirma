@@ -7,7 +7,7 @@ set /p msg="Commit mesaji: "
 
 git commit -m "%msg%"
 
-git push origin main
+git push origin master
 
 echo.
 echo Push tamamlandi! Vercel deploy ediliyor...
