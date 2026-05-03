@@ -1,0 +1,4297 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="google-site-verification" content="hyckNY_ATq4Vl9ynvRboQ8Ge60B5QeKWAF1VyvTaB1s" />
+    <title>Zinciri Kırma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* ── THEMES ── */
+      :root {
+        --cs: 4rem;
+        --page-bg: rgb(180, 180, 180);
+        --panel-bg: rgba(120, 165, 155, 0.85);
+        --panel-bd: rgba(90, 145, 170, 0.7);
+        --chain-bg: rgba(60, 210, 30, 0.7);
+        --chain-bd: rgba(10, 29, 2, 0.64);
+        --tab-idle-bg: rgba(255, 255, 255, 0.25);
+        --tab-idle-bd: rgba(0, 0, 0, 0.45);
+        --btn-bg: #fff;
+        --btn-shadow: rgba(0, 0, 0, 0.18);
+        --cell-bg: #fff;
+        --cell-color: #111;
+        --cell-bd: rgb(0, 0, 0);
+        --col-hd-bg: rgb(150, 150, 180);
+        --col-hd-color: #000;
+        --row-hd-bg: rgb(150, 150, 180);
+        --row-hd-color: #000;
+        --empty-bg: rgb(127, 127, 127);
+        --xmark: rgba(214, 5, 5, 0.7);
+        --month-bd: rgb(24, 8, 95);
+        --year-bd: rgb(224, 16, 16);
+        --title-color: #e60404;
+        --lbl-color: rgb(45, 15, 82);
+
+        --label-checked: rgb(255, 255, 255);
+        --total-ring-color: rgb(6, 101, 88);
+        --hint-color: rgb(52, 237, 237);
+
+        --count-bg: rgba(207, 75, 190, 0.34);
+        --count-bd: rgba(182, 89, 146, 0.62);
+        --count-num: rgb(206, 238, 47);
+        --scr-thumb: rgb(111, 114, 100);
+        --scr-track: rgba(128, 154, 177, 0.7);
+        --hr-color: rgb(126, 173, 170);
+        --ctitle: rgb(6, 101, 88);
+        --cinfo: #444;
+        --prog-bg: rgba(0, 0, 0, 0.1);
+        --prog-fill: rgb(20, 180, 200);
+        --prog-txt: rgb(0, 80, 100);
+        --note-bg: #ffffcc;
+        --note-bd: #cca;
+        --note-color: #333;
+        --modal-ov: rgba(0, 0, 0, 0.55);
+        --modal-bg: #f5f5f5;
+        --modal-bd: #ccc;
+        --inp-bg: #fff;
+        --inp-color: #111;
+        --inp-bd: #000;
+        --pill-bd: rgb(75, 53, 67);
+        --pill-chk: rgba(0, 200, 0, 0.4);
+        --pill-radio: rgba(107, 189, 221, 0.45);
+        --err-color: #c00;
+        --err-bg: #ffff88;
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(0, 0, 0, 0.2);
+        --fx-toggle: rgba(255, 255, 255, 0.85);
+        --fx-view: rgba(127, 67, 10, 0.5);
+        --fx-add: rgba(233, 77, 184, 0.5);
+        --fx-load: rgba(138, 183, 224, 0.5);
+        --fx-dl: rgba(110, 204, 102, 0.5);
+        --fx-reset: rgba(236, 255, 61, 0.5);
+        --fx-del: rgba(243, 68, 68, 0.5);
+      }
+      [data-theme="dark"] {
+        --page-bg: rgb(24, 24, 26);
+        --panel-bg: rgba(40, 55, 50, 0.88);
+        --panel-bd: rgba(74, 85, 94, 0.7);
+        --chain-bg: rgba(15, 55, 10, 0.88);
+        --chain-bd: rgba(34, 76, 16, 0.7);
+        --tab-idle-bg: rgba(255, 255, 255, 0.07);
+        --tab-idle-bd: rgba(255, 255, 255, 0.18);
+        --btn-bg: rgb(13, 13, 13);
+        --btn-shadow: rgba(0, 0, 0, 0.5);
+        --cell-bg: rgb(28, 28, 28);
+        --cell-color: rgb(205, 193, 193);
+        --cell-bd: rgb(80, 80, 80);
+        --col-hd-bg: #000;
+        --col-hd-color: rgb(104, 104, 223);
+        --row-hd-bg: #000;
+        --row-hd-color: rgb(202, 68, 68);
+        --empty-bg: rgb(12, 12, 12);
+        --xmark: rgba(235, 102, 102, 0.75);
+        --month-bd: rgb(101, 177, 215);
+        --year-bd: rgb(240, 112, 112);
+        --title-color: rgb(255, 82, 82);
+        --lbl-color: rgb(230, 230, 210);
+
+        --label-checked: rgb(205, 193, 193);
+        --total-ring-color: rgb(140, 230, 240);
+
+        --hint-color: rgb(255, 255, 255);
+        --count-bg: rgba(90, 50, 80, 0.4);
+        --count-bd: rgba(130, 80, 120, 0.6);
+        --count-num: rgb(150, 210, 240);
+        --scr-thumb: rgb(62, 84, 101);
+        --scr-track: rgba(16, 40, 60, 0.7);
+        --hr-color: rgb(80, 90, 88);
+        --ctitle: rgb(105, 176, 206);
+        --cinfo: rgb(77, 128, 124);
+        --prog-bg: rgba(255, 255, 255, 0.08);
+        --prog-fill: rgb(20, 180, 200);
+        --prog-txt: rgb(140, 230, 240);
+        --note-bg: rgb(30, 30, 20);
+        --note-bd: #555;
+        --note-color: #ddd;
+        --modal-ov: rgba(0, 0, 0, 0.75);
+        --modal-bg: rgb(30, 32, 30);
+        --modal-bd: #555;
+        --inp-bg: rgb(22, 22, 22);
+        --inp-color: rgb(200, 195, 195);
+        --inp-bd: rgb(100, 100, 100);
+        --pill-bd: rgb(120, 100, 110);
+        --pill-chk: rgba(40, 130, 50, 0.5);
+        --pill-radio: rgba(80, 120, 140, 0.5);
+        --err-color: rgb(255, 100, 100);
+        --err-bg: rgb(50, 30, 10);
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(203, 175, 175, 0.2);
+        --fx-toggle: rgba(255, 82, 82, 0.5);
+        --fx-view: rgba(206, 117, 34, 0.5);
+        --fx-add: rgba(87, 87, 87, 0.5);
+        --fx-load: rgba(41, 64, 87, 0.5);
+        --fx-dl: rgba(73, 114, 70, 0.5);
+        --fx-reset: rgba(85, 94, 8, 0.5);
+        --fx-del: rgba(157, 42, 42, 0.5);
+      }
+      [data-theme="night"] {
+        --page-bg: #000;
+        --panel-bg: rgba(100, 80, 30, 0.85);
+        --panel-bd: rgba(72, 96, 42, 0.7);
+        --chain-bg: rgba(90, 65, 25, 0.8);
+        --chain-bd: rgba(142, 140, 87, 0.7);
+        --tab-idle-bg: rgba(255, 200, 50, 0.1);
+        --tab-idle-bd: rgba(200, 150, 20, 0.4);
+        --btn-bg: rgb(164, 183, 113);
+        --btn-shadow: rgba(0, 0, 0, 0.5);
+        --cell-bg: rgb(221, 208, 120);
+        --cell-color: rgb(50, 35, 5);
+        --cell-bd: rgb(58, 43, 3);
+        --col-hd-bg: rgb(16, 60, 33);
+        --col-hd-color: rgb(225, 246, 121);
+        --row-hd-bg: rgb(134, 65, 9);
+        --row-hd-color: rgb(207, 199, 89);
+        --empty-bg: rgb(25, 12, 2);
+        --xmark: rgba(150, 0, 0, 0.6);
+        --month-bd: rgb(38, 104, 8);
+        --year-bd: rgb(111, 18, 11);
+        --title-color: rgb(119, 3, 3);
+        --lbl-color: #000;
+
+        --label-checked: rgb(50, 35, 5);
+        --total-ring-color: rgb(193, 103, 1);
+
+        --hint-color: rgb(240, 220, 100);
+        --count-bg: rgba(49, 66, 0, 0.3);
+        --count-bd: rgba(75, 73, 1, 0.55);
+        --count-num: rgb(160, 80, 5);
+        --scr-thumb: rgb(56, 44, 11);
+        --scr-track: rgb(180, 130, 40);
+        --hr-color: rgb(143, 77, 15);
+        --ctitle: rgb(193, 103, 1);
+        --cinfo: rgb(142, 116, 21);
+        --prog-bg: rgba(0, 0, 0, 0.15);
+        --prog-fill: rgb(140, 100, 15);
+        --prog-txt: #000;
+        --note-bg: rgb(200, 190, 100);
+        --note-bd: rgb(120, 80, 10);
+        --note-color: #222;
+        --modal-ov: rgba(0, 0, 0, 0.75);
+        --modal-bg: rgb(40, 30, 5);
+        --modal-bd: #554;
+        --inp-bg: rgb(200, 190, 110);
+        --inp-color: #111;
+        --inp-bd: rgb(110, 70, 10);
+        --pill-bd: rgb(140, 100, 30);
+        --pill-chk: rgba(0, 120, 0, 0.35);
+        --pill-radio: rgba(80, 60, 20, 0.5);
+        --err-color: #8b0000;
+        --err-bg: rgb(240, 230, 100);
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(240, 164, 0, 0.2);
+        --fx-toggle: rgba(106, 71, 32, 0.5);
+        --fx-view: rgba(106, 71, 32, 0.5);
+        --fx-add: rgba(102, 102, 102, 0.5);
+        --fx-load: rgba(201, 92, 3, 0.5);
+        --fx-dl: rgba(34, 162, 22, 0.5);
+        --fx-reset: rgba(169, 186, 13, 0.5);
+        --fx-del: rgba(188, 32, 32, 0.5);
+      }
+      [data-theme="matrix"] {
+        --page-bg: #000;
+        --panel-bg: rgba(0, 0, 0, 0.92);
+        --panel-bd: rgba(20, 200, 10, 0.5);
+        --chain-bg: rgba(0, 0, 0, 0.95);
+        --chain-bd: rgba(52, 215, 20, 0.5);
+        --tab-idle-bg: rgba(0, 40, 0, 0.5);
+        --tab-idle-bd: rgba(0, 200, 0, 0.3);
+        --btn-bg: #000;
+        --btn-shadow: rgba(0, 255, 0, 0.15);
+        --cell-bg: #000;
+        --cell-color: rgb(15, 200, 10);
+        --cell-bd: rgb(20, 155, 15);
+        --col-hd-bg: #000;
+        --col-hd-color: rgb(37, 214, 11);
+        --row-hd-bg: #000;
+        --row-hd-color: rgb(11, 200, 37);
+        --empty-bg: #000;
+        --xmark: rgba(0, 255, 0, 0.45);
+        --month-bd: #0f0;
+        --year-bd: #0f0;
+        --title-color: rgb(64, 231, 4);
+        --lbl-color: rgb(48, 225, 20);
+
+        --label-checked: rgb(15, 200, 10);
+        --total-ring-color: rgb(35, 201, 13);
+
+        --hint-color: rgb(25, 210, 31);
+        --count-bg: rgba(0, 0, 0, 0.5);
+        --count-bd: rgba(61, 214, 31, 0.5);
+        --count-num: #0f0;
+        --scr-thumb: rgb(20, 185, 28);
+        --scr-track: #000;
+        --hr-color: #0a0;
+        --ctitle: rgb(35, 201, 13);
+        --cinfo: rgb(38, 132, 26);
+        --prog-bg: rgba(0, 100, 0, 0.2);
+        --prog-fill: #0f0;
+        --prog-txt: #0f0;
+        --note-bg: #001100;
+        --note-bd: #0a0;
+        --note-color: #0f0;
+        --modal-ov: rgba(0, 30, 0, 0.85);
+        --modal-bg: #001100;
+        --modal-bd: #0f0;
+        --inp-bg: #000;
+        --inp-color: #0f0;
+        --inp-bd: #0a0;
+        --pill-bd: #0a0;
+        --pill-chk: rgba(0, 180, 0, 0.3);
+        --pill-radio: rgba(0, 120, 0, 0.4);
+        --err-color: #0f0;
+        --err-bg: #000;
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(50, 255, 50, 0.2);
+        --fx-toggle: rgba(55, 255, 0, 0.5);
+        --fx-view: rgba(55, 255, 0, 0.5);
+        --fx-add: rgba(55, 255, 0, 0.5);
+        --fx-load: rgba(55, 255, 0, 0.5);
+        --fx-dl: rgba(55, 255, 0, 0.5);
+        --fx-reset: rgba(55, 255, 0, 0.5);
+        --fx-del: rgba(55, 255, 0, 0.5);
+      }
+      [data-theme="matrix"] :not(i) {
+        font-family: "Courier New", monospace !important;
+      }
+      [data-theme="matrix"] #btn-help {
+        letter-spacing: -0.08em;
+      }
+      /* Matrix: boş hücreler tamamen görünmez */
+      [data-theme="matrix"] .chtbl td.empty {
+        background: #000;
+        border-color: #000;
+      }
+      [data-theme="matrix"] .snake-cont .circle-cell.empty-ring {
+        background: #000;
+        border-color: #000;
+        box-shadow: none;
+      }
+      [data-theme="unicorn"] {
+        --page-bg: #fde8f5;
+        --panel-bg: rgba(255, 220, 240, 0.82);
+        --panel-bd: rgba(230, 130, 200, 0.55);
+        --chain-bg: rgba(253, 230, 245, 0.88);
+        --chain-bd: rgba(220, 140, 200, 0.55);
+        --tab-idle-bg: rgba(255, 200, 230, 0.35);
+        --tab-idle-bd: rgba(200, 100, 180, 0.4);
+        --btn-bg: rgb(255, 235, 245);
+        --btn-shadow: rgba(200, 80, 160, 0.2);
+        --cell-bg: rgb(255, 245, 252);
+        --cell-color: rgb(90, 20, 70);
+        --cell-bd: rgb(220, 140, 200);
+        --col-hd-bg: rgb(250, 190, 220);
+        --col-hd-color: rgb(100, 0, 80);
+        --row-hd-bg: rgb(220, 180, 240);
+        --row-hd-color: rgb(70, 0, 90);
+        --empty-bg: rgb(240, 225, 240);
+        --xmark: rgba(200, 0, 100, 0.65);
+        --month-bd: rgb(180, 50, 180);
+        --year-bd: rgb(255, 80, 120);
+        --title-color: rgb(210, 0, 100);
+        --lbl-color: rgb(130, 0, 100);
+
+        --label-checked: rgb(90, 20, 70);
+        --total-ring-color: rgb(180, 0, 120);
+
+        --hint-color: rgb(140, 50, 120);
+        --count-bg: rgba(255, 200, 230, 0.4);
+        --count-bd: rgba(220, 100, 180, 0.55);
+        --count-num: rgb(180, 0, 120);
+        --scr-thumb: rgb(200, 120, 180);
+        --scr-track: rgba(255, 200, 230, 0.5);
+        --hr-color: rgb(220, 140, 200);
+        --ctitle: rgb(160, 0, 120);
+        --cinfo: rgb(140, 60, 110);
+        --prog-bg: rgba(220, 100, 180, 0.12);
+        --prog-fill: rgb(220, 80, 160);
+        --prog-txt: rgb(120, 0, 80);
+        --note-bg: rgb(255, 248, 240);
+        --note-bd: rgb(220, 160, 200);
+        --note-color: rgb(100, 20, 80);
+        --modal-ov: rgba(180, 0, 120, 0.35);
+        --modal-bg: rgb(255, 240, 250);
+        --modal-bd: rgb(220, 140, 200);
+        --inp-bg: rgb(255, 248, 252);
+        --inp-color: rgb(80, 10, 60);
+        --inp-bd: rgb(210, 130, 190);
+        --pill-bd: rgb(200, 100, 170);
+        --pill-chk: rgba(200, 80, 160, 0.25);
+        --pill-radio: rgba(180, 100, 200, 0.3);
+        --err-color: rgb(180, 0, 60);
+        --err-bg: rgb(255, 230, 240);
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(200, 80, 180, 0.15);
+        --fx-toggle: rgba(210, 0, 100, 0.25);
+        --fx-view: rgba(180, 100, 200, 0.4);
+        --fx-add: rgba(200, 80, 160, 0.35);
+        --fx-load: rgba(130, 80, 200, 0.35);
+        --fx-dl: rgba(100, 180, 200, 0.35);
+        --fx-reset: rgba(255, 200, 50, 0.4);
+        --fx-del: rgba(220, 0, 80, 0.4);
+      }
+      [data-theme="cyberpunk"] {
+        --page-bg: rgb(5, 2, 20);
+        --panel-bg: rgba(10, 5, 35, 0.92);
+        --panel-bd: rgba(255, 20, 150, 0.5);
+        --chain-bg: rgba(8, 3, 28, 0.95);
+        --chain-bd: rgba(0, 230, 255, 0.4);
+        --tab-idle-bg: rgba(255, 20, 150, 0.08);
+        --tab-idle-bd: rgba(255, 20, 150, 0.35);
+        --btn-bg: rgb(15, 5, 40);
+        --btn-shadow: rgba(255, 20, 150, 0.25);
+        --cell-bg: rgb(12, 5, 35);
+        --cell-color: rgb(0, 230, 255);
+        --cell-bd: rgb(255, 20, 150);
+        --col-hd-bg: rgb(5, 2, 20);
+        --col-hd-color: rgb(255, 220, 0);
+        --row-hd-bg: rgb(5, 2, 20);
+        --row-hd-color: rgb(255, 20, 150);
+        --empty-bg: rgb(3, 1, 12);
+        --xmark: rgba(255, 20, 150, 0.7);
+        --month-bd: rgb(0, 230, 255);
+        --year-bd: rgb(255, 220, 0);
+        --title-color: rgb(255, 20, 150);
+        --lbl-color: rgb(0, 230, 255);
+
+        --label-checked: rgb(0, 230, 255);
+        --total-ring-color: rgb(255, 220, 0);
+
+        --hint-color: rgb(240, 210, 60);
+        --count-bg: rgba(255, 20, 150, 0.1);
+        --count-bd: rgba(255, 20, 150, 0.4);
+        --count-num: rgb(0, 230, 255);
+        --scr-thumb: rgb(255, 20, 150);
+        --scr-track: rgba(0, 230, 255, 0.1);
+        --hr-color: rgb(255, 20, 150);
+        --ctitle: rgb(0, 230, 255);
+        --cinfo: rgb(160, 100, 255);
+        --prog-bg: rgba(0, 230, 255, 0.1);
+        --prog-fill: rgb(0, 230, 255);
+        --prog-txt: rgb(0, 230, 255);
+        --note-bg: rgb(10, 5, 30);
+        --note-bd: rgb(255, 20, 150);
+        --note-color: rgb(0, 230, 255);
+        --modal-ov: rgba(255, 20, 150, 0.2);
+        --modal-bg: rgb(10, 5, 30);
+        --modal-bd: rgb(255, 20, 150);
+        --inp-bg: rgb(10, 5, 35);
+        --inp-color: rgb(0, 230, 255);
+        --inp-bd: rgb(255, 20, 150);
+        --pill-bd: rgb(255, 20, 150);
+        --pill-chk: rgba(0, 230, 255, 0.25);
+        --pill-radio: rgba(255, 20, 150, 0.25);
+        --err-color: rgb(255, 80, 80);
+        --err-bg: rgb(30, 5, 20);
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(0, 230, 255, 0.12);
+        --fx-toggle: rgba(255, 20, 150, 0.4);
+        --fx-view: rgba(0, 230, 255, 0.35);
+        --fx-add: rgba(160, 100, 255, 0.35);
+        --fx-load: rgba(0, 200, 220, 0.35);
+        --fx-dl: rgba(0, 230, 255, 0.35);
+        --fx-reset: rgba(255, 220, 0, 0.35);
+        --fx-del: rgba(255, 50, 100, 0.4);
+      }
+      /* Cyberpunk: neon text glow */
+      [data-theme="cyberpunk"] .main-title {
+        text-shadow:
+          0 0 12px rgba(255, 20, 150, 0.8),
+          0 0 24px rgba(255, 20, 150, 0.4);
+      }
+      [data-theme="cyberpunk"] .chain-title {
+        text-shadow: 0 0 8px rgba(0, 230, 255, 0.6);
+      }
+      [data-theme="cyberpunk"] .circle-cell {
+        box-shadow:
+          0 0 6px rgba(255, 20, 150, 0.3),
+          inset 0 0 4px rgba(0, 230, 255, 0.1);
+      }
+
+      [data-theme="retro"] {
+        --page-bg: rgb(30, 18, 8);
+        --panel-bg: rgba(55, 35, 15, 0.95);
+        --panel-bd: rgba(210, 140, 40, 0.7);
+        --chain-bg: rgba(40, 25, 10, 0.97);
+        --chain-bd: rgba(200, 130, 30, 0.6);
+        --tab-idle-bg: rgba(200, 130, 30, 0.12);
+        --tab-idle-bd: rgba(200, 130, 30, 0.4);
+        --btn-bg: rgb(50, 30, 10);
+        --btn-shadow: rgba(200, 130, 30, 0.3);
+        --cell-bg: rgb(42, 26, 8);
+        --cell-color: rgb(240, 200, 80);
+        --cell-bd: rgb(160, 100, 20);
+        --col-hd-bg: rgb(25, 15, 4);
+        --col-hd-color: rgb(255, 180, 40);
+        --row-hd-bg: rgb(25, 15, 4);
+        --row-hd-color: rgb(220, 140, 30);
+        --empty-bg: rgb(18, 10, 3);
+        --xmark: rgba(220, 80, 40, 0.75);
+        --month-bd: rgb(200, 150, 40);
+        --year-bd: rgb(220, 80, 40);
+        --title-color: rgb(255, 180, 20);
+        --lbl-color: rgb(220, 170, 60);
+
+        --label-checked: rgb(240, 200, 80);
+        --total-ring-color: rgb(255, 180, 20);
+
+        --hint-color: rgb(170, 120, 40);
+        --count-bg: rgba(200, 130, 30, 0.15);
+        --count-bd: rgba(200, 130, 30, 0.45);
+        --count-num: rgb(255, 200, 60);
+        --scr-thumb: rgb(180, 110, 25);
+        --scr-track: rgba(80, 50, 10, 0.5);
+        --hr-color: rgb(160, 100, 20);
+        --ctitle: rgb(240, 180, 40);
+        --cinfo: rgb(180, 130, 40);
+        --prog-bg: rgba(200, 130, 30, 0.15);
+        --prog-fill: rgb(220, 160, 30);
+        --prog-txt: rgb(255, 210, 80);
+        --note-bg: rgb(45, 28, 8);
+        --note-bd: rgb(180, 120, 25);
+        --note-color: rgb(240, 200, 80);
+        --modal-ov: rgba(0, 0, 0, 0.75);
+        --modal-bg: rgb(40, 24, 8);
+        --modal-bd: rgb(180, 120, 25);
+        --inp-bg: rgb(38, 22, 6);
+        --inp-color: rgb(240, 200, 80);
+        --inp-bd: rgb(160, 100, 20);
+        --pill-bd: rgb(180, 120, 25);
+        --pill-chk: rgba(200, 160, 30, 0.3);
+        --pill-radio: rgba(180, 120, 25, 0.3);
+        --err-color: rgb(255, 100, 50);
+        --err-bg: rgb(50, 20, 5);
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(200, 140, 30, 0.18);
+        --fx-toggle: rgba(255, 140, 20, 0.45);
+        --fx-view: rgba(220, 160, 30, 0.4);
+        --fx-add: rgba(180, 200, 40, 0.35);
+        --fx-load: rgba(200, 150, 30, 0.4);
+        --fx-dl: rgba(160, 200, 50, 0.35);
+        --fx-reset: rgba(240, 200, 40, 0.4);
+        --fx-del: rgba(220, 80, 40, 0.45);
+      }
+      /* Retro: scanline efekti + phosphor glow */
+      [data-theme="retro"] .main-title {
+        text-shadow:
+          0 0 10px rgba(255, 180, 20, 0.7),
+          0 0 20px rgba(200, 130, 0, 0.4);
+        font-family: "Courier New", monospace !important;
+      }
+      [data-theme="retro"] .chain-title {
+        text-shadow: 0 0 6px rgba(240, 180, 40, 0.5);
+      }
+      [data-theme="retro"] .circle-cell {
+        box-shadow:
+          0 0 5px rgba(220, 160, 30, 0.25),
+          inset 0 0 3px rgba(255, 200, 60, 0.08);
+      }
+      [data-theme="retro"] button {
+        font-family: "Courier New", monospace !important;
+      }
+      [data-theme="retro"] #btn-help {
+        letter-spacing: -0.08em;
+      }
+      [data-theme="retro"] input,
+      [data-theme="retro"] select {
+        font-family: "Courier New", monospace !important;
+      }
+
+      [data-theme="defter"] {
+        --page-bg: rgb(242, 236, 220);
+        --panel-bg: rgba(250, 244, 228, 0.97);
+        --panel-bd: rgba(160, 130, 90, 0.55);
+        --chain-bg: rgba(252, 247, 232, 0.98);
+        --chain-bd: rgba(150, 120, 80, 0.45);
+        --tab-idle-bg: rgba(220, 210, 185, 0.5);
+        --tab-idle-bd: rgba(150, 120, 80, 0.4);
+        --btn-bg: rgb(248, 242, 226);
+        --btn-shadow: rgba(120, 90, 50, 0.15);
+        --cell-bg: rgb(254, 251, 240);
+        --cell-color: rgb(40, 25, 10);
+        --cell-bd: rgb(180, 160, 120);
+        --col-hd-bg: rgb(235, 225, 195);
+        --col-hd-color: rgb(80, 55, 25);
+        --row-hd-bg: rgb(228, 218, 190);
+        --row-hd-color: rgb(90, 60, 25);
+        --empty-bg: rgb(230, 224, 205);
+        --xmark: rgba(160, 40, 20, 0.6);
+        --month-bd: rgb(100, 140, 180);
+        --year-bd: rgb(160, 40, 20);
+        --title-color: rgb(80, 45, 15);
+        --lbl-color: rgb(60, 40, 15);
+
+        --label-checked: rgb(40, 25, 10);
+        --total-ring-color: rgb(50, 35, 12);
+
+        --hint-color: rgb(130, 105, 65);
+        --count-bg: rgba(200, 215, 240, 0.35);
+        --count-bd: rgba(100, 140, 190, 0.4);
+        --count-num: rgb(40, 80, 160);
+        --scr-thumb: rgb(170, 145, 100);
+        --scr-track: rgba(200, 185, 150, 0.4);
+        --hr-color: rgb(180, 160, 120);
+        --ctitle: rgb(50, 35, 12);
+        --cinfo: rgb(100, 80, 40);
+        --prog-bg: rgba(100, 140, 180, 0.15);
+        --prog-fill: rgb(70, 120, 180);
+        --prog-txt: rgb(30, 70, 140);
+        --note-bg: rgb(255, 252, 220);
+        --note-bd: rgb(200, 180, 120);
+        --note-color: rgb(40, 25, 10);
+        --modal-ov: rgba(80, 60, 30, 0.4);
+        --modal-bg: rgb(252, 248, 232);
+        --modal-bd: rgb(180, 155, 110);
+        --inp-bg: rgb(255, 252, 240);
+        --inp-color: rgb(30, 18, 5);
+        --inp-bd: rgb(170, 145, 100);
+        --pill-bd: rgb(160, 130, 80);
+        --pill-chk: rgba(70, 120, 180, 0.25);
+        --pill-radio: rgba(100, 140, 180, 0.3);
+        --err-color: rgb(160, 30, 20);
+        --err-bg: rgb(255, 240, 200);
+        /* ── efekt & bg-chain ── */
+        --bg-chain: rgba(80, 60, 30, 0.12);
+        --fx-toggle: rgba(120, 85, 35, 0.35);
+        --fx-view: rgba(100, 70, 25, 0.3);
+        --fx-add: rgba(40, 120, 40, 0.3);
+        --fx-load: rgba(40, 80, 180, 0.25);
+        --fx-dl: rgba(20, 130, 70, 0.3);
+        --fx-reset: rgba(180, 140, 20, 0.35);
+        --fx-del: rgba(180, 40, 25, 0.35);
+      }
+      /* Defter: kâğıt dokusu + kalem çizgisi hissi */
+      [data-theme="defter"] .main-title {
+        font-family: "Georgia", "Palatino Linotype", serif !important;
+        color: rgb(60, 35, 10);
+      }
+      [data-theme="defter"] .chain-title {
+        font-family: "Georgia", "Palatino Linotype", serif !important;
+      }
+      [data-theme="defter"] .circle-cell {
+        box-shadow: inset 0 1px 2px rgba(120, 90, 50, 0.12);
+      }
+      /* Çizgili defter satırları hissi: chain card arka planına yatay çizgiler */
+      [data-theme="defter"] .chain-card {
+        background-image: repeating-linear-gradient(
+          to bottom,
+          transparent,
+          transparent calc(var(--cs) - 1px),
+          rgba(100, 140, 190, 0.18) calc(var(--cs) - 1px),
+          rgba(100, 140, 190, 0.18) var(--cs)
+        );
+      }
+
+      /* ── BASE ── */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        font-size: clamp(12px, 11px + 0.28vw, 16px);
+        scrollbar-color: var(--scr-thumb) var(--scr-track);
+      }
+      /* ── PAGE LAYOUT ── */
+      body {
+        background: var(--page-bg);
+        min-height: 100vh;
+        padding: 0.5rem 0.6rem;
+        font-family: "Segoe UI", system-ui, sans-serif;
+      }
+      /* ── ARKA PLAN ZİNCİR GÖRSELİ — chain-card içinde, scrollla birlikte ── */
+      body::before {
+        display: none !important;
+      }
+      body.bg-off .chain-card::before {
+        display: none;
+      }
+      .chain-card {
+        position: relative;
+      }
+      .chain-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-chain);
+        -webkit-mask-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/Pgo8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDIwMDEwOTA0Ly9FTiIKICJodHRwOi8vd3d3LnczLm9yZy9UUi8yMDAxL1JFQy1TVkctMjAwMTA5MDQvRFREL3N2ZzEwLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4wIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiB3aWR0aD0iMTI4MC4wMDAwMDBwdCIgaGVpZ2h0PSI2MTIuMDAwMDAwcHQiIHZpZXdCb3g9IjAgMCAxMjgwLjAwMDAwMCA2MTIuMDAwMDAwIgogcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQgbWVldCI+CjxtZXRhZGF0YT4KQ3JlYXRlZCBieSBwb3RyYWNlIDEuMTUsIHdyaXR0ZW4gYnkgUGV0ZXIgU2VsaW5nZXIgMjAwMS0yMDE3CjwvbWV0YWRhdGE+CjxnIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAuMDAwMDAwLDYxMi4wMDAwMDApIHNjYWxlKDAuMTAwMDAwLC0wLjEwMDAwMCkiCmZpbGw9IiMwMDAwMDAiIHN0cm9rZT0ibm9uZSI+CjxwYXRoIGQ9Ik00NTMgNTM2NSBjLTEwMiAtMjIgLTE5MCAtNzAgLTI2NCAtMTQ0IC04MiAtODIgLTEwNCAtMTM4IC05NyAtMjQyCjkgLTExOSA4NyAtMjE4IDIyOCAtMjg5IDg5IC00NSAxNzIgLTYzIDI5MCAtNjMgMTc1IC0xIDMxMCA0OCA0MjAgMTQ5IDU4IDU0CjYwIDU1IDk3IDQ1IDU4IC0xNyAxMjcgLTEzIDE5NCA5IGw2MCAyMCA2MiAtNjIgYzEwNyAtMTA5IDI0NiAtMTYxIDQyNyAtMTYxCjE3MyAtMSAzMTEgNDkgNDE5IDE0OSA1OSA1NCA2MSA1NSA5OCA0NSA1OCAtMTcgMTI3IC0xMyAxOTQgOSBsNjAgMjAgNjIgLTYyCmMxMDggLTExMCAyNDYgLTE2MiA0MjcgLTE2MSAxNzMgMCAzMTMgNTAgNDE5IDE1MCBsNTYgNTQgNDIgLTExIGM2MyAtMTUgMTI3Ci0xMiAxOTMgMTAgbDYwIDIwIDYyIC02MiBjMTEwIC0xMTAgMjQ3IC0xNjIgNDI4IC0xNjEgMTc0IDAgMzE3IDUyIDQxOSAxNTEKbDU0IDU0IDQzIC0xMSBjNjQgLTE2IDEyOCAtMTMgMTk0IDkgbDYwIDIwIDYzIC02NCBjMTA5IC0xMDkgMjQ2IC0xNjAgNDI3Ci0xNTkgMTc0IDAgMzE3IDUyIDQxOSAxNTEgbDU0IDU0IDQzIC0xMSBjNjQgLTE2IDEyOCAtMTMgMTk0IDkgbDYwIDIwIDYyIC02MwpjMTA4IC0xMDkgMjQ1IC0xNjEgNDI4IC0xNjAgMTcyIDAgMzI0IDU2IDQyMyAxNTUgbDUwIDUwIDQzIC0xMSBjNjQgLTE2IDEyOAotMTMgMTk0IDkgbDYwIDIwIDYyIC02MyBjMTA4IC0xMDkgMjQ1IC0xNjEgNDI4IC0xNjAgMTcyIDAgMzIxIDU1IDQyMiAxNTYKbDQ5IDQ5IDQ0IC0xMSBjNjUgLTE2IDEyOCAtMTMgMTk1IDkgbDU4IDIwIDY0IC02MyBjMTA5IC0xMTAgMjQ2IC0xNjEgNDI4Ci0xNjAgMTcyIDAgMzIxIDU1IDQyMSAxNTUgNDggNDggNDkgNDggOTEgMzggNjcgLTE1IDEzMyAtMTIgMTk4IDEwIGw1OCAyMCA2NAotNjMgYzEwOSAtMTEwIDI0NiAtMTYxIDQyOCAtMTYwIDE3MiAwIDMyMiA1NSA0MjAgMTU1IDQ4IDQ5IDQ4IDQ5IDkxIDM5IDY4Ci0xNiAxMzQgLTEzIDE5OSA5IGw1OCAyMCA2NCAtNjMgYzcwIC03MCAxNTMgLTExNiAyNTggLTE0MyA3OSAtMjEgMjQzIC0yMwozMjAgLTUgOTIgMjIgMjEwIDg0IDI2NyAxNDEgbDUxIDUxIDQzIC0xMCBjNzMgLTE3IDE3OSAtMTIgMTc5IDkgMCA1IC0yNyA2Ci01OSAzIC02MCAtNiAtMTE1IDEgLTEzOSAxNiAtMTEgNyAtMTEgMTQgNCA0MiAxMyAyNCAxOCA1NiAxOCAxMDkgMCA1MyAtNSA4NQotMTggMTA5IC0xNSAyOCAtMTUgMzUgLTQgNDIgMjQgMTUgNzkgMjIgMTM5IDE2IDMyIC0zIDU5IC0yIDU5IDMgMCAyMSAtMTE5CjI3IC0xODIgMTAgLTM3IC0xMSAtMzkgLTEwIC05MSA0MiAtMTcwIDE3MCAtNDg4IDIwOSAtNzI2IDg4IC01OSAtMjkgLTE0NwotMTA1IC0xNjggLTE0MyAtOSAtMTggLTEyIC0xOCAtNzEgMiAtNjcgMjMgLTE0NiAyNyAtMjAzIDExIC0zNiAtMTAgLTM4IC05Ci05MSA0MiAtMTc2IDE3MiAtNDk3IDIxMCAtNzMxIDg2IC02MCAtMzIgLTE0NCAtMTA0IC0xNjQgLTE0MSAtOSAtMTggLTEyIC0xOAotNzEgMiAtNjcgMjMgLTE0NiAyNyAtMjA0IDExIC0zNSAtMTAgLTM3IC05IC05MCA0MiAtMTcyIDE3MiAtNDk4IDIwOSAtNzMxCjg2IC02MCAtMzIgLTE0NCAtMTA0IC0xNjQgLTE0MSAtOSAtMTggLTEyIC0xOCAtNzEgMiAtNjcgMjMgLTE0NiAyNyAtMjA0IDExCi0zNSAtMTAgLTM3IC05IC05MCA0MiAtMjA5IDIwNyAtNjI1IDIxMiAtODM3IDkgLTI3IC0yNSAtNTMgLTU0IC01OCAtNjQgLTkKLTE4IC0xMiAtMTggLTcxIDIgLTY3IDIzIC0xNDYgMjcgLTIwNCAxMSAtMzUgLTEwIC0zNyAtOSAtOTEgNDQgLTE2OCAxNjgKLTQ5OSAyMDcgLTcyOCA4NSAtNTkgLTMyIC0xMzIgLTkzIC0xNjEgLTEzNyBsLTE2IC0yMyAtNjAgMjAgYy02NiAyMyAtMTQ2IDI3Ci0yMDMgMTEgLTM0IC0xMCAtMzcgLTggLTkxIDQ1IC0xNzUgMTY4IC01MDAgMjA2IC03MjkgODQgLTU5IC0zMiAtMTMyIC05MwotMTYxIC0xMzcgbC0xNiAtMjMgLTYwIDIwIGMtNjYgMjMgLTE0NiAyNyAtMjAzIDExIC0zNCAtMTAgLTM3IC04IC05MSA0NQotMjM0IDIyNiAtNjk0IDIwMiAtODg1IC00OCBsLTIxIC0yOCAtNjEgMjEgYy02NSAyMiAtMTMyIDI1IC0xOTggMTAgLTQyIC0xMAotNDIgLTEwIC04OCAzOSAtMTIxIDEyOSAtMzY2IDE5MSAtNTc4IDE0NiAtMTI2IC0yNyAtMjUxIC0xMDIgLTMxMyAtMTg4IGwtMjAKLTI5IC02MiAyMSBjLTY4IDIzIC0xMzEgMjYgLTE5NSAxMCBsLTQyIC0xMCAtNjAgNTggYy0yMzYgMjI4IC03MDUgMTk2IC04ODgKLTYwIC0xMiAtMTggLTE1IC0xOCAtNzUgMiAtNjcgMjMgLTEzNiAyNyAtMTk1IDEwIC0zOCAtMTAgLTM5IC0xMCAtMTAwIDQ4Ci03MiA2NyAtMTQ2IDEwNiAtMjU0IDEzNCAtODkgMjIgLTIyNiAyNCAtMzIwIDR6IG0zMjEgLTQyIGM5OCAtMjQgMTk3IC04MwoyNDcgLTE0NyBsMjAgLTI2IC0zNSAtMzMgYy01OSAtNTYgLTcxIC0xMTggLTM2IC0xODYgMTAgLTIxIDMyIC00OCA0NiAtNTkKbDI4IC0xOSAtNTAgLTUwIGMtMjY2IC0yNjYgLTg1OCAtMTMxIC04NTcgMTk2IDAgMjQxIDMyMCA0MDQgNjM3IDMyNHogbTEyNjEKMCBjODMgLTIwIDE2MyAtNjUgMjE5IC0xMjIgbDQ3IC00NyAtNDAgLTQyIGMtNjggLTcxIC02OCAtMTU1IDAgLTIyMyBsNDAgLTQwCi01MSAtNDkgYy0xNTQgLTE1MCAtNDQ2IC0xODMgLTY2MSAtNzUgLTU3IDMwIC0xNTkgMTI1IC0xNTkgMTQ5IDAgOSA5IDMwIDIwCjQ4IDI2IDQzIDI2IDExMyAwIDE1NiAtMTEgMTggLTIwIDM5IC0yMCA0OCAwIDggMjMgNDAgNTIgNzAgNzUgNzkgMTcyIDEyMwozMjggMTQ4IDQwIDcgMTYwIC00IDIyNSAtMjF6IG0xMjQwIDYgYzgyIC0xOCAxODUgLTczIDIzOSAtMTI4IGw0OSAtNTAgLTMyCi0yNyBjLTgxIC02OCAtODMgLTE2NyAtNSAtMjQxIGwzNSAtMzMgLTUxIC01MCBjLTE1OCAtMTUzIC00NTUgLTE4NCAtNjcxIC02OQotNjAgMzIgLTE0OSAxMTkgLTE0OSAxNDUgMCA3IDkgMjggMjAgNDYgMjYgNDMgMjYgMTEzIDAgMTUzIC0yOSA0NCAtMjUgNjEgMzAKMTE5IDEyMiAxMjkgMzI0IDE4MCA1MzUgMTM1eiBtMTI2MCAwIGM4MiAtMTggMTg1IC03MyAyMzkgLTEyOCBsNDkgLTUwIC0zMgotMjcgYy04MSAtNjcgLTgzIC0xNjcgLTYgLTI0MCBsMzUgLTMzIC01MCAtNTAgYy0xOTAgLTE5MCAtNTkzIC0xODUgLTc3NSAxMAotNTEgNTQgLTU0IDY4IC0yNCAxMTYgMjcgNDMgMjIgMTE2IC05IDE2MCAtMjAgMjkgLTIwIDMwIC0zIDU5IDI3IDQzIDEwMyAxMDkKMTU4IDEzNyAxMjAgNjEgMjY5IDc4IDQxOCA0NnogbTEyNjAgMCBjODIgLTE4IDE4NSAtNzMgMjM5IC0xMjggbDQ5IC01MCAtMzIKLTI3IGMtNjkgLTU4IC04MiAtMTQyIC0zMSAtMjEyIDE3IC0yMyAzNSAtNDIgNDAgLTQyIDIzIDAgNyAtMzMgLTM2IC03NCAtMTgzCi0xNzYgLTU1NiAtMTgwIC03NDYgLTggLTIzIDIwIC00OSA1MCAtNTkgNjYgLTE3IDI5IC0xNyAzMCA0IDYwIDMxIDQ0IDMxIDEyOQotMSAxNzQgbC0yMyAzMiAyMCAyOCBjMTEzIDE1OSAzNDIgMjMxIDU3NiAxODF6IG0xMjYwIC0xIGM3OSAtMTcgMTc1IC02NyAyMzMKLTEyMSBsNTMgLTUxIC0zNCAtMzUgYy00NiAtNDggLTU3IC03MiAtNTcgLTEyMSAwIC00OCAxMSAtNzMgNTIgLTExNyBsMzEgLTMyCi0yMSAtMjYgYy01NCAtNjkgLTE2MCAtMTI3IC0yNzUgLTE1MiAtODQgLTE3IC0yMzUgLTEyIC0zMDggMTEgLTEwNiAzMyAtMjA5CjEwMyAtMjUwIDE3MCAtMTcgMjkgLTE3IDMwIDMgNTkgMzQgNDcgMzUgMTA3IDQgMTYyIC0yNiA0NyAtMjYgNDcgLTcgNzQgMTEzCjE1OSAzNDIgMjMwIDU3NiAxNzl6IG0xMjk1IC0xMCBjMzYgLTExIDg1IC0zMSAxMDkgLTQ1IDUzIC0zMSAxMzEgLTEwMSAxMzEKLTExOCAwIC02IC0xMiAtMjIgLTI2IC0zNiAtMzcgLTM0IC01NCAtNzIgLTU0IC0xMTkgMCAtNDggMTEgLTczIDUzIC0xMTggbDMxCi0zMiAtNDggLTQ5IGMtOTYgLTk4IC0yNDcgLTE0NyAtNDE2IC0xMzcgLTUyIDMgLTExNiAxMiAtMTQxIDIwIC0xMDQgMzIgLTIwMAo5NyAtMjUwIDE2OCBsLTIwIDI4IDIyIDMxIGMzNCA0OSAzNyAxMDkgNSAxNjUgbC0yNiA0NiAyOCAzOSBjMTE3IDE1OSAzNzQKMjI2IDYwMiAxNTd6IG0xMjYwIDAgYzM2IC0xMSA4NSAtMzEgMTA5IC00NSA1MyAtMzEgMTMxIC0xMDEgMTMxIC0xMTggMCAtNgotMTIgLTIyIC0yNiAtMzYgLTM3IC0zNCAtNTQgLTcyIC01NCAtMTE5IDAgLTQ4IDExIC03MyA1MyAtMTE4IGwzMSAtMzIgLTQ0Ci00NSBjLTIwNiAtMjEwIC02NDYgLTE4NSAtODEwIDQ2IGwtMjAgMjcgMjUgNDQgYzMyIDU1IDMyIDEwMCAtMSAxNTUgLTI0IDQyCi0yNSA0NSAtOSA2OSA0NCA2OCAxNTEgMTQzIDI0NSAxNzMgMTA2IDM0IDI1NiAzMyAzNzAgLTF6IG0xMjYwIDAgYzM2IC0xMSA4NQotMzEgMTA5IC00NSA1MCAtMjkgMTMxIC0xMDAgMTMxIC0xMTYgMCAtNSAtMTUgLTI3IC0zNCAtNDggLTY2IC03MiAtNjUgLTE0NgoxIC0yMjAgbDM2IC00MCAtNDMgLTQ0IGMtODMgLTg1IC0yMDIgLTEzMyAtMzUwIC0xNDEgLTE2NiAtMTAgLTMwMSAzMiAtNDA1CjEyOCAtNzcgNzAgLTgwIDc4IC01MCAxMzAgMzIgNTUgMzEgOTMgLTEgMTUzIGwtMjUgNDggMjkgNDEgYzM2IDUwIDEzMSAxMTcKMjA2IDE0NSAxMTcgNDMgMjcwIDQ3IDM5NiA5eiBtMTI0MCA1IGMzMCAtNyA3OCAtMjUgMTA3IC0zOSA1NiAtMjcgMTUzIC0xMDgKMTUzIC0xMjggMCAtNyAtMTYgLTI3IC0zNSAtNDYgLTY4IC02NiAtNjcgLTE0NSAzIC0yMjIgbDM1IC0zOSAtNDMgLTQ0IGMtMTQ4Ci0xNTEgLTQ0MiAtMTg5IC02NTQgLTg1IC02MiAzMSAtMTMxIDg4IC0xNjEgMTM0IC0xNSAyMiAtMTQgMjcgMTAgNzEgMzIgNjAKMzIgOTAgMCAxNTAgbC0yNiA0OCAyNyAzOSBjMTA0IDE1MCAzNTcgMjIwIDU4NCAxNjF6IG0tMTA3OTAgLTE3MiBjMzkgLTE0IDQ0Ci0yMCA0MSAtNDEgLTIgLTE0IC0zIC02MyAtMyAtMTEwIDAgLTQ3IDEgLTk2IDMgLTExMCA0IC0yMiAtMiAtMjcgLTQ2IC00MwotNTUgLTE5IC0xODcgLTE5IC0yMDcgMSAtOCA4IC02IDIyIDYgNTIgMjAgNTEgMjEgMTQ5IDEgMTk3IC05IDIwIC0xNCA0MiAtMTEKNDkgMTAgMjcgMTUxIDMxIDIxNiA1eiBtMTI2MCAwIGMzOSAtMTUgNDQgLTIwIDQwIC00MiAtNyAtNDAgLTUgLTE4MiAzIC0yMTAKOCAtMjMgNCAtMjcgLTM1IC00NSAtMzEgLTE0IC02NSAtMTkgLTEyNSAtMTkgLTEwMSAwIC0xMTIgOCAtODkgNjUgMjAgNTEgMjEKMTQ5IDEgMTk3IC05IDIwIC0xNCA0MiAtMTEgNDkgMTAgMjcgMTUxIDMxIDIxNiA1eiBtMTI2MCAwIGMzOSAtMTUgNDQgLTIwIDQwCi00MiAtNyAtNDAgLTUgLTE4MiAzIC0yMTAgOCAtMjMgNCAtMjcgLTM1IC00NSAtNDkgLTIyIC0xOTkgLTI3IC0yMTggLTggLTkgOQotOCAyNCA0IDU4IDkgMjYgMTYgNjkgMTYgOTYgMCAyNyAtNyA3MCAtMTYgOTYgLTggMjUgLTEyIDUwIC03IDU0IDI1IDI0IDE1MwoyNSAyMTMgMXogbTEyNTUgMSBjNTQgLTE4IDUzIC0xNiAzNyAtOTcgLTEwIC00NiAtNiAtODcgMTIgLTE1NiA3IC0yMyAzIC0yNwotMzYgLTQ1IC00OSAtMjIgLTE5OSAtMjcgLTIxOCAtOCAtOSA5IC04IDI0IDQgNTggOSAyNiAxNiA2OSAxNiA5NiAwIDI3IC03CjcwIC0xNiA5NiAtOCAyNSAtMTIgNTAgLTcgNTQgMjQgMjQgMTQyIDI1IDIwOCAyeiBtMTI1MyAzIGMyOCAtOSA1MyAtMTkgNTYKLTIzIDIgLTQgLTIgLTMzIC0xMSAtNjUgLTE0IC01NyAtMTIgLTg3IDEyIC0xNzIgMTMgLTQ0IC0xNDAgLTgxIC0yMzEgLTU2CmwtNDIgMTEgMTkgNTAgYzIzIDYwIDI0IDEzMiA0IDE5MCAtOCAyMyAtMTUgNDcgLTE1IDUyIDAgMjkgMTI3IDM3IDIwOCAxM3oKbTEyNjAgMCBjMjggLTkgNTMgLTE5IDU2IC0yMyAyIC00IC0zIC0zNCAtMTEgLTY2IC0xNSAtNTggLTEyIC05NyAxMiAtMTcxIDUKLTE3IC0xIC0yNCAtMzIgLTM5IC00OCAtMjMgLTE0NiAtMzIgLTE5OSAtMTcgbC00MiAxMSAxOSA1MCBjMjQgNjQgMjQgMTM2IDAKMTk5IGwtMTkgNTAgMjcgMTAgYzQwIDE1IDEzMiAxMyAxODkgLTR6IG0xMjg1IC0xMCBjMjggLTEzIDM2IC0yMiAzMSAtMzQgLTI2Ci02MyAtMjYgLTE1MyAxIC0yMjIgMTQgLTM4IC0xNDYgLTczIC0yMzEgLTUwIGwtNDEgMTEgMTggNTIgYzIzIDY3IDIzIDEyOSAwCjE5NSBsLTE4IDUyIDI2IDExIGM0MCAxNSAxNzAgNiAyMTQgLTE1eiBtMTI2MCAtMSBjMjcgLTEzIDM2IC0yMiAzMSAtMzMgLTI2Ci02MyAtMjYgLTE1MyAxIC0yMjIgMTUgLTM4IC0xNDcgLTczIC0yMzMgLTUwIC0zNSAxMCAtNDIgMTYgLTM2IDI5IDM5IDkzIDQzCjE0OSAxNSAyMjkgbC0xOCA1MiAyNiAxMSBjNDAgMTUgMTcwIDYgMjE0IC0xNnogbTEyNTggMiBsMzUgLTE4IC0xNSAtNTggYy0xNQotNTcgLTEwIC0xMjIgMTMgLTE4MSAxNiAtMzggLTE0NiAtNzMgLTIzMiAtNTAgLTM1IDEwIC00MiAxNiAtMzYgMjkgNDAgOTQgNDMKMTQ2IDE1IDIyNyBsLTE5IDU0IDI2IDEwIGM0MCAxNiAxNzEgNyAyMTMgLTEzeiBtLTEwMzMzIC04NSBjMTMgLTUzIDUgLTEzNQotMTcgLTE3MCAtMTUgLTIzIC01NiAxMSAtNzYgNjMgLTE0IDM2IC0xNSA1MSAtNiA3OSAxNCA0MiA1NiA5MCA3NCA4NCA2IC0yCjE4IC0yNyAyNSAtNTZ6IG0xMjUyIDI4IGMyNiAtNjEgOCAtMjA5IC0yNSAtMjA5IC0xOCAwIC01MSA0MyAtNjUgODYgLTE0IDQxCi0xIDg5IDM1IDEyOCAzMSAzMyA0MCAzMyA1NSAtNXogbTEyNjAgLTUgYzIzIC03MCA3IC0yMDQgLTI1IC0yMDQgLTE4IDAgLTYyCjU3IC03MCA5MyAtMTMgNDkgMzggMTQ3IDc2IDE0NyA0IDAgMTMgLTE2IDE5IC0zNnogbTEyNTkgNSBjMjMgLTY3IDYgLTIwOQotMjUgLTIwOSAtMjAgMCAtNjQgNjUgLTcxIDEwMyAtNSAzNCAxMyA4MyA0NSAxMjAgMjIgMjUgMzkgMjEgNTEgLTE0eiBtMTI2MAowIGMyMyAtNjYgNCAtMjA5IC0yOCAtMjA5IC01IDAgLTIzIDE3IC0zOCAzNyAtMjEgMjggLTI4IDQ3IC0yOCA4MyAwIDM2IDcgNTUKMjggODMgMzQgNDUgNTIgNDcgNjYgNnogbTEyNjAgMCBjMjMgLTY2IDQgLTIwOSAtMjggLTIwOSAtMTcgMCAtNjAgNjAgLTY3IDk0Ci03IDQyIDEgNzEgMzMgMTE0IDMwIDQwIDQ4IDQxIDYyIDF6IG0xMjYwIDAgYzIzIC02NiA0IC0yMDkgLTI4IC0yMDkgLTE0IDAKLTYwIDU4IC02NyA4NiAtMTAgMzggNCA5MCAzMiAxMjQgMzMgMzggNDkgMzggNjMgLTF6IG0xMjYwIC02IGMyMSAtNzUgNCAtMjAzCi0yOCAtMjAzIC0xNCAwIC02MCA1OCAtNjcgODYgLTEwIDM4IDQgOTAgMzIgMTI0IDM0IDQwIDUxIDM4IDYzIC03eiBtMTI1OSAtMgpjMTUgLTQ3IDE1IC0xMDQgMiAtMTUzIC0xMyAtNDcgLTI2IC01NSAtNTIgLTMyIC02MiA1NyAtNjQgMTM3IC01IDIwMiAyOSAzMQo0MiAyOCA1NSAtMTd6IG0xMjYwIDAgYzE1IC00NyAxNSAtMTA0IDIgLTE1MyAtMTMgLTQ3IC0yNiAtNTUgLTUyIC0zMiAtNjIgNTcKLTY0IDEzNyAtNSAyMDIgMjkgMzEgNDIgMjggNTUgLTE3eiBtLTEwOTYzIC04MCBjMCAtNTEgLTIwIC05MCAtMzggLTcyIC0xMgoxMiAtMTQgMTIyIC0yIDE0MCAxNSAyNSA0MCAtMTYgNDAgLTY4eiBtMTI1MiA0OCBjMjIgLTQyIDggLTExNiAtMjMgLTEyNiAtMTUKLTUgLTI2IDY3IC0xOCAxMTcgNyA0NCAyMiA0OCA0MSA5eiBtMTI1MiAxOCBjMjAgLTI1IDIzIC03MiA3IC0xMTAgLTggLTIwCi0xOSAtMzcgLTI0IC0zNyAtMTQgMCAtMjMgNzQgLTE2IDEyMCA3IDQyIDE1IDQ4IDMzIDI3eiBtMTI3MCAtMzMgYzEyIC0zNCAxMQotNDQgLTIgLTc2IC05IC0yMSAtMjAgLTM4IC0yNiAtMzggLTE0IDAgLTI0IDc0IC0xNiAxMjEgOCA0OSAyNSA0NyA0NCAtN3oKbTEyNjAgMCBjMTIgLTM0IDExIC00NCAtMiAtNzYgLTkgLTIxIC0yMCAtMzggLTI2IC0zOCAtMTQgMCAtMjQgNzQgLTE2IDEyMSA4CjQ5IDI1IDQ3IDQ0IC03eiBtMTI1NyAxMCBjMTMgLTMxIDEzIC00MiAyIC03NyAtMTcgLTUzIC0zNSAtNTggLTQ0IC0xMyAtOCA0MwozIDEyNiAxNyAxMjYgNiAwIDE3IC0xNiAyNSAtMzZ6IG0xMjYxIC03IGMxMCAtMjkgMTAgLTQ1IDAgLTc0IC0yMiAtNjYgLTQ3Ci00NiAtNDcgMzcgMCA4MyAyNSAxMDMgNDcgMzd6IG0xMjUzIDI0IGMxNiAtMzAgMTIgLTEwNCAtNyAtMTMxIGwtMTcgLTI0IC03CjI0IGMtMTUgNTQgLTcgMTUwIDEyIDE1MCA0IDAgMTMgLTkgMTkgLTE5eiBtMTI2MCAwIGMxNiAtMzAgMTIgLTEwNCAtNyAtMTMxCmwtMTcgLTI0IC03IDI0IGMtMTUgNTQgLTcgMTUwIDEyIDE1MCA0IDAgMTMgLTkgMTkgLTE5eiIvPgo8cGF0aCBkPSJNNzM1IDM4OTggYy0zOCAtNSAtODkgLTExIC0xMTIgLTExIC0yMiAtMSAtMzcgLTUgLTMyIC04IDUgLTMgLTEwCi0xMSAtMzMgLTE4IC0yNCAtNyAtNjMgLTI0IC04NyAtMzcgLTI0IC0xMyAtNDYgLTIyIC00OCAtMjAgLTMgMyAxNyAxNiA0NCAzMAoyNiAxNCA0NCAyNSAzOCAyNSAtMTcgMSAtODggLTQzIC04OCAtNTQgMSAtNSAtMTIgLTI1IC0yOCAtNDMgLTUyIC01OSAtNTEKLTEwOCA2IC0xNzAgMzUgLTQwIDEwOSAtODEgMTgzIC0xMDMgMjggLTggMzggLTE1IDMwIC0yMCAtNyAtNSA1IC02IDI3IC00IDI5CjQgMzQgMyAyMCAtNCAtMzYgLTE2IDY4IC0yNiAyNTAgLTI1IDEzOSAxIDE4NCA1IDI0NyAyMiA5OCAyNyAxNzMgNjIgMjI1IDEwNwo1MSA0MyA5MiA0NiAxMzUgOSAzOCAtMzEgMTA5IC02OCAxNjYgLTg1IDMwIC04IDM5IC0xNSAzMCAtMjEgLTggLTUgMyAtNyAyNwotMyAzMSA0IDM1IDMgMjAgLTUgLTE1IC04IC0xMCAtOSAyNSAtNSAzMSAzIDM5IDIgMjUgLTQgLTMzIC0xNCAxMDQgLTI0IDI0NAotMTggMTkzIDkgMzI1IDQ4IDQxNyAxMjMgNjQgNTMgMTAxIDU3IDE0OCAxNyA0MiAtMzUgMTM4IC04MCAyMDQgLTk1IDQyIC05CjUwIC0xNCAzNiAtMjAgLTExIC00IDEgLTYgMzEgLTMgMzQgMyA0MiAyIDI1IC00IC00MSAtMTMgMTE3IC0yNSAyNTAgLTE4IDE4Mgo5IDMzNiA1NyA0MTcgMTMxIDUwIDQ1IDkxIDQ4IDEzNyA5IDQyIC0zNSAxMzggLTgwIDIwNCAtOTUgNDIgLTkgNTAgLTE0IDM2Ci0yMCAtMTEgLTQgMSAtNiAzMSAtMyAzMyAzIDQyIDIgMjUgLTMgLTIxIC03IC0xNiAtOSAzMCAtMTUgMjQ3IC0zMCA1MjQgMjUKNjM3IDEyNyA1MyA0NyA4NyA0NyAxNTIgMSA1NSAtNDAgMTQ1IC03OSAyMDYgLTkxIDMzIC02IDM2IC04IDIwIC0xNSAtMTMgLTYKLTIgLTcgMzAgLTQgMzQgMyA0MiAyIDI1IC00IC00MCAtMTMgMTE0IC0yNCAyNDkgLTE5IDE4NiA5IDM1NSA2MyA0MjUgMTM3IDQyCjQ0IDk0IDQzIDE0OCAtMyA0MiAtMzcgMTM4IC03OSAyMDMgLTkyIDMyIC02IDM2IC05IDIwIC0xNCAtNDEgLTE1IDE1NiAtMzMKMjk1IC0yNyAyMDAgOCAzNTkgNTcgNDM4IDEzNyAzOSAzOSA5NCA0MiAxMzEgNiAzMSAtMjkgMTA5IC02OSAxNjkgLTg3IDI4IC04CjM4IC0xNSAzMCAtMjAgLTcgLTUgNSAtNiAyNyAtNCAyOSA0IDM0IDMgMjAgLTQgLTM2IC0xNiA2OCAtMjYgMjUwIC0yNSAxMzkgMQoxODQgNSAyNDcgMjIgMTAwIDI3IDE3OSA2NSAyMjUgMTA4IDQ1IDQzIDkxIDQ2IDEzNSA4IDM4IC0zMSAxMDkgLTY4IDE2NiAtODUKMzAgLTggMzkgLTE1IDMwIC0yMSAtOCAtNSAzIC03IDI3IC0zIDMxIDQgMzUgMyAyMCAtNSAtMTUgLTggLTEwIC05IDI1IC01IDMxCjMgMzkgMiAyNSAtNCAtMzMgLTE0IDEwMyAtMjQgMjQ0IC0xOCAxOTMgOCAzMzUgNTIgNDI4IDEzMiA1MSA0NCA5MiA0NiAxMzcgOAo0MiAtMzUgMTM4IC04MCAyMDQgLTk1IDQyIC05IDUwIC0xNCAzNiAtMjAgLTExIC00IDEgLTYgMzEgLTMgMzQgMyA0MiAyIDI1Ci00IC00MiAtMTQgOTggLTI0IDIzOSAtMTggMTkzIDggMzQ0IDU1IDQyOCAxMzEgNTAgNDUgOTEgNDggMTM3IDkgNDIgLTM1IDEzOAotODAgMjA0IC05NSA0MiAtOSA1MCAtMTQgMzYgLTIwIC0xMSAtNCAxIC02IDMxIC0zIDMzIDMgNDIgMiAyNSAtMyAtMjEgLTcKLTE2IC05IDMwIC0xNSAyNDcgLTMwIDUyNCAyNSA2MzcgMTI3IDUyIDQ3IDkwIDQ4IDE0NCA1IDQ1IC0zNSAxNTQgLTg0IDIxNAotOTUgMzMgLTYgMzYgLTggMjAgLTE1IC0xMyAtNiAtMiAtNyAzMCAtNCAzNCAzIDQyIDIgMjUgLTQgLTQwIC0xMyAxMTQgLTI0CjI0OSAtMTkgMTg2IDkgMzU1IDYzIDQyNSAxMzcgMjQgMjUgMzggMzEgNzEgMzEgMjIgMCA0NiA1IDUzIDEyIDE2IDE2IDE2IDEzMAowIDE0NiAtNyA3IC0zOSAxMiAtNzYgMTIgLTUyIDAgLTY5IDQgLTk2IDI1IC00NSAzNSAtMTM1IDcwIC0yMzEgOTEgLTEwOCAyMwotMzQxIDIzIC00NDYgMCAtNDIgLTkgLTgzIC0xNSAtOTAgLTEzIC04IDIgLTEwIDIgLTYgLTEgNyAtMyAtMTA2IC02MiAtMTE5Ci02MiAtMyAwIC0yIDUgMiAxMiA0IDcgMyA4IC01IDQgLTYgLTQgLTkgLTExIC02IC0xNiAxMSAtMTcgLTI4IC0zMyAtOTQgLTM4Ci02MyAtNCAtNzIgLTIgLTEwNCAyMiAtMTQ0IDExMCAtNTA1IDE0NiAtNzQ0IDc1IC0zNyAtMTIgLTc4IC0yMiAtOTAgLTIyIC0xMQotMSAtMTkgLTYgLTE1IC0xMSAzIC01IC0yIC02IC0xMiAtMyAtOSA0IC0xNSAzIC0xMiAtMiAzIC01IC01IC0xNiAtMTkgLTI1Ci0zNSAtMjMgLTQ1IC0xOSAtMTUgNSBsMjUgMjEgLTI1IC0xNCBjLTE0IC05IC0yNSAtMjEgLTI1IC0yOSAwIC05IC0xOSAtMTQKLTY3IC0xNyAtNjEgLTMgLTcxIC0xIC0xMTIgMjcgLTExNCA3OSAtMzYyIDEyNCAtNTU3IDEwMiAtMTQ5IC0xNyAtMjA3IC0zNAotMzQzIC05OSAtNSAtMyAtNiAwIC0yIDcgMTEgMTcgMCAxMyAtMTUgLTYgLTEyIC0xNSAtMTIgLTE2IDEgLTggMTIgNyAxMyA2IDMKLTYgLTcgLTkgLTM1IC0xNSAtNzYgLTE3IC01NyAtMyAtNzAgMCAtMTEzIDI3IC0xMzUgODYgLTM2NCAxMjYgLTU2OSAxMDAgLTU1Ci03IC0xMTcgLTEzIC0xMzcgLTEzIC0yMSAwIC0zMyAtMyAtMjcgLTYgNSAtNCAtMTAgLTEyIC0zMyAtMTkgLTI0IC03IC02MwotMjQgLTg3IC0zNyAtNDkgLTI3IC01NSAtMjkgLTQ1IC0xMiA0IDcgMyA4IC01IDQgLTYgLTQgLTkgLTExIC02IC0xNiAzIC00Ci0zIC0xNCAtMTIgLTIxIC0xNSAtMTIgLTE2IC0xMiAtOSA1IDYgMTkgNiAxOSAtMTIgMyAtMzEgLTI4IC0xMDkgLTIyIC0xNjAKMTMgLTEyNCA4MyAtMzYzIDEyNSAtNTY3IDk5IC01NSAtNyAtMTE3IC0xMyAtMTM3IC0xMyAtMjEgMCAtMzMgLTMgLTI4IC02IDYKLTQgLTE0IC0xNCAtNDQgLTI0IC0zMCAtOSAtNzggLTMyIC0xMDYgLTUxIC0yOSAtMTkgLTUwIC0yOSAtNDggLTIzIDIgNiAzMQoyNyA2NCA0NSAzMiAxOCA1NSAzMyA0OSAzMyAtMTUgMCAtMTA5IC01NiAtMTI0IC03NCAtOSAtMTEgLTMwIC0xNiAtNjMgLTE2Ci0zOSAwIC02MiA4IC0xMTQgMzkgLTEyNyA3NyAtMzQ0IDExMyAtNTQyIDkxIC02NCAtOCAtMTMyIC0xNCAtMTUwIC0xNCAtMjAgMQotMjggLTIgLTIwIC04IDEwIC02IDEwIC04IDEgLTggLTI0IDAgLTEyMiAtNDEgLTE1OCAtNjYgLTIxIC0xNCAtMzkgLTIzIC00MgotMjEgLTIgMyAxMiAxNSAzMSAyNyAyMCAxMiAzNiAyNCAzNiAyNyAwIDcgLTQ5IC0yNSAtNzYgLTQ4IC0zMiAtMjkgLTExNiAtMjYKLTE1OCA2IC00NSAzNSAtMTM1IDcwIC0yMzEgOTEgLTEwOCAyMyAtMzQxIDIzIC00NDYgMCAtNDIgLTkgLTgzIC0xNSAtOTAgLTEzCi04IDIgLTEwIDIgLTYgLTEgNyAtMyAtMTA2IC02MiAtMTE5IC02MiAtMyAwIC0yIDUgMiAxMiA0IDcgMyA4IC01IDQgLTYgLTQKLTkgLTExIC02IC0xNiAxMSAtMTcgLTI4IC0zMyAtOTQgLTM4IC02MyAtNCAtNzIgLTIgLTEwNCAyMiAtMTQ0IDExMCAtNTA1CjE0NiAtNzQ0IDc1IC0zNyAtMTIgLTc4IC0yMiAtOTAgLTIyIC0xMSAtMSAtMTkgLTYgLTE1IC0xMSAzIC01IC0yIC02IC0xMiAtMwotOSA0IC0xNSAzIC0xMiAtMiAzIC01IC01IC0xNiAtMTkgLTI1IC0zNSAtMjMgLTQ1IC0xOSAtMTUgNSBsMjUgMjEgLTI1IC0xNApjLTE0IC05IC0yNSAtMjEgLTI1IC0yOSAwIC05IC0xOSAtMTQgLTY3IC0xNyAtNjAgLTMgLTcxIC0xIC0xMTAgMjUgLTI0IDE2Ci01NiAzNSAtNzMgNDIgLTEyMSA1MyAtMzI5IDgwIC00ODYgNjIgLTE0OSAtMTcgLTIwNyAtMzQgLTM0MyAtOTkgLTUgLTMgLTUgMQowIDkgNyAxMiA1IDEyIC05IDAgLTIwIC0xNiAtMjMgLTI2IC00IC0xNSA5IDYgOSA1IDAgLTcgLTcgLTkgLTM1IC0xNSAtNzYKLTE3IC01NyAtMyAtNzAgMCAtMTEzIDI3IC0xMzUgODYgLTM2NiAxMjcgLTU2OSAxMDAgLTU1IC03IC0xMTcgLTEzIC0xMzcgLTEzCi0yMSAwIC0zMyAtMyAtMjcgLTYgNSAtNCAtMTAgLTEyIC0zMyAtMTkgLTI0IC03IC02MyAtMjQgLTg3IC0zNyAtNDkgLTI3IC01NQotMjkgLTQ1IC0xMiA0IDcgMyA4IC01IDQgLTYgLTQgLTkgLTExIC02IC0xNiAzIC00IC0zIC0xNCAtMTIgLTIxIC0xNSAtMTIKLTE2IC0xMiAtOSA1IDYgMTkgNiAxOSAtMTIgMyAtMzEgLTI4IC0xMDkgLTIyIC0xNjAgMTMgLTU0IDM2IC0xMzMgNjYgLTIyNAo4NSAtOTIgMjAgLTI3NiAyNiAtMzYzIDEzeiBtMjY1IC05OSBjLTE5IC03IC0xNSAtOCAxNyAtNCA0OSA2IDE0MCAtMjQgMTY4Ci01NSAxNCAtMTYgMTYgLTMwIDExIC02NyAtNyAtNTYgLTI0IC03MyAtMTAyIC0xMDIgLTE2MyAtNjIgLTQ0MSAtMzUgLTUyNiA1MAotMzggMzggLTM1IDU4IDE2IDk3IDY2IDQ5IDE0NCA3MiAyODEgODEgMTYzIDExIDE2NSAxMSAxMzUgMHogbTExMDAgMCBjLTE5Ci03IC0xNSAtOCAxNyAtNCA0OSA2IDE0MCAtMjQgMTY4IC01NSAxNCAtMTYgMTYgLTI5IDExIC02NyAtMyAtMjYgLTE0IC01NgotMjQgLTY1IC0yNyAtMjcgLTEyMSAtNTcgLTIxNCAtNjcgLTIzMSAtMjYgLTQ2OCA2NiAtNDA4IDE1OSA1IDggMTAgMTAgMTAgMwowIC02IDE0IDIgMzEgMTggNDQgNDEgMTQ0IDY5IDI3OSA3OCAxNTggMTEgMTYwIDExIDEzMCAweiBtMTE2NyAtMyBjMjggLTggNzAKLTI0IDkyIC0zNyAzNSAtMTkgNDEgLTI4IDQxIC01NSAwIC00NiAtMTEgLTk0IC0yMiAtOTQgLTUgMCAtNiA1IC0yIDEyIDQgNyAzCjggLTUgNCAtNiAtNCAtOSAtMTIgLTYgLTE3IDkgLTE0IC04NSAtNTEgLTExNSAtNDQgLTE3IDQgLTIxIDMgLTExIC00IDE5IC0xMgotNzIgLTI1IC0xODEgLTIzIC0xNTEgMSAtMjgyIDQ5IC0zMDggMTEyIC0xMiAyOSAtOSA0NSA5IDQ1IDQgMCAxNSA4IDI1IDE4CjUwIDUwIDE0MiA3NyAyOTEgODcgNjEgNCAxMTcgOCAxMjUgOCA4IDEgMzggLTQgNjcgLTEyeiBtMTAzOCAzIGMtMjMgLTYgLTE5Ci03IDIwIC00IDM2IDQgNDYgMiAzNSAtNSAtMTEgLTggLTkgLTkgMTEgLTUgMTggNSA0MyAtMiA3OCAtMjAgbDUyIC0yNiAtMwotNjEgYy0yIC00MSAtOCAtNjMgLTE3IC02NiAtOSAtMyAtMTEgMCAtNiA4IDUgOSA0IDExIC00IDYgLTYgLTQgLTkgLTEyIC01Ci0xNyA5IC0xNSAtODQgLTUyIC0xMTQgLTQ1IC0yMCA1IC0yMyA0IC0xMiAtNCA4IC01IDEzIC0xMCAxMCAtMTAgLTMgMCAtNDIKLTQgLTg3IC0xMCAtMTQ2IC0xNiAtMzE0IDE1IC0zNzcgNzAgLTM3IDMzIC00OCA2MCAtMzUgODEgNSA4IDkgMTAgOSA1IDAgLTYKMTIgMiAyOCAxNiA1OSA1NSAxMzIgNzggMjg3IDg4IDYxIDQgMTIxIDcgMTM1IDcgMjIgMSAyMiAwIC01IC04eiBtMTExOCA0CmMtNyAtMiAtMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyIDUgMTQgMCAxOSAtMiAxMyAtNXogbTEwODcgLTQgYy0xOSAtNyAtMTUKLTggMTcgLTQgNDggNiAxNDAgLTI0IDE2OCAtNTUgMjUgLTI4IDEyIC0xMTUgLTIwIC0xMzYgLTE0MiAtOTMgLTQ3MyAtODgKLTU4OSA4IC0yNyAyMiAtMzYgMzcgLTM2IDU5IDAgMTcgNCAyOCA5IDI1IDQgLTMgMTcgNCAyNyAxNSA0NyA1MiAxMzcgNzkgMjk0Cjg5IDE2MSAxMCAxNjAgMTAgMTMwIC0xeiBtMTEwMCAwIGMtMTkgLTcgLTE1IC04IDE3IC00IDQ5IDYgMTQwIC0yNCAxNjggLTU1CjE0IC0xNiAxNiAtMzAgMTEgLTY3IC03IC01NiAtMjQgLTczIC0xMDIgLTEwMiAtMTYzIC02MiAtNDQxIC0zNSAtNTI2IDUwIC0zOAozOCAtMzUgNTggMTYgOTcgNjcgNTAgMTQ1IDczIDI4MSA4MSAxNjUgMTEgMTY1IDExIDEzNSAweiBtMTEwMCAwIGMtMTkgLTcKLTE1IC04IDE3IC00IDQ5IDYgMTQwIC0yNCAxNjggLTU1IDI3IC0yOSAxNCAtMTA4IC0yMiAtMTM3IC02MCAtNDkgLTIzMiAtNzgKLTM3MCAtNjIgLTE3MyAxOSAtMjg2IDkzIC0yNDMgMTU5IDUgOCAxMCAxMCAxMCAzIDAgLTYgMTQgMiAzMCAxNyA0NiA0MyAxNDQKNzEgMjc4IDgwIDE2MSAxMCAxNjIgMTAgMTMyIC0xeiBtMTE2NyAtMyBjMjggLTggNzAgLTI0IDkyIC0zNyAzNSAtMTkgNDEgLTI4CjQxIC01NSAwIC00NiAtMTEgLTk0IC0yMiAtOTQgLTUgMCAtNiA1IC0yIDEyIDQgNyAzIDggLTUgNCAtNiAtNCAtOSAtMTIgLTYKLTE3IDQgLTUgLTE0IC0xOCAtMzggLTI4IC0xOTMgLTgzIC01MzEgLTQyIC01NzcgNjkgLTEyIDI4IC05IDQ1IDkgNDUgMyAwIDIwCjEyIDM2IDI4IDQ0IDQwIDE0MiA2NyAyNzUgNzYgNjMgNSAxMjIgOSAxMzAgOSA4IDEgMzggLTQgNjcgLTEyeiBtMTAzOCAzCmMtMjMgLTYgLTE5IC03IDIwIC00IDM2IDQgNDYgMiAzNSAtNSAtMTEgLTggLTkgLTkgMTEgLTUgMTggNSA0MyAtMiA3OCAtMjAKbDUyIC0yNiAtMyAtNjEgYy0yIC00MSAtOCAtNjMgLTE3IC02NiAtOSAtMyAtMTEgMCAtNiA4IDUgOSA0IDExIC00IDYgLTYgLTQKLTkgLTEyIC01IC0xNyA5IC0xNSAtODQgLTUyIC0xMTQgLTQ1IC0xOCA1IC0yMiA0IC0xMyAtMyAyMSAtMTQgLTU4IC0yNCAtMTc0Ci0yMyAtMTU1IDIgLTI4NiA0NyAtMzE0IDEwOSAtMTEgMjQgLTUgNTYgOSA0OCA0IC0yIDE2IDUgMjYgMTYgMjQgMjYgNzYgNTMKMTM0IDY5IDM4IDExIDIwMiAyNiAyOTAgMjcgMjIgMSAyMiAwIC01IC04eiBtMTExOCA0IGMtNyAtMiAtMTkgLTIgLTI1IDAgLTcKMyAtMiA1IDEyIDUgMTQgMCAxOSAtMiAxMyAtNXogbS02NDg5IC0zMyBjNTQgLTI1IDY1IC00NiA1OCAtMTA4IC01IC01MCAtMzEKLTcxIC0xMTcgLTk4IC0yMjEgLTY3IC01MzUgLTQgLTUzNSAxMDggMCAxNiA0IDI3IDkgMjQgNCAtMyAxNyA0IDI3IDE1IDU3IDYzCjE3MCA4OSAzNjUgODUgMTI4IC0zIDE1MiAtNiAxOTMgLTI2eiBtNjUyMyAxNyBjLTcgLTQgMCAtNSAxNCAtMiAyNiA2IDExMgotMjYgMTI1IC00NyAzIC01IDUgLTI2IDUgLTQ2IC0xIC0yMCAtMiAtNDUgLTIgLTU1IDAgLTIyIC00NyAtNTIgLTExNCAtNzMKLTIyMSAtNjcgLTUzNSAtNCAtNTM1IDEwOCAwIDE2IDQgMjcgOSAyNCA0IC0zIDE3IDQgMjcgMTUgMjcgMzAgODggNTkgMTU4IDc0CjY1IDE1IDMzMyAxNiAzMTMgMnogbS0xMDYyNyAtNzMgYzAgLTIgLTkgLTQgLTIwIC00IC0xMSAwIC0yMCA0IC0yMCA5IDAgNSA5CjcgMjAgNCAxMSAtMyAyMCAtNyAyMCAtOXogbTMzMDAgNiBjMCAtNSAtOCAtMTAgLTE3IC0xMCAtMTUgMCAtMTYgMiAtMyAxMCAxOQoxMiAyMCAxMiAyMCAweiBtMTEwMCAwIGMwIC01IC04IC0xMCAtMTcgLTEwIC0xNSAwIC0xNiAyIC0zIDEwIDE5IDEyIDIwIDEyCjIwIDB6IG0xMTA2IC0zIGM0IC00IC0yIC03IC0xNCAtNyAtMTIgMCAtMjIgNCAtMjIgOSAwIDEwIDI2IDkgMzYgLTJ6IG0xMTA0Ci0zIGMwIC0yIC05IC00IC0yMCAtNCAtMTEgMCAtMjAgNCAtMjAgOSAwIDUgOSA3IDIwIDQgMTEgLTMgMjAgLTcgMjAgLTl6Cm0zMzAwIDYgYzAgLTUgLTggLTEwIC0xNyAtMTAgLTE1IDAgLTE2IDIgLTMgMTAgMTkgMTIgMjAgMTIgMjAgMHogbTExMzggLTM3CmMzIC0zOCAxIC00MyAtMTcgLTQzIC0xMiAwIC0yMSA1IC0yMSAxMCAwIDYgNSAxMCAxMCAxMCA2IDAgMTAgMTEgMTAgMjUgMCAyMQotNSAyNSAtMjcgMjUgLTIyIDAgLTI1IDIgLTEzIDEwIDggNiAyNCA5IDM1IDggMTYgLTIgMjEgLTEyIDIzIC00NXogbTI4IC01OQpjLTYgLTE2IC03NiAtMjAgLTc2IC00IDAgNiAxNCAxMCAzMCAxMCAyOSAwIDMwIDIgMzAgNDMgMCAyNCAzIDQ3IDggNTEgOCA5CjE2IC04MCA4IC0xMDB6IG0tOTk4MyA4OSBjLTcgLTIgLTE5IC0yIC0yNSAwIC03IDMgLTIgNSAxMiA1IDE0IDAgMTkgLTIgMTMKLTV6IG0xMTA0IDEgYy0zIC0zIC0xMiAtNCAtMTkgLTEgLTggMyAtNSA2IDYgNiAxMSAxIDE3IC0yIDEzIC01eiBtNTUwNiAtMQpjLTcgLTIgLTE5IC0yIC0yNSAwIC03IDMgLTIgNSAxMiA1IDE0IDAgMTkgLTIgMTMgLTV6IG0xMTA0IDEgYy0zIC0zIC0xMiAtNAotMTkgLTEgLTggMyAtNSA2IDYgNiAxMSAxIDE3IC0yIDEzIC01eiBtLTg3OTIgLTY0IGMzIC01IC0xIC0xMCAtOSAtMTAgLTkgMAotMTYgNSAtMTYgMTAgMCA2IDQgMTAgOSAxMCA2IDAgMTMgLTQgMTYgLTEweiBtMTEwNSAwIGMwIC01IC03IC0xMCAtMTUgLTEwCi04IDAgLTE1IDUgLTE1IDEwIDAgNiA3IDEwIDE1IDEwIDggMCAxNSAtNCAxNSAtMTB6IG0xMTAwIDAgYzAgLTUgLTQgLTEwIC0xMAotMTAgLTUgMCAtMTAgNSAtMTAgMTAgMCA2IDUgMTAgMTAgMTAgNiAwIDEwIC00IDEwIC0xMHogbTExMDAgMCBjMCAtNSAtNCAtMTAKLTEwIC0xMCAtNSAwIC0xMCA1IC0xMCAxMCAwIDYgNSAxMCAxMCAxMCA2IDAgMTAgLTQgMTAgLTEweiBtMTEwMCAwIGMwIC01IC00Ci0xMCAtMTAgLTEwIC01IDAgLTEwIDUgLTEwIDEwIDAgNiA1IDEwIDEwIDEwIDYgMCAxMCAtNCAxMCAtMTB6IG0xMTAwIDAgYzAKLTUgLTQgLTEwIC0xMCAtMTAgLTUgMCAtMTAgNSAtMTAgMTAgMCA2IDUgMTAgMTAgMTAgNiAwIDEwIC00IDEwIC0xMHogbTExMDUKMCBjMyAtNSAtMSAtMTAgLTkgLTEwIC05IDAgLTE2IDUgLTE2IDEwIDAgNiA0IDEwIDkgMTAgNiAwIDEzIC00IDE2IC0xMHoKbTExMDUgMCBjMCAtNSAtNyAtMTAgLTE1IC0xMCAtOCAwIC0xNSA1IC0xNSAxMCAwIDYgNyAxMCAxNSAxMCA4IDAgMTUgLTQgMTUKLTEweiBtMTEwMCAwIGMwIC01IC00IC0xMCAtMTAgLTEwIC01IDAgLTEwIDUgLTEwIDEwIDAgNiA1IDEwIDEwIDEwIDYgMCAxMAotNCAxMCAtMTB6IG0xMTAwIDAgYzAgLTUgLTQgLTEwIC0xMCAtMTAgLTUgMCAtMTAgNSAtMTAgMTAgMCA2IDUgMTAgMTAgMTAgNgowIDEwIC00IDEwIC0xMHogbS05OTAwIC0zMCBjMCAtNSAtMTEgLTEwIC0yNSAtMTAgLTE0IDAgLTI1IDUgLTI1IDEwIDAgNiAxMQoxMCAyNSAxMCAxNCAwIDI1IC00IDI1IC0xMHogbTExMDAgMCBjMCAtNSAtMTIgLTEwIC0yNiAtMTAgLTE0IDAgLTIzIDQgLTE5CjEwIDMgNiAxNSAxMCAyNiAxMCAxMCAwIDE5IC00IDE5IC0xMHogbTExMDAgMCBjMCAtNSAtOSAtMTAgLTIwIC0xMCAtMTEgMAotMjAgNSAtMjAgMTAgMCA2IDkgMTAgMjAgMTAgMTEgMCAyMCAtNCAyMCAtMTB6IG0xMTAwIDAgYzAgLTUgLTkgLTEwIC0yMCAtMTAKLTExIDAgLTIwIDUgLTIwIDEwIDAgNiA5IDEwIDIwIDEwIDExIDAgMjAgLTQgMjAgLTEweiBtMTEwNSAwIGM0IC02IC01IC0xMAotMTkgLTEwIC0xNCAwIC0yNiA1IC0yNiAxMCAwIDYgOSAxMCAxOSAxMCAxMSAwIDIzIC00IDI2IC0xMHogbTExMDAgMCBjNCAtNgotNSAtMTAgLTE5IC0xMCAtMTQgMCAtMjYgNSAtMjYgMTAgMCA2IDkgMTAgMTkgMTAgMTEgMCAyMyAtNCAyNiAtMTB6IG0xMTA1IDAKYzAgLTUgLTExIC0xMCAtMjUgLTEwIC0xNCAwIC0yNSA1IC0yNSAxMCAwIDYgMTEgMTAgMjUgMTAgMTQgMCAyNSAtNCAyNSAtMTB6Cm0xMTAwIDAgYzAgLTUgLTEyIC0xMCAtMjYgLTEwIC0xNCAwIC0yMyA0IC0xOSAxMCAzIDYgMTUgMTAgMjYgMTAgMTAgMCAxOSAtNAoxOSAtMTB6IG0xMTAwIDAgYzAgLTUgLTkgLTEwIC0yMCAtMTAgLTExIDAgLTIwIDUgLTIwIDEwIDAgNiA5IDEwIDIwIDEwIDExIDAKMjAgLTQgMjAgLTEweiBtMTEwMCAwIGMwIC01IC05IC0xMCAtMjAgLTEwIC0xMSAwIC0yMCA1IC0yMCAxMCAwIDYgOSAxMCAyMAoxMCAxMSAwIDIwIC00IDIwIC0xMHogbS0xMDY2NyAtMTY3IGMtNyAtMiAtMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyIDUgMTQgMAoxOSAtMiAxMyAtNXogbTU1MTAgMCBjLTcgLTIgLTE5IC0yIC0yNSAwIC03IDMgLTIgNSAxMiA1IDE0IDAgMTkgLTIgMTMgLTV6Cm0xMTAwIDAgYy03IC0yIC0xOSAtMiAtMjUgMCAtNyAzIC0yIDUgMTIgNSAxNCAwIDE5IC0yIDEzIC01eiBtLTY1MjAgLTEwIGMtNwotMiAtMjEgLTIgLTMwIDAgLTEwIDMgLTQgNSAxMiA1IDE3IDAgMjQgLTIgMTggLTV6IG0xMTAwIDAgYy03IC0yIC0xOSAtMiAtMjUKMCAtNyAzIC0yIDUgMTIgNSAxNCAwIDE5IC0yIDEzIC01eiBtMTEwMCAwIGMtNyAtMiAtMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyCjUgMTQgMCAxOSAtMiAxMyAtNXogbTExMDAgMCBjLTcgLTIgLTE5IC0yIC0yNSAwIC03IDMgLTIgNSAxMiA1IDE0IDAgMTkgLTIKMTMgLTV6IG0xMTAwIDAgYy03IC0yIC0xOSAtMiAtMjUgMCAtNyAzIC0yIDUgMTIgNSAxNCAwIDE5IC0yIDEzIC01eiBtMTEwMCAwCmMtNyAtMiAtMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyIDUgMTQgMCAxOSAtMiAxMyAtNXogbTExMTAgMCBjLTcgLTIgLTIxIC0yCi0zMCAwIC0xMCAzIC00IDUgMTIgNSAxNyAwIDI0IC0yIDE4IC01eiBtMTEwMCAwIGMtNyAtMiAtMjEgLTIgLTMwIDAgLTEwIDMKLTQgNSAxMiA1IDE3IDAgMjQgLTIgMTggLTV6IG0xMTAwIDAgYy03IC0yIC0xOSAtMiAtMjUgMCAtNyAzIC0yIDUgMTIgNSAxNCAwCjE5IC0yIDEzIC01eiBtMTEwMCAwIGMtNyAtMiAtMTkgLTIgLTI1IDAgLTcgMyAtMiA1IDEyIDUgMTQgMCAxOSAtMiAxMyAtNXoKbTExMDAgMCBjLTcgLTIgLTE5IC0yIC0yNSAwIC03IDMgLTIgNSAxMiA1IDE0IDAgMTkgLTIgMTMgLTV6Ii8+CjxwYXRoIGQ9Ik0xMTU0IDM2MTQgYy0xOCAtMTQgLTE4IC0xNSA0IC00IDEyIDYgMjIgMTMgMjIgMTUgMCA4IC01IDYgLTI2IC0xMXoiLz4KPHBhdGggZD0iTTIyNTQgMzYxNCBjLTE4IC0xNCAtMTggLTE1IDQgLTQgMTIgNiAyMiAxMyAyMiAxNSAwIDggLTUgNiAtMjYgLTExeiIvPgo8cGF0aCBkPSJNMzE5MyAzNzkzIGM5IC0yIDIzIC0yIDMwIDAgNiAzIC0xIDUgLTE4IDUgLTE2IDAgLTIyIC0yIC0xMiAtNXoiLz4KPHBhdGggZD0iTTQ0MzAgMzYwMCBjLTkgLTYgLTEwIC0xMCAtMyAtMTAgNiAwIDE1IDUgMTggMTAgOCAxMiA0IDEyIC0xNSAweiIvPgo8cGF0aCBkPSJNNjYzNSAzNjA0IGMtMjIgLTEzIC0zNSAtMjQgLTMwIC0yNCAxMiAwIDc1IDM4IDc1IDQ1IDAgNiAyIDcgLTQ1Ci0yMXoiLz4KPHBhdGggZD0iTTg4NjQgMzYxNCBjLTE4IC0xNCAtMTggLTE1IDQgLTQgMTIgNiAyMiAxMyAyMiAxNSAwIDggLTUgNiAtMjYgLTExeiIvPgo8cGF0aCBkPSJNOTgwMyAzNzkzIGM5IC0yIDIzIC0yIDMwIDAgNiAzIC0xIDUgLTE4IDUgLTE2IDAgLTIyIC0yIC0xMiAtNXoiLz4KPHBhdGggZD0iTTExMDQwIDM2MDAgYy05IC02IC0xMCAtMTAgLTMgLTEwIDYgMCAxNSA1IDE4IDEwIDggMTIgNCAxMiAtMTUgMHoiLz4KPHBhdGggZD0iTTU1NDUgMzYwOSBjLTE2IC0xMCAtMjUgLTE5IC0xOSAtMTkgNyAwIDIyIDkgMzUgMjAgMzAgMjQgMjMgMjQgLTE2Ci0xeiIvPgo8cGF0aCBkPSJNMTIxNTUgMzYwOSBjLTE2IC0xMCAtMjUgLTE5IC0xOSAtMTkgNyAwIDIyIDkgMzUgMjAgMzAgMjQgMjMgMjQKLTE2IC0xeiIvPgo8cGF0aCBkPSJNNDkxMCAzODYwIGMtOCAtNSAtMTAgLTEwIC01IC0xMCA2IDAgMTcgNSAyNSAxMCA4IDUgMTEgMTAgNSAxMCAtNQowIC0xNyAtNSAtMjUgLTEweiIvPgo8cGF0aCBkPSJNMTE1MjAgMzg2MCBjLTggLTUgLTEwIC0xMCAtNSAtMTAgNiAwIDE3IDUgMjUgMTAgOCA1IDExIDEwIDUgMTAgLTUKMCAtMTcgLTUgLTI1IC0xMHoiLz4KPHBhdGggZD0iTTE1NjggMzg0NCBjLTM5IC0yMSAtMzUgLTI4IDUgLTggMzcgMTkgNDQgMjQgMzEgMjQgLTUgLTEgLTIxIC04Ci0zNiAtMTZ6Ii8+CjxwYXRoIGQ9Ik04MTc4IDM4NDQgYy0zOSAtMjEgLTM1IC0yOCA1IC04IDM3IDE5IDQ0IDI0IDMxIDI0IC01IC0xIC0yMSAtOAotMzYgLTE2eiIvPgo8cGF0aCBkPSJNMjY1NCAzODM0IGMtMTggLTE0IC0xOCAtMTQgNiAtMyAzMSAxNCAzNiAxOSAyNCAxOSAtNiAwIC0xOSAtNyAtMzAKLTE2eiIvPgo8cGF0aCBkPSJNOTI2NCAzODM0IGMtMTggLTE0IC0xOCAtMTQgNiAtMyAzMSAxNCAzNiAxOSAyNCAxOSAtNiAwIC0xOSAtNyAtMzAKLTE2eiIvPgo8cGF0aCBkPSJNMzc5IDM3ODMgYy0xMyAtMTYgLTEyIC0xNyA0IC00IDE2IDEzIDIxIDIxIDEzIDIxIC0yIDAgLTEwIC04IC0xNwotMTd6Ii8+CjxwYXRoIGQ9Ik0yODA4IDM0NjMgYzcgLTMgMTYgLTIgMTkgMSA0IDMgLTIgNiAtMTMgNSAtMTEgMCAtMTQgLTMgLTYgLTZ6Ii8+CjxwYXRoIGQ9Ik0zOTA4IDM0NjMgYzcgLTMgMTYgLTIgMTkgMSA0IDMgLTIgNiAtMTMgNSAtMTEgMCAtMTQgLTMgLTYgLTZ6Ii8+CjxwYXRoIGQ9Ik01MDA4IDM0NjMgYzcgLTMgMTYgLTIgMTkgMSA0IDMgLTIgNiAtMTMgNSAtMTEgMCAtMTQgLTMgLTYgLTZ6Ii8+CjxwYXRoIGQ9Ik05NDE4IDM0NjMgYzcgLTMgMTYgLTIgMTkgMSA0IDMgLTIgNiAtMTMgNSAtMTEgMCAtMTQgLTMgLTYgLTZ6Ii8+CjxwYXRoIGQ9Ik0xMDUxOCAzNDYzIGM3IC0zIDE2IC0yIDE5IDEgNCAzIC0yIDYgLTEzIDUgLTExIDAgLTE0IC0zIC02IC02eiIvPgo8cGF0aCBkPSJNMTE2MTggMzQ2MyBjNyAtMyAxNiAtMiAxOSAxIDQgMyAtMiA2IC0xMyA1IC0xMSAwIC0xNCAtMyAtNiAtNnoiLz4KPHBhdGggZD0iTTQ4NSAyNjg1IGMtMTMxIC0yNCAtMjMyIC03MyAtMzExIC0xNTIgLTEzNiAtMTM3IC0xMzQgLTMyNCA2IC00NjEKMTgzIC0xODEgNTQ0IC0yMTEgNzg0IC02NyA1NSAzMyA1NyAzMyAxNDggMjggNTEgLTMgMTEzIDAgMTM4IDYgNDMgMTAgNDggOAoxMTAgLTI5IDIxMSAtMTI3IDQ5OCAtMTI5IDcwNCAtNSA1NSAzMyA1NyAzMyAxNDggMjggNTEgLTMgMTEzIDAgMTM4IDYgNDMgMTAKNDggOCAxMTAgLTI5IDIwNSAtMTIyIDQ1MyAtMTMwIDY3NSAtMjEgbDEwMCA0OSA4NSAtNSBjNDcgLTIgMTA1IDAgMTMwIDYgNDMKMTAgNDggOCAxMTAgLTI5IDIxMSAtMTI1IDQ2OSAtMTMxIDY4NyAtMTUgODEgNDMgODEgNDMgMTY1IDM4IDQ4IC0zIDEwNyAtMQoxMzggNiA0OSAxMCA1NyAxMCA4MCAtOCAxOTcgLTE0NSA1MjIgLTE1NyA3NDAgLTI2IDU0IDMyIDU2IDMzIDE1MCAyOCA1MiAtMwoxMTUgMCAxMzkgNSA0MiAxMCA0OCA5IDEwOSAtMjggMjA2IC0xMjUgNDk4IC0xMjkgNjk1IC0xMCBsNjQgMzkgOTQgLTYgYzUyCi0zIDExNCAwIDEzOCA1IDQyIDEwIDQ4IDkgMTAyIC0yNSAyMTEgLTEzMCA1MDYgLTEzMyA3MTMgLTggNTUgMzMgNTcgMzMgMTQ4CjI4IDUxIC0zIDExMyAwIDEzNyA1IDQyIDEwIDQ4IDkgMTEwIC0yOCAyMTQgLTEyNyA0OTkgLTEyOSA3MDUgLTUgNTUgMzMgNTcKMzMgMTQ4IDI4IDUxIC0zIDExMyAwIDEzOCA2IDQzIDEwIDQ4IDggMTEwIC0yOSAxNDEgLTg0IDMwNCAtMTE0IDQ2OCAtODcgOTkKMTYgMjAxIDU0IDI2MCA5NiAyNSAxNyAzOSAxOSAxMjMgMTQgNTIgLTMgMTE0IDAgMTM5IDYgNDMgMTAgNDggOCAxMTAgLTI5CjIxMSAtMTI1IDQ2OSAtMTMxIDY4NyAtMTUgODEgNDMgODEgNDMgMTY1IDM4IDQ4IC0zIDEwNyAtMSAxMzggNiA0OSAxMCA1NyAxMAo4MCAtOCAxOTcgLTE0NSA1MjMgLTE1NyA3NDAgLTI2IDU0IDMyIDU3IDMzIDE0NiAyOCAxNDAgLTggMjYxIDI4IDMzOCAxMDMKMjAxIDE5NSAtNCA0NjIgLTMzOSA0NDEgLTg4IC02IC05MCAtNiAtMTQ1IDI4IC03NSA0NSAtMTY4IDc1IC0yNzUgODggLTE1NQoxOCAtMzM0IC0yNSAtNDU2IC0xMDkgLTM0IC0yMyAtMzkgLTI0IC05MCAtMTMgLTMxIDcgLTg3IDkgLTEzNCA2IGwtODAgLTYKLTEwMCA1MCBjLTgwIDM5IC0xMjAgNTMgLTIwMCA2NiAtMTY4IDI3IC0zMzkgLTQgLTQ3MyAtODggLTYyIC0zOCAtNjMgLTM4Ci0xMTUgLTI4IC0yOSA3IC04OSA5IC0xMzkgNiAtODYgLTYgLTg5IC01IC0xNDQgMjggLTczIDQ0IC0xNTcgNzIgLTI2MCA4NgotMTQ5IDIxIC0zMzQgLTE4IC00NTAgLTk1IC01MiAtMzUgLTU0IC0zNSAtMTExIC0yNSAtMzIgNiAtOTUgOSAtMTQwIDYgLTgwCi02IC04NCAtNSAtMTM5IDI4IC0yMDQgMTIzIC00OTUgMTIxIC03MDEgLTMgLTcwIC00MiAtNzAgLTQyIC0xMjQgLTMxIC0zMSA3Ci04OCA5IC0xMzYgNiAtODIgLTYgLTgzIC02IC0xNDkgMzMgLTIwNCAxMTkgLTQ5MCAxMTUgLTY5NyAtMTAgLTY1IC00MCAtNjcKLTQwIC0xMTkgLTI5IC0zMSA3IC04OCA5IC0xMzcgNiAtODMgLTYgLTg1IC02IC0xNDAgMjggLTIwNSAxMjUgLTUwMCAxMjEKLTcxMSAtOSAtNTcgLTM2IC01OSAtMzYgLTExMSAtMjUgLTMyIDcgLTg4IDkgLTEzOCA2IC04MyAtNiAtODYgLTYgLTE0MCAyNwotMjExIDEyOCAtNTA5IDEyMiAtNzIyIC0xNSAtNDUgLTI4IC00OCAtMjkgLTEwMCAtMTggLTMxIDcgLTg3IDkgLTEzNCA2IGwtODAKLTYgLTEwMCA1MCBjLTIyNyAxMTIgLTQ3OSAxMDIgLTY4MSAtMjggLTUwIC0zMyAtNTMgLTMzIC0xMDUgLTIyIC0zMiA3IC04OCA5Ci0xNDAgNiAtODYgLTcgLTg4IC02IC0xNDQgMjggLTc0IDQ0IC0xNTggNzIgLTI2MSA4NiAtMTQ5IDIxIC0zMzQgLTE4IC00NTAKLTk1IC01MyAtMzUgLTU0IC0zNiAtMTA2IC0yNSAtMzAgNyAtOTAgOSAtMTQwIDYgLTg2IC02IC04OSAtNSAtMTQ0IDI4IC0yMDQKMTIzIC00OTUgMTIxIC03MDEgLTMgLTcwIC00MiAtNzAgLTQyIC0xMjQgLTMxIC0zMSA3IC04OCA5IC0xMzcgNiAtODEgLTYgLTg0Ci01IC0xNDAgMjggLTEzNSA4MiAtMzEwIDExMSAtNDc3IDgweiBtMjkzIC0xODQgYzUwIC0yMyA2NCAtNDIgNDEgLTU3IC0yMgotMTMgLTQ5IC05MCAtNDkgLTEzOSAwIC00NyAyMCAtMTA0IDUyIC0xNDcgMTcgLTIzIC03IC00MSAtODMgLTYyIC0yMTIgLTYwCi00NDkgNTAgLTQ0OSAyMDkgMCA4MyA3OCAxNzEgMTg0IDIwNSA4NSAyOCAyMjkgMjMgMzA0IC05eiBtMTA3NiA4IGMzNyAtMTEKNjkgLTI2IDcyIC0zNCAzIC03IC03IC0zMiAtMjMgLTU2IC0yNCAtMzcgLTI4IC01MiAtMjggLTExNCAwIC02MiA0IC03NyAyOAotMTE0IDE2IC0yNCAyNiAtNDkgMjMgLTU2IC0yIC03IC0zNSAtMjMgLTcxIC0zNSAtOTUgLTMyIC0yMjQgLTI2IC0zMTIgMTQKLTM1IDE2IC02MyAzNCAtNjMgNDAgMCA2IDExIDMzIDI1IDYwIDE1IDI5IDI1IDY2IDI1IDkxIDAgMjUgLTEwIDYyIC0yNSA5MQotMTQgMjcgLTI1IDU0IC0yNSA2MCAwIDExIDkzIDU3IDEzNSA2NyA1NCAxMyAxNzYgNiAyMzkgLTE0eiBtMTEyNyAtNyBjNTEKLTIyIDY2IC0zNyA0OCAtNDggLTIxIC0xMyAtNTkgLTEwOSAtNTkgLTE1MCAwIC0yNiAxMSAtNjQgMzIgLTEwNCAzMCAtNjEgMzAKLTYzIDEyIC03NyAtNjggLTQ5IC0yNjMgLTU3IC0zNjEgLTE0IC03MyAzMiAtNzggNDEgLTUyIDkxIDM1IDY2IDM2IDEyNyA1CjE5NSAtMTQgMzEgLTIzIDYxIC0yMCA2NiA3IDEyIDYxIDQwIDEwOSA1NiA2MCAyMCAyMjcgMTEgMjg2IC0xNXogbTEwNjMgMTQKYzI2IC04IDU4IC0yMSA3MSAtMzAgbDI0IC0xNiAtMzIgLTUyIGMtMjcgLTQzIC0zMiAtNjEgLTMyIC0xMTMgMCAtNTIgNSAtNzAKMzIgLTExNCBsMzMgLTUyIC0zMyAtMTkgYy03OCAtNDggLTI1NyAtNTMgLTM1NCAtMTEgLTc1IDMzIC03OCA0MCAtNDggOTYgMzQKNjUgMzQgMTM1IDAgMTk5IC0xNCAyNiAtMjMgNTIgLTE5IDU3IDggMTMgNjEgNDAgMTA5IDU1IDU0IDE3IDE5MSAxNyAyNDkgMHoKbTExNDQgLTE1IGMyOCAtMTMgNTIgLTI3IDUyIC0zMCAwIC00IC0xMSAtMjIgLTI0IC00MCAtMTQgLTE4IC0zMCAtNTUgLTM2Ci04MiAtMTQgLTU5IC0yIC0xMTkgMzYgLTE3MSAxMyAtMTcgMjQgLTM1IDI0IC0zOSAwIC0zIC0yNCAtMTcgLTUyIC0zMCAtNDYKLTIxIC02OCAtMjQgLTE2OCAtMjQgLTk5IDAgLTEyMiAzIC0xNjcgMjQgLTc0IDMzIC03OCA0MCAtNDggOTIgMzQgNjAgMzQgMTM3CjAgMjA0IC0xMyAyNyAtMjIgNTIgLTE5IDU3IDcgMTIgNjIgMzkgMTA5IDU1IDY1IDIxIDIyOCAxMiAyOTMgLTE2eiBtMTEwMCAwCmM0OSAtMjIgNjQgLTQyIDQyIC01NiAtMTUgLTkgLTQyIC02NSAtNTEgLTEwNSAtMTAgLTQ1IDUgLTExMiAzNiAtMTU4IDE0IC0yMAoyNSAtNDAgMjUgLTQzIDAgLTQgLTI0IC0xNyAtNTIgLTMwIC0xMDggLTQ2IC0yNzkgLTM2IC0zNzUgMjMgbC0zMyAxOSAyNyA1MApjMzUgNjggMzUgMTM2IDAgMjA2IGwtMjYgNTEgMjcgMTggYzg5IDU4IDI3NSA3MCAzODAgMjV6IG0xMTAwIDAgYzUwIC0yMyA2NAotNDIgNDEgLTU3IC0yMiAtMTMgLTQ5IC05MCAtNDkgLTEzOSAwIC00OSAyNyAtMTI2IDQ5IC0xMzkgNDYgLTI5IC01NyAtNzcKLTE3NiAtODQgLTg4IC01IC0xNTIgNiAtMjIwIDM5IC00OSAyNCAtNTEgMzMgLTIxIDg1IDMxIDUyIDMxIDEzMyAxIDE5NSAtMTMKMjUgLTIzIDUwIC0yMyA1NSAwIDE0IDM4IDM1IDEwMCA1NiA3OSAyNiAyMjUgMjAgMjk4IC0xMXogbTEwNzYgOCBjMzcgLTExIDY5Ci0yNiA3MiAtMzQgMyAtNyAtNyAtMzIgLTIzIC01NiAtMjQgLTM3IC0yOCAtNTIgLTI4IC0xMTQgMCAtNjIgNCAtNzcgMjggLTExNAoxNiAtMjQgMjYgLTQ5IDIzIC01NiAtMyAtOCAtMzcgLTI0IC03NiAtMzYgLTEwMCAtMzAgLTIyMCAtMjQgLTMwNyAxNSAtMzUgMTYKLTYzIDMzIC02MyAzOSAwIDUgMTIgMzQgMjYgNjQgMjIgNDUgMjYgNjIgMjEgMTA0IC00IDI4IC0xNSA2NyAtMjcgODYgLTExIDE5Ci0yMCA0MCAtMjAgNDcgMCAxMiA5MCA1OCAxMzUgNjkgNTQgMTMgMTc2IDYgMjM5IC0xNHogbTExMjkgLTcgYzI2IC0xMiA0NwotMjQgNDcgLTI4IDAgLTQgLTE0IC0zNSAtMzEgLTcwIC00MyAtODcgLTM3IC0xNDggMjEgLTI0MSAxOSAtMjkgMTAgLTM4IC02NgotNjQgLTgwIC0yOSAtMjI0IC0yNCAtMzAxIDEwIC03NSAzMyAtNzggMzkgLTQ4IDEwMiAzMSA2OCAzMSAxMjAgMCAxODcgLTE0CjMwIC0yMiA1OCAtMTkgNjMgNyAxMiA2MSA0MCAxMDkgNTYgNjEgMjAgMjI3IDExIDI4OCAtMTV6IG0xMDYxIDE0IGMyNiAtOCA1OAotMjEgNzEgLTMwIGwyNCAtMTYgLTMyIC01MSBjLTI3IC00NCAtMzIgLTYyIC0zMiAtMTE0IDAgLTUyIDUgLTcwIDMyIC0xMTQKbDMzIC01MiAtMzMgLTE5IGMtNzggLTQ4IC0yNTcgLTUzIC0zNTQgLTExIC03NSAzMyAtNzggNDAgLTQ4IDk2IDM0IDY1IDM0CjEzNSAwIDE5OSAtMTQgMjYgLTIzIDUyIC0xOSA1NyA4IDEzIDYxIDQwIDEwOSA1NSA1NCAxNyAxOTEgMTcgMjQ5IDB6IG0xMTQ0Ci0xNSBjMjggLTEzIDUyIC0yNyA1MiAtMzEgMCAtNCAtOSAtMTkgLTIxIC0zMyAtNTcgLTczIC02MCAtMTY5IC05IC0yNTEgMTcKLTI2IDMwIC00OCAzMCAtNTAgMCAtMiAtMjQgLTE0IC01MiAtMjcgLTQ2IC0yMSAtNjggLTI0IC0xNjggLTI0IC05OSAwIC0xMjIKMyAtMTY3IDI0IC03NCAzMyAtNzcgMzkgLTQ4IDk2IDMzIDY1IDMzIDEzNSAwIDIwMCAtMTMgMjcgLTIyIDUyIC0xOSA1NyA3IDEyCjYyIDM5IDEwOSA1NSA2NSAyMSAyMjggMTIgMjkzIC0xNnogbS0xMDU5MyAtNTggYy0zNyAtODcgLTQwIC0xNzcgLTkgLTI1MSAxNgotNDAgMTggLTM3IC0yMSAtNDUgLTUwIC05IC01NiAxIC0zNSA2MyAyOCA4MCAyNCAxMzkgLTE1IDIzMyAtNiAxNSAtMSAxNyA0MAoxNyA0MSAwIDQ2IC0yIDQwIC0xN3ogbTExMDAgLTUgYy00MCAtMTI2IC00MSAtMTMzIC0xOCAtMjEwIDEyIC00MCAyMSAtNzMgMjAKLTc0IC0xMSAtNyAtNjYgLTExIC03NiAtNSAtMTAgNyAtOSAxNSA0IDQxIDM1IDY3IDMxIDE1MSAtMTAgMjUzIC02IDE1IC0xIDE3CjQwIDE3IDQ1IDAgNDcgLTEgNDAgLTIyeiBtMTEwMCAwIGMtNDAgLTEzMiAtNDAgLTEzMyAwIC0yNjQgNiAtMTggMSAtMjIgLTI0Ci0yNyAtNTQgLTExIC02MCAtMyAtNDAgNTYgMjMgNjYgMjMgMTM4IDAgMjA1IGwtMTggNTIgNDUgMCBjNDEgMCA0NCAtMSAzNwotMjJ6IG0xMTA1IDEzIGMwIC01IC03IC0yOCAtMTUgLTUxIC04IC0yMyAtMTUgLTU0IC0xNSAtNjggMCAtMzYgLTEyIC0yMCAtMjcKMzYgLTcgMjYgLTE1IDU3IC0xOSA3MCAtNiAyMCAtMyAyMiAzNSAyMiAyMyAwIDQxIC00IDQxIC05eiBtMTEwMCAtMyBjMCAtNwotNyAtMzEgLTE1IC01MyAtMTkgLTU0IC0xOSAtMTIyIDIgLTE4NCAxOCAtNTcgMTggLTU2IC0xNyAtNjQgLTQ0IC0xMSAtNTUgNQotMzggNTAgMzMgODEgMzIgMTE3IC03IDI0MSAtNyAyMCAtNCAyMiAzNCAyMiAyNiAwIDQxIC00IDQxIC0xMnogbTExMDIgNyBjMwotMyAtMyAtMjkgLTEzIC01OCAtMjMgLTY2IC0yMyAtMTE4IDAgLTE4NSAxOSAtNTYgMTkgLTU2IC0xOSAtNjUgLTQ2IC0xMSAtNTAKMiAtMjcgODEgMjEgNzAgMjEgNzUgNSAxMzUgLTkgMzQgLTIwIDcwIC0yMyA4MCAtNiAxNCAtMSAxNyAzMiAxNyAyMiAwIDQyIC0yCjQ1IC01eiBtMTEwMyAtMTIgYy0xNiAtMzcgLTM1IC0xMTkgLTM1IC0xNDggMSAtMTYgOSAtNTUgMjAgLTg1IDEwIC0zMCAxOAotNTUgMTcgLTU2IC0xIC0xIC0xNiAtNCAtMzIgLTcgLTUwIC05IC01NiAxIC0zNSA2MyAyOCA4MCAyNCAxMzkgLTE1IDIzMyAtNgoxNSAtMSAxNyA0MCAxNyA0MSAwIDQ2IC0yIDQwIC0xN3ogbTExMDAgMCBjLTMgLTEwIC0xNCAtNDYgLTIzIC04MCAtMTYgLTYwCi0xNiAtNjUgNSAtMTM1IDEyIC00MCAyMSAtNzMgMjAgLTc0IC0xIC0xIC0xNiAtNCAtMzIgLTcgLTUwIC05IC01NiAxIC0zNSA2MwoyOCA4MCAyNCAxMzkgLTE1IDIzMyAtNiAxNSAtMSAxNyA0MCAxNyA0MSAwIDQ2IC0yIDQwIC0xN3ogbTExMDAgLTUgYy00MAotMTMyIC00MCAtMTQwIDAgLTI2NCA2IC0xOCAyIC0yMiAtMjQgLTI3IC01NCAtMTEgLTYwIC0zIC00MCA1NiAyNCA2OCAyNCAxMzQKMCAyMDIgbC0xOSA1NSA0NSAwIGM0MiAwIDQ1IC0xIDM4IC0yMnogbTExMDEgMCBjLTQgLTEzIC0xMiAtNDQgLTE5IC03MCAtNgotMjcgLTE0IC00OCAtMTcgLTQ4IC0zIDAgLTExIDIxIC0xNyA0OCAtNyAyNiAtMTUgNTcgLTE5IDcwIC02IDIwIC0zIDIyIDM2CjIyIDM5IDAgNDIgLTIgMzYgLTIyeiBtMTE0NyAxMCBjMjMgLTcgNjEgLTMxIDg0IC01NCAzOSAtMzYgNDMgLTQ1IDQzIC04NyAwCi00MCAtNiAtNTMgLTM2IC04NiAtMzYgLTQwIC04OSAtNjYgLTE1NSAtNzQgLTU2IC04IC02NSAzIC00NSA1MiAyMCA1MiAyMQoxNjAgMSAyMDggLTggMTkgLTE1IDM5IC0xNSA0NCAwIDEzIDc2IDExIDEyMyAtM3ogbS0xMTMyMyAtMTQ0IGMwIC0yMSAtNCAtMzMKLTEwIC0yOSAtMTcgMTAgLTExIDY1IDcgNjUgMiAwIDMgLTE2IDMgLTM2eiBtMTEwMCAwIGMwIC0yMSAtNCAtMzMgLTEwIC0yOQotMTcgMTAgLTExIDY1IDcgNjUgMiAwIDMgLTE2IDMgLTM2eiBtMTEwMCAtMSBjLTEgLTMxIC0zIC0zNSAtMTEgLTIwIC02IDkgLTcKMjYgLTQgMzcgMTAgMzAgMTUgMjQgMTUgLTE3eiBtMTEwNCAtMTYgYy03IC0yMSAtNyAtMjEgLTE0IC0yIC00IDExIC01IDI4IC0yCjM4IDQgMTcgNiAxOCAxNCAzIDUgLTkgNiAtMjYgMiAtMzl6IG0xMTA2IDE4IGMwIC0xMyAtNCAtMjcgLTEwIC0zMCAtNiAtNAotMTAgOCAtMTAgMzAgMCAyMiA0IDM0IDEwIDMwIDYgLTMgMTAgLTE3IDEwIC0zMHogbTExMDAgLTYgYzAgLTE2IC00IC0yOSAtMTAKLTI5IC01IDAgLTEwIDE2IC0xMCAzNiAwIDIxIDQgMzMgMTAgMjkgNiAtMyAxMCAtMTkgMTAgLTM2eiBtMTEwMCA1IGMwIC0yMQotNCAtMzMgLTEwIC0yOSAtMTcgMTAgLTExIDY1IDcgNjUgMiAwIDMgLTE2IDMgLTM2eiBtMTEwMCAwIGMwIC0yMSAtNCAtMzMKLTEwIC0yOSAtMTcgMTAgLTExIDY1IDcgNjUgMiAwIDMgLTE2IDMgLTM2eiBtMTEwMCAtMSBjMCAtMjcgLTMgLTM0IC0xMSAtMjYKLTcgNyAtOSAyMyAtNSAzNyA5IDM3IDE2IDMyIDE2IC0xMXogbTExMDIgLTE2IGMtNCAtMTcgLTYgLTE4IC0xNCAtMyAtNSA5IC02CjI2IC0yIDM5IDcgMjEgNyAyMSAxNCAyIDQgLTExIDUgLTI4IDIgLTM4eiBtMTEwOCAxOCBjMCAtMTMgLTQgLTI3IC0xMCAtMzAKLTYgLTQgLTEwIDggLTEwIDMwIDAgMjIgNCAzNCAxMCAzMCA2IC0zIDEwIC0xNyAxMCAtMzB6IG0tNzQ2MSAtMTA4IGMxNiAtNDAKMTQgLTQ0IC0xOSAtNTAgLTU0IC0xMSAtNTkgLTMgLTM3IDY2IDExIDM0IDIyIDY5IDI1IDc3IDMgOCA4IC0zIDEzIC0yNSA0Ci0yMiAxMiAtNTMgMTggLTY4eiBtNjU5OCA0NiBjNyAtMjcgMTUgLTU3IDE4IC02OSA2IC0xOCAxIC0yMiAtMjQgLTI3IC01NQotMTEgLTYxIC0yIC00MCA1NCAxMSAyNyAxOSA1OCAxOSA2OSAwIDM2IDE1IDIxIDI3IC0yN3oiLz4KPHBhdGggZD0iTTEyMjAgMTIwMCBjLTcxIC05IC0xODQgLTM2IC0yMTMgLTUxIC0xMyAtNyAtMzYgLTQgLTgwIDEwIC0yNzcgOTIKLTY1MSAxMCAtNzUzIC0xNjQgLTg3IC0xNTAgMzQgLTMxMSAyODcgLTM4MSAxMDEgLTI4IDMzOSAtMjYgNDQyIDQgOTUgMjcgMTEzCjI3IDIyNCAxIDc0IC0xOCAxMTAgLTIwIDIyMyAtMTcgODggMyAxNTggMTEgMjAyIDIzIGw2NiAxOSA5NCAtMzAgYzg2IC0yNwoxMDQgLTI5IDI0OCAtMjkgMTIyIDAgMTY5IDQgMjIwIDE5IDEwMCAyOSAxMjIgMzAgMjIyIDYgMTI0IC0zMCAyODYgLTMwIDQxNQotMSBsOTMgMjEgNzcgLTIyIGM2NiAtMTkgMTAyIC0yMyAyMzMgLTIzIDEzMSAwIDE2NyA0IDIzMyAyMyA5MCAyNiAxMTUgMjcKMTc5IDcgMTM0IC00MCAzMzcgLTM4IDQ4NSA2IGw3NSAyMiA5MSAtMjQgYzEzMSAtMzQgMzQ0IC0zNCA0NjQgMCA4OSAyNSAxMTAKMjQgMjMzIC00IDk5IC0yMiAzMTQgLTE3IDQxMiAxMCA2NyAxOSA2NyAxOSAxMzUgLTMgMzcgLTEyIDk1IC0yNyAxMjggLTMzIDgzCi0xNSAyOTQgLTYgMzcwIDE3IDc1IDIzIDEzOSAyMyAyMzUgMCAxMDUgLTI2IDI3NyAtMjQgMzk1IDMgbDkxIDIwIDc5IC0yMgpjMTE3IC0zMiAzNTcgLTMyIDQ2OCAxIDkxIDI2IDExNSAyNyAxODIgNyAxMzIgLTQxIDMzMiAtMzggNDgzIDcgbDc0IDIxIDkxCi0yNCBjMTMwIC0zNCAzNDMgLTM0IDQ2NCAwIDg4IDI1IDExMSAyNCAyMjggLTMgMTAzIC0yMyAyNzYgLTIxIDM4NyA1IGw4OSAyMQo5NyAtMjkgYzg4IC0yNSAxMTEgLTI4IDI1MiAtMjggMTMyIDAgMTY3IDQgMjM3IDI0IDg3IDI0IDEwMSAyNCAyMjMgLTQgMTA1Ci0yNCAyNjkgLTIzIDM5MSAzIGw5NiAyMSA3NCAtMjIgYzYyIC0xOCAxMDAgLTIxIDIzOSAtMjEgMTQzIDAgMTc0IDMgMjMwIDIyCjgxIDI3IDEwNyAyNyAyMDYgMSAxMDMgLTI3IDI4NyAtMjkgMzk0IC00IDg3IDIwIDE5OSA3MSAyNTIgMTE0IDQwIDM0IDg4IDEyMQo4OCAxNjAgMCAxMjcgLTEzNSAyNDQgLTMzNiAyOTIgLTEyNyAzMCAtMzMyIDI0IC00NDkgLTE0IGwtODAgLTI2IC02MyAxOQpjLTE0MyA0NSAtMjk0IDQ4IC00NjMgOSBsLTg3IC0yMCAtNzMgMjMgYy02NSAyMCAtOTQgMjMgLTI0NCAyMyAtMTU5IDAgLTE3NQotMiAtMjQ4IC0yOCBsLTc4IC0yNyAtNjYgMjAgYy0xNTEgNDcgLTM0NCA0NyAtNDkyIDEgLTM2IC0xMSAtNjQgLTE1IC03MyAtMTAKLTMwIDIwIC0xNDIgNDggLTIyOSA1OCAtMTE4IDEzIC0yNTMgMCAtMzUzIC0zMyBsLTczIC0yNSAtNjMgMjAgYy0xNTggNDkKLTM0OCA0OCAtNTA5IC0zIGwtNzQgLTIzIC03MSAyNSBjLTY2IDIzIC04NSAyNSAtMjQ2IDI0IC0xNjMgMCAtMTgxIC0yIC0yNTUKLTI3IGwtODAgLTI2IC02MyAxOSBjLTE0NCA0NSAtMjk3IDQ4IC00NjIgOCBsLTg2IC0yMCAtNjkgMjIgYy01NSAxOCAtMTAxIDI0Ci0yMTUgMjcgLTEzNCA0IC0xNTIgMiAtMjQwIC0yMiAtMTE4IC0zMyAtMTI3IC0zMyAtMjI1IC01IC0xMTUgMzIgLTI5NSAzMgotNDE5IDEgbC04OCAtMjMgLTc5IDI2IGMtMTU4IDUyIC0zNzAgNTMgLTUyNSAxIGwtNzEgLTI0IC02MyAyMCBjLTM1IDExIC0xMDUKMjUgLTE1NyAzMSAtMTExIDE0IC0yNDYgMSAtMzUyIC0zNSBsLTY4IC0yMiAtNzQgMjMgYy0xNDIgNDYgLTM4OCA0MSAtNTI2Ci0xMCAtNTIgLTE5IC01MyAtMTkgLTExOCAxIC0xNDggNDYgLTI5OSA0OSAtNDY1IDkgbC04NiAtMjAgLTY5IDIyIGMtNTIgMTcKLTEwNCAyNCAtMjAyIDI3IC0xNDAgNiAtMjEyIC0zIC0zMTUgLTM4IC01NiAtMjAgLTU2IC0yMCAtMTIwIDAgLTE0NSA0NiAtMzAzCjQ5IC00NjUgMTAgbC04MiAtMjAgLTgxIDI1IGMtNDQgMTQgLTEyMCAzMCAtMTY4IDM2IC05NSAxMSAtOTggMTEgLTE5MiAwegptMjYzIC0xMjkgbDM4IC0xMiAtMzUgLTQwIGMtNjMgLTc0IC03MSAtMTY1IC0yMSAtMjQxIGwyNSAtMzggLTI3IC0xMiBjLTM3Ci0xNiAtMjU5IC0xNiAtMjk2IDAgbC0yNyAxMiAyNyA0MSBjNTAgNzYgNDMgMTY5IC0xOSAyNDggLTEwIDEzIC0xNiAyNiAtMTMKMjkgMzAgMzAgMjY0IDM5IDM0OCAxM3ogbTM4MzkgLTIgbDM3IC0xMiAtMzEgLTM1IGMtMzggLTQ0IC01OCAtOTEgLTU4IC0xMzcKMCAtNDAgMjIgLTEwMCA0NyAtMTI3IDE0IC0xNiAxNCAtMTggLTEzIC0zMCAtMzggLTE2IC0yNTkgLTE2IC0yOTcgMCBsLTI3IDEyCjMxIDU1IGM0MiA3NCAzOSAxNDMgLTEwIDIxMSAtMTggMjYgLTMwIDQ5IC0yNyA1MiAzMiAzMSAyNjYgMzkgMzQ4IDExeiBtMzc5NQoxMSBjNzYgLTE3IDgyIC0yNCA1MSAtNTcgLTE0IC0xNSAtMzMgLTQzIC00MyAtNjIgLTI0IC00NyAtMTcgLTE0MCAxMyAtMTgxCjEyIC0xNiAyMiAtMzMgMjIgLTM5IDAgLTE0IC05MSAtMzEgLTE2NSAtMzEgLTY5IDAgLTE2MiAxNiAtMTcwIDMwIC0zIDUgNiAyNQoyMCA0NSA0NyA3MCA0NSAxMzkgLTYgMjE5IC0xNiAyNyAtMjcgNTEgLTI0IDU1IDI3IDI3IDIxMyA0MCAzMDIgMjF6IG0tODMwNAotMTEgYzIwIC01IDM3IC0xMiAzNyAtMTUgMCAtMiAtMTIgLTIyIC0yNiAtNDQgLTQ5IC03NCAtNDIgLTE2OCAxOCAtMjM1IDI4Ci0zMyAyOCAtMzQgOSAtNDQgLTExIC02IC01NCAtMTYgLTk2IC0yMyAtMTAyIC0xNiAtMjE2IDAgLTMwMiA0MyAtMjM2IDExNQotOTIgMzI4IDIyMiAzMjkgNTUgMCAxMTcgLTUgMTM4IC0xMXogbTE5MDcgMCBjMjcgLTYgNTAgLTE0IDUwIC0xOCAwIC00IC0xMAotMTYgLTIxIC0yNyAtMzIgLTI4IC01OSAtOTMgLTU5IC0xNDIgMCAtNDMgMTcgLTg3IDUyIC0xMzEgMTMgLTE4IDE2IC0yNyA4Ci0zNSAtMTYgLTE2IC0yNjkgLTE0IC0yOTcgMiBsLTIyIDEyIDMwIDU4IGMzOSA3MyAzNiAxMjkgLTEwIDIwMyAtMTcgMjkgLTI5CjU0IC0yNyA1NyAyOCAyNyAyMDcgNDAgMjk2IDIxeiBtMTI2MCAwIGM3MyAtMTYgNzUgLTE3IDU3IC0zNyAtMjUgLTI3IC01NwotMTA0IC01NyAtMTM3IDAgLTM2IDMzIC0xMTEgNjIgLTE0MiBsMjAgLTIyIC00MyAtMTMgYy01NSAtMTYgLTI3MyAtMTYgLTMxMgowIGwtMjkgMTIgMjYgMzEgYzU3IDY3IDU3IDE1NyAwIDIzOSAtMTkgMjggLTMxIDUwIC0yNyA1MCA1IDEgMzEgNyA1OCAxNSA1OQoxNiAxODIgMTkgMjQ1IDR6IG02NjMgMiBjMjEgLTUgNDEgLTExIDQzIC0xNCAzIC0zIC03IC0yMiAtMjEgLTQzIC0zMiAtNDcKLTM5IC03MyAtMzMgLTEzMyAzIC0zMiAxNSAtNjMgMzYgLTk0IDE4IC0yNSAzMiAtNDggMzIgLTUwIDAgLTE0IC0xMDkgLTMyCi0xOTUgLTMyIC04NCAxIC0xNzUgMTYgLTE3NSAzMCAwIDIgMTEgMjEgMjUgNDEgNDggNzAgNDYgMTU1IC00IDIyOCBsLTMxIDQ1CjQ3IDE1IGM1NCAxNiAyMTcgMjAgMjc2IDd6IG0xOTQ1IC04IGwyMyAtOSAtMzggLTQ4IGMtMzYgLTQ2IC0zOCAtNTMgLTM4Ci0xMjEgMCAtNjYgMyAtNzcgMzMgLTExOCBsMzMgLTQ2IC00MyAtMTIgYy01MSAtMTMgLTIyOSAtNyAtMjcxIDEwIGwtMjkgMTEKMjYgMzEgYzU1IDY1IDU3IDE1NCA0IDIzNCAtMTcgMjUgLTI4IDQ5IC0yNCA1MiAzIDMgMjcgMTIgNTMgMTkgNTIgMTUgMjMxIDEzCjI3MSAtM3ogbTEyNjkgLTMgbDMyIC0xMSAtMzIgLTQ2IGMtMjggLTM5IC0zMiAtNTMgLTMyIC0xMDggMCAtNTYgNCAtNjkgMzMKLTExMSAzOSAtNTQgMzcgLTU3IC00NyAtNzUgLTY0IC0xMyAtMjIzIC03IC0yNjUgMTAgLTI2IDEwIC0yNyAxMyAtMTQgMjkgNjYKNzQgNjQgMTg0IC00IDI3MSAtMTAgMTMgLTE2IDI2IC0xMyAyOSAyOSAyOSAyNzIgMzggMzQyIDEyeiBtNjM2IDcgbDM3IC0xMgotMjUgLTM3IGMtNTEgLTc0IC00OSAtMTU5IDQgLTIzNCAxNyAtMjQgMzEgLTQ2IDMxIC00OSAwIC0yIC0zNCAtMTEgLTc3IC0yMQotNTQgLTEyIC05OCAtMTUgLTE1MiAtMTEgLTY5IDYgLTE0MSAyMiAtMTQxIDMzIDAgMyAxMSAyMiAyNSA0MyA0NyA3MSA0NiAxNDcKLTUgMjIyIC0xNiAyNCAtMjYgNDcgLTIyIDUxIDI2IDI2IDI1NSAzNiAzMjUgMTV6IG0xOTA2IDIgbDUxIC0xMSAtMzUgLTQ1CmMtNjUgLTg1IC02OCAtMTU3IC05IC0yNDQgbDMzIC00OSAtMjcgLTcgYy00MiAtMTIgLTI1NCAtOCAtMjg0IDUgbC0yOCAxMSAyNQozNyBjNTQgODAgNTMgMTQ5IC00IDIzNSAtMTcgMjQgLTI4IDQ1IC0yNiA0OCAzIDIgMjggOSA1NyAxNyA2NyAxNiAxODIgMTcKMjQ3IDN6IG0xMzI1IC0xOSBjNjcgLTI1IDEyOCAtNzYgMTQ2IC0xMjEgMjkgLTY5IC0zNCAtMTU1IC0xNDYgLTIwMCAtNTAgLTIwCi03NyAtMjMgLTE4NCAtMjMgLTc3IC0xIC0xMzYgNCAtMTUzIDEyIGwtMjcgMTIgMjcgNDIgYzI0IDM1IDI4IDUyIDI4IDEwOSAwCjYwIC00IDcyIC0zMyAxMTQgLTE4IDI2IC0zMSA1MCAtMjggNTIgMyAzIDI5IDEyIDU4IDE5IDgwIDIwIDIzOCAxMiAzMTIgLTE2egptLTk2MzQgOSBjNDggLTEwIDYxIC0yMSA0MCAtMzQgLTI0IC0xNSAtNTAgLTg2IC01MCAtMTM5IDAgLTQ1IDYgLTYyIDM1IC0xMDYKMjAgLTI5IDMzIC01NSAzMSAtNTggLTEyIC0xMiAtMTI4IC0zMiAtMTg2IC0zMiAtNjAgMCAtMTc0IDIwIC0xODYgMzMgLTQgMyA2CjIxIDIwIDM5IDYxIDgwIDcwIDE0NyAzMSAyMjQgLTE0IDI3IC0yNSA1MiAtMjUgNTYgMCAyNSAxOTggMzcgMjkwIDE3eiBtMTI4NwotNSBsMjIgLTkgLTI5IC00MyBjLTUzIC03OSAtNDkgLTE1OCAxMiAtMjM1IDE3IC0yMSAyOCAtNDAgMjYgLTQyIC0yIC0zIC0zMwotMTIgLTY5IC0yMSAtNzEgLTE4IC0yMzAgLTE1IC0yNjkgNiAtMjEgMTEgLTIxIDExIDEwIDQ3IDYxIDcwIDcwIDE1MyAyMyAyMzEKLTM0IDU4IC0zNSA2NCAtMyA3NCAzMyA5IDI0OSAzIDI3NyAtOHogbTI1NTMgNSBsNTEgLTExIC0xNyAtMjYgYy02NiAtMTAxCi02MyAtMTkxIDkgLTI2OSAxMSAtMTMgMTggLTI1IDE2IC0yOCAtMyAtMiAtMzQgLTEyIC03MCAtMjEgLTc3IC0yMCAtMjI0IC0xNQotMjgzIDEwIGwtMzggMTYgMzUgNDAgYzYyIDczIDY4IDE2OCAxNSAyNDMgLTExIDE1IC0xOSAzMCAtMTcgMzIgMjQgMjMgMjE0CjMyIDI5OSAxNHogbTEyNTggMCBsNDkgLTEyIC0yOSAtNDcgYy0xNiAtMjYgLTMyIC02NiAtMzUgLTg5IC03IC01MCAxNyAtMTE4CjUyIC0xNTEgMTQgLTEzIDI1IC0yNyAyNSAtMzAgMCAtMzEgLTI4OSAtNDkgLTMzOSAtMjEgbC0yMyAxMyAyNSAyNiBjNjkgNzQKNzYgMTc2IDE5IDI1NyBsLTMxIDQ1IDMyIDkgYzQ2IDEzIDE5NyAxMyAyNTUgMHogbTI1ODAgMCBsNDkgLTEyIC0yOSAtNDcKYy0xNiAtMjUgLTMxIC02MiAtMzQgLTgxIC04IC00OSAxMiAtMTEzIDQ2IC0xNTMgMTcgLTE4IDMwIC0zNiAzMCAtMzkgMCAtMgotMjEgLTExIC00NyAtMTggLTcwIC0yMCAtMjU3IC0xOCAtMzA3IDQgbC0zOSAxNyAyNSAyOCBjNjQgNjggNzcgMTYzIDMzIDI0MQotMTQgMjQgLTIzIDQ2IC0yMSA0OSAyMiAyMSAyMTYgMjkgMjk0IDExeiBtMTI1OCAwIGMyNCAtNiA0NCAtMTMgNDQgLTE1IDAgLTMKLTEyIC0yMyAtMjcgLTQ1IC0xOSAtMjkgLTI4IC01NyAtMzEgLTk3IC0zIC01MSAwIC02MyAzMiAtMTE2IDIwIC0zMiAzNCAtNjEKMzIgLTY0IC0xMiAtMTEgLTEyNyAtMzIgLTE4MyAtMzIgLTU4IDAgLTE2MyAxNyAtMTYzIDI2IDAgMiAxNiAyNCAzNSA0OSA1Ngo3NCA1OSAxNDcgOSAyMzMgLTE1IDI2IC0yOCA0OSAtMjggNTIgLTMgMTkgMjEyIDI2IDI4MCA5eiBtLTQyNjAgLTExMSBjMTkKLTM2IDE4IC04OCAtMyAtMTE3IC0xNSAtMjMgLTE3IC0yMyAtMzAgLTYgLTE3IDI1IC0xNyA4NSAyIDExMiAxMyAxOSAxMyAyNAotNyA0OSBsLTIyIDI5IDIzIC0yMCBjMTMgLTExIDI5IC0zMiAzNyAtNDd6IG0tMzgyNCAtMzEgYzUgLTI4IC0zIC02NiAtMTkKLTkyIC0xMyAtMjAgLTEzIC0yMCAtMjggLTEgLTE5IDI1IC0xOSA4NiAtMSAxMTIgMTMgMTYgMTMgMjIgMCA0NCAtMTAgMTcgLTYKMTUgMTUgLTggMTYgLTE5IDMxIC00NCAzMyAtNTV6IG03NjUzIDQ2IGMyNyAtNDEgMzIgLTg0IDEyIC0xMjIgLTE5IC0zOCAtMzUKLTM2IC00NiA1IC04IDI3IC03IDQ3IDQgNzcgMTAgMjggMTEgNDYgNCA1OSAtMTcgMzIgLTEgMTkgMjYgLTE5eiBtLTk1ODUgLTczCmMwIC0yMSAtNCAtNDEgLTkgLTQ1IC0xMiAtNyAtMjYgNTkgLTE3IDgxIDEwIDI2IDI2IDUgMjYgLTM2eiBtNjUwIDE0IGMwIC0zMgotMTggLTY2IC0zMSAtNTkgLTEyIDggLTEyIDUxIDIgNzYgMTMgMjUgMjkgMTUgMjkgLTE3eiBtMjU0MCAtMTQgYzAgLTQ1IC0xNQotNjEgLTI0IC0yNSAtOCAzMCAzIDc3IDE1IDY5IDUgLTMgOSAtMjMgOSAtNDR6IG02NTAgNyBjMCAtNDEgLTE0IC02NiAtMjQKLTQyIC04IDIxIC04IDcwIDAgNzggMTMgMTMgMjQgLTUgMjQgLTM2eiBtNjQyIC0xOSBjLTEyIC00NyAtMzIgLTQ4IC0zMiAtMSAwCjQ1IDE5IDczIDMyIDQ4IDUgLTggNSAtMjkgMCAtNDd6IG0yNTQ4IDEyIGMwIC0xNCAtNCAtMzIgLTkgLTM5IC04IC0xMiAtMTEKLTkgLTE2IDEyIC05IDM2IDMgODcgMTYgNjYgNSAtNyA5IC0yNSA5IC0zOXogbTY0NSAzMCBjOCAtMjYgLTQgLTgyIC0xNiAtNzQKLTEyIDcgLTEyIDk0IDAgOTQgNSAwIDEzIC05IDE2IC0yMHogbTY0NSAtMTQgYzAgLTQwIC04IC02NiAtMjEgLTY2IC0xMCAwCi0xMiA2MCAtMyA4NCAxMSAyOCAyNCAxNyAyNCAtMTh6IG0tNzAzMCAtMjMgYzAgLTMwIC0xMCAtNTQgLTIxIC00NyAtMTAgNgotMTIgNzcgLTIgODcgOSAxMCAyMyAtMTMgMjMgLTQweiBtMTI1NSAxOSBjMyAtMTYgMiAtMzkgLTQgLTUzIGwtOSAtMjQgLTExCjI4IGMtMTEgMjkgLTUgNzcgOSA3NyA1IDAgMTEgLTEzIDE1IC0yOHogbTI1ODEgMyBjMyAtMTMgMiAtMzcgLTQgLTUyIGwtMTAKLTI4IC0xMSAyOCBjLTExIDI5IC01IDc3IDEwIDc3IDUgMCAxMSAtMTEgMTUgLTI1eiBtMTI1NCAtMjUgYzAgLTIxIC00IC00MQotOSAtNDQgLTEyIC04IC0yNCA0OCAtMTYgNzQgMTAgMzEgMjUgMTMgMjUgLTMweiBtMjU4MyAyMyBjMyAtMTUgMCAtMzggLTUKLTUyIGwtMTAgLTI2IC0xMCAyOCBjLTEwIDI5IC00IDc3IDExIDc3IDUgMCAxMSAtMTIgMTQgLTI3eiBtMTI1NyAtMjMgYzAgLTQxCi0xNCAtNjEgLTI0IC0zNCAtOCAyMSAtOCA2OSAwIDc3IDE0IDEzIDI0IC02IDI0IC00M3oiLz4KPC9nPgo8L3N2Zz4K");
+        -webkit-mask-repeat: repeat-y;
+        -webkit-mask-size: 100% auto;
+        -webkit-mask-position: left top;
+        mask-repeat: repeat-y;
+        mask-size: 100% auto;
+        mask-position: left top;
+        opacity: 0.5;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── DESKTOP (≥900px): yatay iki kolon ── */
+      #app {
+        display: flex;
+        flex-direction: row;
+        gap: 0;
+        align-items: flex-start;
+        height: calc(100vh - 1rem);
+        min-height: 0;
+      }
+      #panel-col {
+        flex: none;
+        width: 245px;
+        min-width: 0;
+        flex-shrink: 0;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-width: thin;
+        scrollbar-color: var(--scr-thumb) transparent;
+        /* yatay collapse: width 0'a animasyon */
+        transition:
+          width 0.28s ease,
+          opacity 0.22s ease;
+      }
+      #panel-col.collapsed {
+        width: 0 !important;
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+      }
+      #toggle-col {
+        flex-shrink: 0;
+        width: 1.8rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 0.3rem;
+      }
+      #chain-col {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        padding-left: 0.5rem;
+      }
+
+      /* ── MOBILE (≤899px): dikey stack ── */
+      @media (max-width: 899px) {
+        #app {
+          flex-direction: column;
+          height: auto;
+          min-height: 0;
+          align-items: stretch;
+        }
+        #panel-col {
+          width: 100% !important;
+          height: auto;
+          overflow: hidden;
+          /* dikey collapse: max-height animasyon */
+          max-height: 2000px;
+          transition:
+            max-height 0.35s ease,
+            opacity 0.25s ease;
+        }
+        #panel-col.collapsed {
+          max-height: 0 !important;
+          opacity: 0;
+          pointer-events: none;
+          width: 100% !important; /* width override'ı ezme */
+        }
+        #panel {
+          width: 100% !important;
+        }
+        #toggle-col {
+          flex-direction: row;
+          width: 100%;
+          padding: 0.18rem 0;
+          justify-content: center;
+        }
+        #chain-col {
+          padding-left: 0;
+          height: auto;
+          overflow: visible;
+        }
+      }
+
+      /* ── PANEL ── */
+      #panel {
+        background: var(--panel-bg);
+        border: outset var(--panel-bd);
+        border-width: 0 0.65rem 0.65rem 0;
+        border-radius: 0.2rem 0.65rem;
+        padding: 0.55rem 0.4rem 0.75rem 0.4rem;
+        width: 245px;
+      }
+
+      /* ── TOGGLE BUTTON ── */
+      #btn-toggle {
+        flex-shrink: 0;
+        background: var(--panel-bg);
+        border: outset var(--panel-bd);
+        color: var(--title-color);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        padding: 0;
+        transition: background 0.2s;
+      }
+      /* desktop: dikey şerit, yatay açılır ◀/▶ */
+      @media (min-width: 900px) {
+        #btn-toggle {
+          width: 1.6rem;
+          height: 3rem;
+          border-width: 0 0.4rem 0.4rem 0;
+          border-radius: 0 0.4rem;
+          align-self: flex-start;
+          margin-top: 0.3rem;
+        }
+      }
+      /* mobile: yatay şerit, dikey açılır ▲/▼ */
+      @media (max-width: 899px) {
+        #btn-toggle {
+          width: 3rem;
+          height: 1.4rem;
+          border-width: 0 0.3rem 0.3rem 0;
+          border-radius: 0 0.3rem;
+        }
+      }
+
+      hr {
+        border: none;
+        border-top: 1px solid var(--hr-color);
+        margin: 0.35rem 0 0.5rem;
+      }
+
+      #panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem 0 0.25rem;
+        gap: 0.4rem;
+      }
+      .main-title {
+        font-family: "Pacifico", cursive;
+        font-size: 1.45rem;
+        color: var(--title-color);
+        line-height: 1.2;
+        white-space: nowrap;
+      }
+
+      /* ── TOP BAR: dil + tema + görünüm kontrolleri ── */
+      #top-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        gap: 0;
+        margin: -0.55rem -0.4rem 0 -0.4rem;
+        border-radius: 0.2rem 0.6rem 0 0;
+        overflow: hidden;
+        background: var(--panel-bg);
+        border-bottom: 1px solid var(--hr-color);
+        margin-bottom: 0.4rem;
+      }
+      .top-bar-group {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        padding: 0.28rem 0.55rem;
+      }
+      #top-bar-lang {
+        border-right: 1px solid var(--hr-color);
+      }
+      .top-bar-controls {
+        gap: 0.4rem;
+        justify-content: center;
+        flex-wrap: nowrap;
+        padding-left: 0.3rem;
+      }
+      .top-bar-lbl {
+        font-size: 0.68rem;
+        font-weight: 700;
+        color: var(--lbl-color);
+        white-space: nowrap;
+      }
+
+      #btn-view {
+        padding: 0;
+        width: 2.4rem;
+        height: 1.45rem;
+        border-radius: 9rem;
+        background-color: transparent;
+        color: rgb(111, 54, 17);
+        border: 2.5px ridge rgb(89, 38, 8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex-shrink: 0;
+        overflow: hidden;
+        position: relative;
+      }
+      #btn-view .knob {
+        height: 1.1rem;
+        width: 1.1rem;
+        display: grid;
+        place-items: center;
+        background-color: var(--btn-bg);
+        border-radius: 50%;
+        transform: translateX(-0.55rem);
+        transition: transform 0.3s ease;
+        font-size: 0.6rem;
+        pointer-events: none;
+        position: relative;
+        flex-shrink: 0;
+      }
+      #btn-view.alt .knob {
+        transform: translateX(0.55rem);
+      }
+
+      /* view toggle — orijinal tasarım, küçültülmüş */
+      .settings-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 0.6rem;
+        padding: 0.3rem 0 0.1rem;
+        border-top: 1px solid var(--hr-color);
+        margin-top: 0.4rem;
+      }
+      .settings-group {
+        display: flex;
+        align-items: center;
+        gap: 0.28rem;
+      }
+      .settings-lbl {
+        font-size: 0.7rem;
+        color: var(--hint-color);
+        font-weight: 600;
+        white-space: nowrap;
+      }
+      .s-select {
+        font-size: 0.76rem;
+        padding: 0.2rem;
+        border-radius: 3px;
+        border: 1px solid var(--inp-bd);
+        background: var(--inp-bg);
+        color: var(--inp-color);
+        cursor: pointer;
+      }
+
+      #dated-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      #count-fields {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      /* ── YARDIM İÇERİĞİ METİN RENKLERİ ── */
+      .help-body { color: var(--inp-color); }
+      [data-theme="dark"]      .help-body { color: rgb(200, 195, 195); }
+      [data-theme="night"]     .help-body { color: rgb(221, 208, 120); }
+      [data-theme="matrix"]    .help-body { color: rgb(15, 200, 10); }
+      [data-theme="unicorn"]   .help-body { color: rgb(80, 10, 60); }
+      [data-theme="cyberpunk"] .help-body { color: rgb(0, 230, 255); }
+      [data-theme="retro"]     .help-body { color: rgb(240, 200, 80); }
+      [data-theme="defter"]    .help-body { color: rgb(40, 25, 10); }
+
+      /* ── PANEL SATIRLARI — modüler ── */
+      #panel-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+      }
+      .panel-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.3rem 0.45rem;
+      }
+
+      /* ── FORM ── */
+      .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.3rem 0.55rem;
+        margin-bottom: 1rem;
+      }
+      /* Her label+input çifti kendi satırında olsun */
+      .field {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        width: 100%;
+      }
+      .field-inline {
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+      } /* satır içi (break yok) */
+      .lbl {
+        color: var(--lbl-color);
+        text-shadow: 0 0 1px;
+        font-weight: 700;
+        font-size: 0.88rem;
+        font-family: "Trebuchet MS", Arial, sans-serif;
+        white-space: nowrap;
+      }
+      input[type="text"],
+      input[type="number"],
+      input[type="date"] {
+        background: var(--inp-bg);
+        border: 1.5px solid var(--inp-bd);
+        border-radius: 4px;
+        padding: 0.28rem 0.4rem;
+        font-size: 0.85rem;
+        color: var(--inp-color);
+      }
+      [data-theme="dark"] input[type="date"] {
+        color-scheme: dark;
+      }
+      input[type="text"] {
+        width: 17rem;
+      }
+      input:focus {
+        outline: 2px solid rgb(100, 220, 120);
+      }
+      .input-error {
+        box-shadow: 0 0 0 2px rgb(230, 60, 60) !important;
+        outline: none !important;
+      }
+      input[type="radio"],
+      input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+      }
+      .pill {
+        border: 1px solid var(--pill-bd);
+        border-radius: 12px;
+        padding: 0.18rem 0.42rem;
+        cursor: pointer;
+        font-size: 0.82rem;
+        user-select: none;
+        color: var(--inp-color);
+      }
+      label:has(input[type="radio"]:checked).pill,
+      label:has(input[type="checkbox"]:checked).pill {
+        border-style: inset;
+        border-width: 2px;
+        border-radius: 4px;
+        color: var(--label-checked);
+        text-shadow: 1px 1px 4px;
+      }
+      label:has(input[type="radio"]:checked).pill {
+        background: var(--pill-radio);
+      }
+      label:has(input[type="checkbox"]:checked).pill {
+        background: var(--pill-chk);
+      }
+      .err {
+        color: var(--err-color);
+        background: var(--err-bg);
+        border: 1px solid var(--err-color);
+        font-size: 0.78rem;
+        font-weight: 700;
+        padding: 0.14rem 0.32rem;
+        border-radius: 3px;
+        display: none;
+      }
+      .hint {
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--hint-color);
+      }
+      .count-box {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.28rem;
+        background: var(--count-bg);
+        border: 1.5px groove var(--count-bd);
+        border-radius: 18px;
+        padding: 0.2rem 0.6rem;
+      }
+      .count-box b {
+        color: var(--total-ring-color);
+        font-size: 1rem;
+      }
+      #show-count {
+        font-weight: 700;
+        color: var(--count-num);
+        font-size: 1rem;
+        text-shadow: 0 0 1rem;
+      }
+      .step-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.2rem;
+        margin-top: 0.18rem;
+      }
+      .step-chip {
+        background: var(--pill-chk);
+        border: 1px solid var(--pill-bd);
+        border-radius: 8px;
+        padding: 0 0.3rem;
+        font-size: 0.74rem;
+        color: var(--inp-color);
+      }
+
+      /* ── BUTTONS ── */
+      button {
+        border: outset #000;
+        border-width: 0 0.28rem 0.28rem 0;
+        border-radius: 0 0.28rem;
+        background: var(--btn-bg);
+        padding: 0.28rem 0.52rem;
+        cursor: pointer;
+        font-size: 0.82rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+        box-shadow: 1px 1px 3px var(--btn-shadow);
+        color: var(--inp-color);
+      }
+      /* ── BUTTON HOVER / ACTIVE — orijinalden birebir ── */
+
+      /* active: tüm cihazlar */
+      #btn-toggle:active {
+        background-color: var(--fx-toggle);
+      }
+      #btn-view:active {
+        background-color: var(--fx-view);
+      }
+      #btn-add:active {
+        background-color: var(--fx-add);
+      }
+      #btn-load:active {
+        background-color: var(--fx-load);
+      }
+      #btn-dl:active {
+        background-color: var(--fx-dl);
+      }
+      #btn-reset:active {
+        background-color: var(--fx-reset);
+      }
+      .btn-del:active {
+        background-color: var(--fx-del);
+      }
+
+      .chain-tab:active {
+        filter: brightness(0.88);
+      }
+
+      /* hover: sadece mouse/trackpad */
+      @media (hover: hover) {
+        #btn-toggle:hover {
+          background-color: var(--fx-toggle);
+        }
+        #btn-view:hover {
+          background-color: var(--fx-view);
+        }
+        #btn-add:hover {
+          background-color: var(--fx-add);
+        }
+        #btn-load:hover {
+          background-color: var(--fx-load);
+        }
+        #btn-dl:hover {
+          background-color: var(--fx-dl);
+        }
+        #btn-reset:hover {
+          background-color: var(--fx-reset);
+        }
+        .btn-del:hover {
+          background-color: var(--fx-del);
+        }
+
+        .chain-tab:hover {
+          filter: brightness(0.88);
+        }
+        button:not(#btn-toggle):not(#btn-view):not(#btn-add):not(#btn-load):not(
+            #btn-dl
+          ):not(#btn-reset):not(.btn-del):hover {
+          filter: brightness(0.88);
+        }
+      }
+
+      /* ── BUTON RENKLERİ — varsayılan ── */
+      #btn-toggle {
+        color: rgb(221, 29, 29);
+        border-color: rgb(255, 38, 38);
+      }
+      #btn-view {
+        color: rgb(111, 54, 17);
+        border-color: rgb(89, 38, 8);
+      }
+      #btn-add {
+        color: rgb(135, 71, 177);
+        font-weight: bold;
+        border-color: rgb(198, 114, 210);
+      }
+      #btn-load {
+        color: rgb(66, 68, 187);
+        border-color: rgb(108, 109, 218);
+      }
+      #btn-dl {
+        color: rgb(41, 94, 5);
+        border-color: rgb(78, 178, 10);
+      }
+      #btn-reset {
+        color: rgb(171, 160, 0);
+        border-color: rgb(255, 238, 0);
+      }
+      .btn-del {
+        color: rgb(171, 24, 24);
+        border-color: rgb(255, 36, 36);
+      }
+
+      /* Gece */
+      [data-theme="night"] #btn-toggle {
+        color: rgb(119, 3, 3);
+        border-color: rgb(87, 0, 0);
+      }
+      [data-theme="night"] #btn-view {
+        color: rgb(100, 72, 32);
+        border-color: rgb(101, 61, 37);
+      }
+      [data-theme="night"] #btn-add {
+        color: rgb(100, 72, 32);
+        border-color: rgb(101, 61, 37);
+      }
+      [data-theme="night"] #btn-load {
+        color: rgb(149, 65, 9);
+        border-color: rgb(162, 89, 22);
+      }
+      [data-theme="night"] #btn-dl {
+        color: rgb(38, 95, 27);
+        border-color: rgb(60, 128, 15);
+      }
+      [data-theme="night"] #btn-reset {
+        color: rgb(141, 136, 7);
+        border-color: rgb(180, 174, 4);
+      }
+      [data-theme="night"] .btn-del {
+        color: rgb(146, 17, 17);
+        border-color: rgb(148, 10, 10);
+      }
+      [data-theme="night"]
+
+      /* Karanlık */
+      [data-theme="dark"] #btn-toggle {
+        color: rgb(255, 82, 82);
+        border-color: rgb(255, 82, 82);
+      }
+      [data-theme="dark"] #btn-view {
+        color: rgb(255, 148, 87);
+        border-color: rgb(255, 148, 87);
+      }
+      [data-theme="dark"] #btn-add {
+        color: rgb(171, 171, 171);
+        border-color: rgb(255, 255, 255);
+      }
+      [data-theme="dark"] #btn-load {
+        color: rgb(99, 100, 171);
+        border-color: rgb(148, 150, 255);
+      }
+      [data-theme="dark"] #btn-dl {
+        color: rgb(105, 171, 61);
+        border-color: rgb(157, 255, 92);
+      }
+      [data-theme="dark"] #btn-reset {
+        color: rgb(171, 164, 65);
+        border-color: rgb(255, 244, 97);
+      }
+      [data-theme="dark"] .btn-del {
+        color: rgb(171, 68, 68);
+        border-color: rgb(255, 102, 102);
+      }
+      [data-theme="dark"]
+
+      /* Matrix — hepsi yeşil */
+      [data-theme="matrix"] #btn-toggle,
+      [data-theme="matrix"] #btn-view,
+      [data-theme="matrix"] #btn-add,
+      [data-theme="matrix"] #btn-load,
+      [data-theme="matrix"] #btn-dl,
+      [data-theme="matrix"] #btn-reset,
+      [data-theme="matrix"] .btn-del,
+      [data-theme="matrix"]
+
+      /* Unicorn */
+      [data-theme="unicorn"] #btn-toggle {
+        color: rgb(180, 0, 90);
+        border-color: rgb(220, 0, 110);
+      }
+      [data-theme="unicorn"] #btn-view {
+        color: rgb(150, 50, 180);
+        border-color: rgb(180, 80, 220);
+      }
+      [data-theme="unicorn"] #btn-add {
+        color: rgb(160, 50, 130);
+        border-color: rgb(200, 80, 160);
+      }
+      [data-theme="unicorn"] #btn-load {
+        color: rgb(80, 50, 160);
+        border-color: rgb(120, 90, 200);
+      }
+      [data-theme="unicorn"] #btn-dl {
+        color: rgb(0, 140, 160);
+        border-color: rgb(0, 180, 200);
+      }
+      [data-theme="unicorn"] #btn-reset {
+        color: rgb(160, 120, 0);
+        border-color: rgb(220, 180, 0);
+      }
+      [data-theme="unicorn"] .btn-del {
+        color: rgb(180, 0, 60);
+        border-color: rgb(220, 30, 80);
+      }
+      [data-theme="unicorn"]
+
+      /* Cyberpunk — neon pembe / cyan */
+      [data-theme="cyberpunk"] #btn-toggle {
+        color: rgb(255, 20, 150);
+        border-color: rgb(255, 20, 150);
+      }
+      [data-theme="cyberpunk"] #btn-view {
+        color: rgb(0, 230, 255);
+        border-color: rgb(0, 230, 255);
+      }
+      [data-theme="cyberpunk"] #btn-add {
+        color: rgb(160, 100, 255);
+        border-color: rgb(160, 100, 255);
+      }
+      [data-theme="cyberpunk"] #btn-load {
+        color: rgb(0, 200, 220);
+        border-color: rgb(0, 200, 220);
+      }
+      [data-theme="cyberpunk"] #btn-dl {
+        color: rgb(0, 230, 255);
+        border-color: rgb(0, 200, 180);
+      }
+      [data-theme="cyberpunk"] #btn-reset {
+        color: rgb(255, 220, 0);
+        border-color: rgb(255, 220, 0);
+      }
+      [data-theme="cyberpunk"] .btn-del {
+        color: rgb(255, 50, 100);
+        border-color: rgb(255, 50, 100);
+      }
+      [data-theme="cyberpunk"]
+
+      /* Retro — amber/turuncu fosfor */
+      [data-theme="retro"] #btn-toggle {
+        color: rgb(255, 140, 20);
+        border-color: rgb(200, 100, 10);
+      }
+      [data-theme="retro"] #btn-view {
+        color: rgb(220, 160, 30);
+        border-color: rgb(180, 120, 20);
+      }
+      [data-theme="retro"] #btn-add {
+        color: rgb(180, 200, 40);
+        border-color: rgb(140, 160, 20);
+      }
+      [data-theme="retro"] #btn-load {
+        color: rgb(200, 150, 30);
+        border-color: rgb(160, 110, 15);
+      }
+      [data-theme="retro"] #btn-dl {
+        color: rgb(160, 200, 50);
+        border-color: rgb(120, 160, 20);
+      }
+      [data-theme="retro"] #btn-reset {
+        color: rgb(240, 200, 40);
+        border-color: rgb(200, 160, 20);
+      }
+      [data-theme="retro"] .btn-del {
+        color: rgb(220, 80, 40);
+        border-color: rgb(180, 50, 20);
+      }
+      [data-theme="retro"]
+
+      /* Defter — mürekkep/kâğıt tonları */
+      [data-theme="defter"] #btn-toggle {
+        color: rgb(80, 45, 15);
+        border-color: rgb(130, 90, 40);
+      }
+      [data-theme="defter"] #btn-view {
+        color: rgb(60, 35, 10);
+        border-color: rgb(110, 80, 35);
+      }
+      [data-theme="defter"] #btn-add {
+        color: rgb(30, 80, 30);
+        border-color: rgb(60, 120, 60);
+      }
+      [data-theme="defter"] #btn-load {
+        color: rgb(30, 60, 140);
+        border-color: rgb(60, 100, 190);
+      }
+      [data-theme="defter"] #btn-dl {
+        color: rgb(20, 100, 60);
+        border-color: rgb(40, 140, 90);
+      }
+      [data-theme="defter"] #btn-reset {
+        color: rgb(140, 100, 10);
+        border-color: rgb(190, 145, 20);
+      }
+      [data-theme="defter"] .btn-del {
+        color: rgb(150, 30, 20);
+        border-color: rgb(200, 50, 30);
+      }
+      [data-theme="defter"]
+
+      .btn-note {
+        color: rgb(20, 110, 160);
+        border-color: rgb(30, 140, 200);
+      }
+      [data-theme="night"] .btn-note {
+        color: rgb(140, 90, 10);
+        border-color: rgb(170, 115, 20);
+      }
+      [data-theme="dark"] .btn-note {
+        color: rgb(80, 170, 220);
+        border-color: rgb(100, 200, 255);
+      }
+      [data-theme="matrix"] .btn-note {
+        color: rgb(0, 200, 80);
+        border-color: rgb(20, 220, 100);
+      }
+      [data-theme="unicorn"] .btn-note {
+        color: rgb(180, 50, 120);
+        border-color: rgb(220, 80, 160);
+      }
+      [data-theme="cyberpunk"] .btn-note {
+        color: rgb(0, 220, 255);
+        border-color: rgb(0, 220, 255);
+      }
+      [data-theme="retro"] .btn-note {
+        color: rgb(180, 160, 40);
+        border-color: rgb(200, 180, 50);
+      }
+      [data-theme="defter"] .btn-note {
+        color: rgb(40, 80, 150);
+        border-color: rgb(60, 110, 190);
+      }
+
+      /* Not modu aktifken imleç */
+      body.note-mode .chtbl td:not(.empty),
+      body.note-mode .circle-cell:not(.empty-ring) {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M14 2l4 4-10 10H4v-4L14 2z' fill='%23f0c040' stroke='%23333' stroke-width='1'/%3E%3C/svg%3E") 0 20, cell !important;
+      }
+      .btn-note.note-active {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+      }
+
+      /* ── ARK PLAN ZİNCİR rengi temaya göre ── */
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.32rem;
+        margin-top: 0.42rem;
+        justify-content: center;
+      }
+      .btn-row button:nth-child(2n + 1) {
+        clear: left;
+      }
+      .btn-row-break {
+        flex-basis: 100%;
+        height: 0;
+      }
+
+      .chain-note-summary {
+        font-size: 0.7rem;
+        color: var(--hint-color);
+        margin-top: 0.15rem;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        flex-wrap: wrap;
+      }
+      .note-idxs {
+        opacity: 0.75;
+        font-style: italic;
+      }
+
+      /* ── TABS & CARD ── */
+      #chain-list {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+      .tab-bar {
+        display: flex;
+        flex-wrap: wrap-reverse;
+        gap: 0.2rem;
+        margin-bottom: 0;
+        flex-shrink: 0;
+      }
+      .chain-tab {
+        border: 2px solid var(--tab-idle-bd);
+        border-bottom: none;
+        border-radius: 8px 8px 0 0;
+        background: var(--tab-idle-bg);
+        color: var(--ctitle);
+        font-size: 0.82rem;
+        padding: 0.2rem 0.6rem;
+        cursor: grab;
+        user-select: none;
+      }
+      .chain-tab.dragging {
+        opacity: 0.45;
+        cursor: grabbing;
+      }
+      .chain-tab.drag-over {
+        outline: 2px dashed var(--ctitle);
+        outline-offset: 2px;
+        transform: translateY(-2px);
+      }
+      .chain-tab.active {
+        background: var(--chain-bg);
+        border: 2px ridge var(--chain-bd);
+        border-bottom: transparent;
+        font-weight: 700;
+      }
+
+      /* TABLE MODE: card fills height, grid-wrap scrolls both axes */
+      .chain-card {
+        background: var(--chain-bg);
+        border: 0.5rem ridge var(--chain-bd);
+        border-radius: 0 6px 6px 6px;
+        padding: 0.6rem 0.7rem 0.7rem;
+        scrollbar-color: var(--scr-thumb) transparent;
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .grid-wrap {
+        flex: 1;
+        min-height: 0;
+        overflow: auto;
+        scrollbar-color: var(--scr-thumb) transparent;
+      }
+
+      /* SNAKE MODE: chain-col scrolls, card+grid-wrap are visible */
+      .grid-wrap.snake-mode {
+        overflow: visible;
+        flex: none;
+      }
+      .chain-card.snake-card {
+        overflow: visible;
+        flex: none;
+      }
+      /* chain-col handles scroll in snake mode */
+      #chain-col.snake-scroll {
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-color: var(--scr-thumb) transparent;
+      }
+      /* chain-list in snake: no flex clipping */
+      #chain-list.snake-list {
+        overflow: visible;
+        flex: none;
+      }
+      #chain-list > div:not(.tab-bar) {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      @media (max-width: 899px) {
+        #app {
+          flex-direction: column;
+          height: auto;
+        }
+        #chain-col {
+          height: auto;
+        }
+        #chain-list {
+          min-height: 0;
+        }
+        .chain-card {
+          flex: none;
+          max-height: 70vh;
+          overflow: auto;
+        }
+        .chain-card.snake-card {
+          overflow: visible;
+          max-height: none;
+        }
+        .grid-wrap.snake-mode {
+          overflow: visible;
+        }
+        #chain-col.snake-scroll {
+          overflow-y: auto;
+          max-height: 80vh;
+        }
+      }
+      .chain-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+      }
+      .chain-meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .chain-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--ctitle);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .chain-info {
+        font-size: 0.74rem;
+        color: var(--cinfo);
+        line-height: 1.5;
+        margin-top: 0.08rem;
+      }
+      .chain-acts {
+        display: flex;
+        gap: 0.28rem;
+        align-items: flex-start;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+      }
+      .btn-ca {
+        font-size: 0.75rem;
+        padding: 0.18rem 0.38rem;
+      }
+      .btn-del {
+        color: rgb(160, 20, 20);
+        border-color: rgb(210, 50, 50);
+      }
+
+      .prog-lbl {
+        font-size: 0.73rem;
+        color: var(--prog-txt);
+        margin: 0.22rem 0 0.15rem;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .prog-wrap {
+        background: var(--prog-bg);
+        border-radius: 6px;
+        height: 9px;
+        overflow: hidden;
+        margin-bottom: 0.3rem;
+        flex-shrink: 0;
+      }
+      .prog-fill {
+        height: 100%;
+        background: var(--prog-fill);
+        border-radius: 6px;
+        transition: width 0.3s ease;
+      }
+      .chain-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 0.35rem;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+      }
+      .chain-meta {
+        flex: 1;
+        min-width: 0;
+      }
+      .chain-title {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--ctitle);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .chain-info {
+        font-size: 0.74rem;
+        color: var(--cinfo);
+        line-height: 1.5;
+        margin-top: 0.08rem;
+      }
+      .chain-acts {
+        display: flex;
+        gap: 0.28rem;
+        align-items: flex-start;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+      }
+      .btn-ca {
+        font-size: 0.75rem;
+        padding: 0.18rem 0.38rem;
+      }
+      .btn-del {
+        color: rgb(160, 20, 20);
+        border-color: rgb(210, 50, 50);
+      }
+      .prog-lbl {
+        font-size: 0.73rem;
+        color: var(--prog-txt);
+        margin: 0.22rem 0 0.15rem;
+        font-weight: 600;
+        flex-shrink: 0;
+      }
+      .prog-wrap {
+        background: var(--prog-bg);
+        border-radius: 6px;
+        height: 9px;
+        overflow: hidden;
+        margin-bottom: 0.3rem;
+        flex-shrink: 0;
+      }
+      .prog-fill {
+        height: 100%;
+        background: var(--prog-fill);
+        border-radius: 6px;
+        transition: width 0.3s ease;
+      }
+
+      /* ── TABLE ── */
+      /* ── ÇARPIŞMA daha yumuşak uçlar ── */
+      .x-mark {
+        position: absolute;
+        inset: 0;
+        background-color: var(--xmark);
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M12,12L88,88M88,12L12,88' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        -webkit-mask-repeat: no-repeat;
+        -webkit-mask-size: 95% 95%;
+        -webkit-mask-position: center;
+        mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M12,12L88,88M88,12L12,88' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+        mask-repeat: no-repeat;
+        mask-size: 95% 95%;
+        mask-position: center;
+        pointer-events: none;
+      }
+      .chtbl {
+        border-collapse: collapse;
+        font-size: 0.8rem;
+        table-layout: fixed;
+        width: max-content;
+      }
+      .chtbl th,
+      .chtbl td {
+        border: 1.5px solid var(--cell-bd);
+        text-align: center;
+        padding: 0;
+      }
+      .chtbl tr:first-child th:first-child {
+        background: transparent;
+        border: 0;
+        color: var(--ctitle);
+        font-size: calc(var(--cs) * 0.32);
+        padding: 0 0.1rem;
+        width: calc(var(--cs) * 1.5);
+        min-width: calc(var(--cs) * 1.5);
+        max-width: calc(var(--cs) * 1.5);
+      }
+      .chtbl tr:first-child th:not(:first-child) {
+        width: var(--cs);
+        min-width: var(--cs);
+        max-width: var(--cs);
+        height: calc(var(--cs) * 0.8);
+        background: var(--col-hd-bg);
+        color: var(--col-hd-color);
+        font-size: calc(var(--cs) * 0.35);
+      }
+      /* Satır başlığı: sabit yükseklik + scroll — çok ay gelince taşmaz */
+      .chtbl tr:not(:first-child) th:first-child {
+        width: calc(var(--cs) * 1.5);
+        min-width: calc(var(--cs) * 1.5);
+        max-width: calc(var(--cs) * 1.5);
+        height: var(--cs);
+        overflow: hidden;
+        background: var(--row-hd-bg);
+        color: var(--row-hd-color);
+        padding: 0 0.12rem;
+        font-size: calc(var(--cs) * 0.33);
+        white-space: normal;
+        line-height: 1.2;
+      }
+      .chtbl td {
+        width: var(--cs);
+        min-width: var(--cs);
+        max-width: var(--cs);
+        height: var(--cs);
+        background: var(--cell-bg);
+        color: var(--cell-color);
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+        font-size: calc(var(--cs) * 0.38);
+      }
+      .chtbl td.empty {
+        background: var(--empty-bg);
+        cursor: default;
+      }
+      .chtbl td.mo {
+        border-left: 2px dashed var(--month-bd) !important;
+      }
+      .chtbl td.yr {
+        border-left: 3px double var(--year-bd) !important;
+      }
+      .chtbl td.ms {
+        font-weight: bold;
+      }
+
+      .has-note::after,
+      .circle-cell.has-note::after {
+        content: "📝";
+        position: absolute;
+        top: -4px;
+        right: -4px;
+        font-size: calc(var(--cs) * 0.32);
+        line-height: 1;
+        pointer-events: none;
+        background: none;
+        width: auto;
+        height: auto;
+        border-radius: 0;
+      }
+
+      /* ── HOVER GHOST X (sadece mouse, işaretlenmemiş hücreler) ── */
+      @media (hover: hover) {
+        .chtbl td:not(.empty):not(:has(.x-svg)):hover::before,
+        .circle-cell:not(:has(.x-svg)):hover::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          border-radius: inherit;
+          background-color: var(--xmark);
+          opacity: 0.28;
+          -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M12,12L88,88M88,12L12,88' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          -webkit-mask-size: 75% 75%;
+          -webkit-mask-position: center;
+          -webkit-mask-repeat: no-repeat;
+          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M12,12L88,88M88,12L12,88' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+          mask-size: 75% 75%;
+          mask-position: center;
+          mask-repeat: no-repeat;
+        }
+      }
+
+      /* ── SNAKE ── */
+      .snake-cont {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        padding-top: calc(var(--cs-snake, var(--cs)) * 0.45);
+      }
+      .snake-row {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+      .circle-cell {
+        width: var(--cs-snake, var(--cs));
+        height: var(--cs-snake, var(--cs));
+        flex-shrink: 0;
+        border-radius: 50%;
+        border: 1.5px solid var(--cell-bd);
+        background: var(--cell-bg);
+        color: var(--cell-color);
+        cursor: pointer;
+        user-select: none;
+        position: relative;
+        display: grid;
+        place-items: center;
+        font-size: calc(var(--cs-snake, var(--cs)) * 0.36);
+        margin: 0;
+        overflow: visible;
+        box-sizing: border-box;
+      }
+      /* arc overlay SVG — drawn as sibling injected by JS */
+      .arc-svg {
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        pointer-events: none;
+        overflow: visible;
+        z-index: 2;
+      }
+      /* month label — orijinal gibi çemberin üstünde */
+      .month-lbl {
+        position: absolute;
+        bottom: calc(100% + 2px);
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: calc(var(--cs-snake, var(--cs)) * 0.28);
+        white-space: nowrap;
+        color: var(--row-hd-color);
+        background: var(--row-hd-bg);
+        border: 1px solid var(--month-bd);
+        padding: 1px 5px;
+        border-radius: 8px;
+        pointer-events: none;
+        z-index: 3;
+        line-height: 1.3;
+      }
+      .circle-cell.ms {
+        font-weight: bold;
+      }
+      .x-svg {
+        stroke: var(--xmark);
+        stroke-width: 7px;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        fill: none;
+        position: absolute;
+        pointer-events: none;
+        width: 115%;
+        height: 115%;
+        top: -7.5%;
+        left: -7.5%;
+      }
+
+      /* Yuvarlak halkalardaki x daha küçük */
+      .circle-cell .x-svg {
+        width: 88%;
+        height: 88%;
+        top: 6%;
+        left: 6%;
+        stroke-width: 9px;
+      }
+
+      /* ── MODAL ── */
+      .modal-ov {
+        position: fixed;
+        inset: 0;
+        background: var(--modal-ov);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+      .modal-box {
+        background: var(--modal-bg);
+        border: 1.5px solid var(--modal-bd);
+        border-radius: 8px;
+        padding: 1.1rem 1.3rem 1rem;
+        min-width: 280px;
+        max-width: min(95vw, 420px);
+        color: var(--inp-color);
+      }
+      #modal-note .modal-box {
+        width: fit-content;
+        min-width: 0;
+        max-width: min(95vw, 420px);
+      }
+      .modal-ttl {
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--ctitle);
+        margin-bottom: 0.7rem;
+      }
+      .modal-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 0.45rem;
+        flex-wrap: wrap;
+      }
+      .modal-acts {
+        display: flex;
+        gap: 0.4rem;
+        justify-content: flex-end;
+        margin-top: 0.8rem;
+        flex-wrap: wrap;
+      }
+      .btn-ok {
+        color: rgb(10, 80, 10);
+        border-color: rgb(10, 80, 10);
+      }
+      #btn-add {
+        color: rgb(0, 0, 0);
+        border-color: rgb(0, 0, 0);
+        font-weight: 700;
+      }
+      .btn-cancel {
+        color: rgb(140, 20, 20);
+        border-color: rgb(200, 40, 40);
+      }
+      textarea.note-inp {
+        display: block;
+        width: 9rem;
+        box-sizing: content-box;
+        min-height: 80px;
+        resize: vertical;
+        background: var(--note-bg);
+        color: var(--note-color);
+        border: 1px solid var(--note-bd);
+        border-radius: 4px;
+        padding: 0.35rem;
+        font-size: 0.85rem;
+        font-family: inherit;
+      }
+      /* ── CELL SIZE KNOB SLIDER ── */
+      .knob-slider-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.15rem;
+      }
+      #cell-size-slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 5.5rem;
+        height: 0.45rem;
+        background: linear-gradient(
+          to right,
+          var(--prog-fill) 0%,
+          var(--prog-fill) var(--pct, 50%),
+          var(--prog-bg) var(--pct, 50%),
+          var(--prog-bg) 100%
+        );
+        border-radius: 9rem;
+        border: none;
+        outline: none;
+        cursor: pointer;
+      }
+      #cell-size-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        background: var(--btn-bg);
+        border: 2px solid var(--prog-fill);
+        cursor: pointer;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      #cell-size-slider::-moz-range-thumb {
+        width: 1.25rem;
+        height: 1.25rem;
+        border-radius: 50%;
+        background: var(--btn-bg);
+        border: 2px solid var(--prog-fill);
+        cursor: pointer;
+      }
+      #cell-size-val {
+        font-size: 0.72rem;
+        color: var(--hint-color);
+        min-width: 1.4rem;
+        text-align: right;
+        font-weight: 600;
+      }
+      #btn-bg-toggle {
+        font-size: 0.78rem;
+        padding: 0.18rem 0.4rem;
+        opacity: 1;
+        transition: opacity 0.2s;
+      }
+      #btn-bg-toggle.bg-off {
+        opacity: 0.35;
+      }
+      body.bg-off::before {
+        display: none;
+      }
+      .unsupported {
+        display: none;
+      }
+      @media (max-width: 200px) {
+        body > *:not(.unsupported) {
+          display: none;
+        }
+        .unsupported {
+          display: block;
+          color: red;
+          font-size: 2rem;
+          text-align: center;
+          padding: 2rem;
+          font-weight: bold;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- panel column -->
+      <div id="panel-col">
+        <div id="panel">
+          <!-- ── KONTROL ÇUBUĞU: dil, tema, görünüm, bg, boyut ── -->
+          <div id="top-bar">
+            <div class="top-bar-group" id="top-bar-lang">
+              <span class="top-bar-lbl" id="top-bar-lbl-lang">Dil</span>
+              <select id="lang-select" class="s-select">
+                <option value="tr">TR</option>
+                <option value="en">EN</option>
+              </select>
+            </div>
+            <div class="top-bar-group" id="top-bar-theme">
+              <span class="top-bar-lbl" id="top-bar-lbl-theme">Tema</span>
+              <select id="theme-select" class="s-select">
+                <option value="">Varsayılan</option>
+                <option value="dark">Karanlık</option>
+                <option value="night">Gece</option>
+                <option value="matrix">Matrix</option>
+                <option value="unicorn">Unicorn</option>
+                <option value="cyberpunk">Cyberpunk</option>
+                <option value="retro">Retro</option>
+                <option value="defter">Defter</option>
+              </select>
+            </div>
+            <div class="top-bar-group top-bar-controls">
+              <button id="btn-view" title="Tablo / Yılan görünümü">
+                <span class="knob"
+                  ><i class="fa-solid fa-table-cells"></i
+                ></span>
+              </button>
+              <button id="btn-bg-toggle" title="Arka plan görselini aç/kapa">
+                <i class="fa-solid fa-image"></i>
+              </button>
+              <div class="knob-slider-wrap">
+                <input
+                  type="range"
+                  id="cell-size-slider"
+                  min="25"
+                  max="100"
+                  value="64"
+                  step="5"
+                />
+                <span id="cell-size-val">64</span>
+              </div>
+            </div>
+          </div>
+          <!-- ── BAŞLIK ── -->
+          <div id="panel-head">
+            <span class="main-title">Zinciri Kırma!</span>
+            <button
+              id="btn-help"
+              title="Yöntem hakkında bilgi"
+              style="
+                margin-left: 0.4rem;
+                font-size: 0.75rem;
+                width: 1.4rem;
+                height: 1.4rem;
+                padding: 0;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+                font-weight: 700;
+              "
+            >
+              ?
+            </button>
+          </div>
+          <hr />
+          <!-- ── PANEL SATIRLARI — modüler ── -->
+          <div id="panel-rows" class="collapsible">
+
+            <!-- S3: Başlık + soru işareti (panel-head buraya taşınmadı, yukarıda kalıyor) -->
+
+            <!-- S4: Tür -->
+            <div class="panel-row" id="prow-kind">
+              <span class="lbl" id="lbl-kind">Tür:</span>
+              <label class="pill"
+                ><input type="radio" name="kind" value="dated" checked />
+                <span id="lbl-dated">Takvimli</span></label
+              >
+              <label class="pill"
+                ><input type="radio" name="kind" value="count" />
+                <span id="lbl-count">Tarihsiz</span></label
+              >
+            </div>
+
+            <!-- S5: Hedefim -->
+            <div class="panel-row" id="prow-goal">
+              <span class="lbl" id="lbl-goal" style="padding-top: 0.25rem">Hedefim:</span>
+              <textarea
+                id="inp-name"
+                maxlength="80"
+                placeholder="Her gün 1 saat kitap okuyacağım!"
+                rows="2"
+                style="
+                  flex: 1;
+                  min-width: 0;
+                  resize: none;
+                  font-family: inherit;
+                  font-size: inherit;
+                  padding: 0.2rem 0.3rem;
+                  border: 1px solid var(--inp-bd);
+                  background: var(--inp-bg);
+                  color: var(--inp-color);
+                  border-radius: 3px;
+                  line-height: 1.4;
+                "
+              ></textarea>
+              <span id="err-name" class="err"></span>
+            </div>
+
+            <!-- Takvimli mod alanları -->
+            <div id="dated-fields">
+              <!-- S6: Başlangıç -->
+              <div class="panel-row" id="prow-start">
+                <span class="lbl" id="lbl-start">Başlangıç:</span>
+                <input id="inp-start" type="date" />
+              </div>
+              <!-- S7: Bitiş -->
+              <div class="panel-row" id="prow-end">
+                <span class="lbl" id="lbl-end">Bitiş:</span>
+                <input id="inp-end" type="date" />
+                <span id="err-date" class="err"></span>
+              </div>
+              <!-- S8+S9: Günler (tek div, iki satır) -->
+              <div class="panel-row" id="prow-days">
+                <span class="lbl" id="lbl-days">Günler:</span>
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="1" checked />
+                  Pzt</label
+                >
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="2" checked />
+                  Sal</label
+                >
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="3" checked />
+                  Çar</label
+                >
+                <div style="flex-basis: 100%; height: 0"></div>
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="4" checked />
+                  Per</label
+                >
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="5" checked />
+                  Cum</label
+                >
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="6" checked />
+                  Cmt</label
+                >
+                <label class="pill"
+                  ><input type="checkbox" class="wd" value="0" checked />
+                  Paz</label
+                >
+                <span id="err-wd" class="err">En az 1 gün seçin.</span>
+              </div>
+            </div>
+
+            <!-- Tarihsiz mod alanları -->
+            <div id="count-fields" style="display: none">
+              <!-- SC1: Hedef -->
+              <div class="panel-row" id="prow-total">
+                <span class="lbl" id="lbl-total">Hedef:</span>
+                <input
+                  id="inp-total"
+                  type="number"
+                  min="1"
+                  max="10080"
+                  value="210"
+                  style="width: 5rem"
+                />
+              </div>
+              <!-- SC2: Halka -->
+              <div class="panel-row" id="prow-rings-count">
+                <span class="lbl" id="lbl-rings-count">Halka:</span>
+                <input
+                  id="inp-rings-count"
+                  type="number"
+                  min="1"
+                  max="10080"
+                  value="7"
+                  style="width: 4rem"
+                />
+                <span class="hint" id="step-auto-hint" style="margin-left: 0.3rem"></span>
+              </div>
+              <!-- SC3+SC4: Özel adımlar + göstergesi (tek div) -->
+              <div class="panel-row" id="prow-step">
+                <span class="lbl" id="lbl-step">Özel adımlar:</span>
+                <input
+                  id="inp-step"
+                  type="text"
+                  style="flex: 1; min-width: 0"
+                  placeholder="opsiyonel: 30,80,120,..."
+                />
+                <span id="err-count" class="err"></span>
+                <div class="step-chips" id="step-chips"></div>
+              </div>
+            </div>
+
+            <!-- S10: Toplam halka -->
+            <div class="panel-row" id="prow-total-ring" style="justify-content: center">
+              <div class="count-box">
+                <b id="lbl-rings">Toplam halka:</b>&nbsp;<span id="show-count">0</span>
+              </div>
+            </div>
+
+            <!-- S11: Satır -->
+            <div class="panel-row" id="prow-rows">
+              <span class="lbl" id="lbl-rows">Satır:</span>
+              <input
+                id="inp-rows"
+                type="number"
+                min="1"
+                max="10080"
+                style="width: 4rem"
+              />
+            </div>
+
+            <!-- S12: Sütun -->
+            <div class="panel-row" id="prow-cols">
+              <span class="lbl" id="lbl-cols">Sütun:</span>
+              <input
+                id="inp-cols"
+                type="number"
+                min="1"
+                max="10080"
+                style="width: 4rem"
+              />
+            </div>
+
+            <!-- S13: Layout bilgisi -->
+            <div class="panel-row" id="prow-layout-info" style="justify-content: center">
+              <span id="layout-info" class="hint"></span>
+            </div>
+
+            <!-- S14: Butonlar -->
+            <div class="panel-row btn-row" id="prow-btns">
+              <button id="btn-add">
+                <i class="fa-solid fa-plus"></i> Oluştur
+              </button>
+              <button id="btn-load">
+                <i class="fa-solid fa-folder-plus"></i> Yükle
+              </button>
+              <div class="btn-row-break"></div>
+              <button id="btn-dl">
+                <i class="fa-solid fa-download"></i> Yedek
+              </button>
+              <button id="btn-reset">
+                <i class="fa-solid fa-broom"></i> Temizle
+              </button>
+            </div>
+            <span
+              id="err-backup"
+              class="err"
+              style="margin-top: 0.22rem; display: none"
+            ></span>
+
+          </div>
+          <!-- /panel-rows -->
+        </div>
+        <!-- /panel -->
+      </div>
+      <!-- /panel-col -->
+
+      <!-- toggle strip -->
+      <div id="toggle-col">
+        <button id="btn-toggle" title="Paneli gizle / göster">◀</button>
+      </div>
+
+      <!-- chain column -->
+      <div id="chain-col">
+        <div id="chain-list"></div>
+      </div>
+    </div>
+    <!-- /app -->
+
+    <input type="file" id="file-input" accept=".json" style="display: none" />
+
+    <!-- Modal: layout -->
+
+    <!-- Modal: note -->
+    <div class="modal-ov" id="modal-note" style="display: none">
+      <div class="modal-box">
+        <div class="modal-ttl" id="mn-title">Not</div>
+        <textarea class="note-inp" id="mn-input" placeholder=""></textarea>
+        <div class="modal-acts">
+          <button class="btn-cancel" id="mn-cancel">İptal</button>
+          <button class="btn-cancel" id="mn-clear">Notu Sil</button>
+          <button class="btn-ok" id="mn-ok">Kaydet</button>
+        </div>
+      </div>
+    </div>
+    <div class="unsupported">Görüntü desteklenmiyor!</div>
+
+    <script>
+      (function () {
+        "use strict";
+        var SK = "zkm2_store",
+          TK = "zkm2_theme",
+          MAX = 10080;
+        var VK = "zkm2_view",
+          LK = "zkm2_lang",
+          CK = "zkm2_collapsed",
+          CSK = "zkm2_cellsize",
+          BGK = "zkm2_bgvis";
+
+        /* ── I18N ── */
+        var LANGS = {
+          tr: {
+            kindLbl: "Tür:",
+            dated: "Takvimli",
+            count: "Tarihsiz",
+            goalLbl: "Hedefim:",
+            goalPH: "Her gün 1 saat kitap okuyacağım!",
+            goalPHcount: "210 sayfalık kitabı okuyacağım!",
+            startLbl: "Başlangıç:",
+            endLbl: "Bitiş:",
+            daysLbl: "Günler:",
+            totalLbl: "Hedef:",
+            stepLbl: "Özel adımlar:",
+            stepPH: "opsiyonel: 30,80,120,...",
+            ringsCountLbl: "Halka:",
+            rowLbl: "Satır:",
+            colLbl: "Sütun:",
+            ringLbl: "Toplam halka:",
+            btnAdd: "Oluştur",
+            btnLoad: "Yükle",
+            btnDl: "Yedek",
+            btnReset: "Temizle",
+            errName: "Zincir adı gerekli.",
+            errAtLeast: "En az 1 gün seçin.",
+            dayNames: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"],
+            dayNamesFull: [
+              "Pazar",
+              "Pazartesi",
+              "Salı",
+              "Çarşamba",
+              "Perşembe",
+              "Cuma",
+              "Cumartesi",
+            ],
+            monthShort: null,
+            progLbl: function (d, t, p) {
+              return "İlerleme: " + d + "/" + t + " (%" + p + ")";
+            },
+            chainInfo: function (n, f, l) {
+              return "Halka: " + n + "&nbsp;|&nbsp;" + f + "&nbsp;–&nbsp;" + l;
+            },
+            chainInfoCount: function (t, ms) {
+              return "Toplam: " + t + "&nbsp;|&nbsp;Kademeler: " + ms;
+            },
+            delConfirm: "Bu zinciri silmek istiyor musunuz?",
+            noteTitle: "Not",
+            notePH: "Bu halka için notunuzu yazın...",
+            noteOk: "Kaydet",
+            noteCancel: "İptal",
+            noteClear: "Notu Sil",
+            noChain: "İndirilecek zincir bulunamadı.",
+            badJson: "JSON formatı bozuk.",
+            badFile: "Dosya geçersiz: ",
+            loadOk: "Yedek başarıyla yüklendi.",
+            viewTable: "Tablo",
+            viewSnake: "Yılan",
+            appTitle: "Zinciri Kırma!",
+            chainBtnDel: "Sil",
+            chainBtnNote: "Not",
+            notesSummary: "Not",
+            notesSummaryRings: "halkada",
+            layoutPrefix: "Düzen:",
+            layoutRows: "satır",
+            layoutCols: "sütun",
+            layoutTotal: "toplam hücre",
+            layoutEmpty: "boş hücre:",
+            layoutEmptySuffix: "adet",
+            topBarLang: "Dil",
+            topBarTheme: "Tema",
+            themeDefault: "Varsayılan",
+            themeDark: "Karanlık",
+            themeNight: "Gece",
+            themeMatrix: "Matrix",
+            themeUnicorn: "Unicorn",
+            themeCyberpunk: "Cyberpunk",
+            themeRetro: "Retro",
+            themeDefter: "Defter",
+            chainTabLabel: "Zincir",
+            locale: "tr-TR",
+          },
+          en: {
+            kindLbl: "Type:",
+            dated: "Calendar",
+            count: "Countable",
+            goalLbl: "My goal:",
+            goalPH: "I will read 1 hour every day!",
+            goalPHcount: "I will read a 210-page book!",
+            startLbl: "Start:",
+            endLbl: "End:",
+            daysLbl: "Days:",
+            totalLbl: "Target:",
+            stepLbl: "Custom steps:",
+            stepPH: "optional: 30,80,120,...",
+            ringsCountLbl: "Rings:",
+            rowLbl: "Rows:",
+            colLbl: "Cols:",
+            ringLbl: "Total rings:",
+            btnAdd: "Create",
+            btnLoad: "Import",
+            btnDl: "Backup",
+            btnReset: "Clear",
+            errName: "Chain name is required.",
+            errAtLeast: "Select at least 1 day.",
+            dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            dayNamesFull: [
+              "Sunday",
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            monthShort: null,
+            progLbl: function (d, t, p) {
+              return "Progress: " + d + "/" + t + " (" + p + "%)";
+            },
+            chainInfo: function (n, f, l) {
+              return "Rings: " + n + "&nbsp;|&nbsp;" + f + "&nbsp;–&nbsp;" + l;
+            },
+            chainInfoCount: function (t, ms) {
+              return "Total: " + t + "&nbsp;|&nbsp;Milestones: " + ms;
+            },
+            delConfirm: "Delete this chain?",
+            noteTitle: "Note",
+            notePH: "Write a note for this ring...",
+            noteOk: "Save",
+            noteCancel: "Cancel",
+            noteClear: "Delete Note",
+            noChain: "No chain to download.",
+            badJson: "Invalid JSON format.",
+            badFile: "Invalid file: ",
+            loadOk: "Backup loaded successfully.",
+            viewTable: "Table",
+            viewSnake: "Snake",
+            appTitle: "Break the Chain!",
+            chainBtnDel: "Delete",
+            chainBtnNote: "Note",
+            notesSummary: "Notes",
+            notesSummaryRings: "rings",
+            layoutPrefix: "Layout:",
+            layoutRows: "rows",
+            layoutCols: "cols",
+            layoutTotal: "total cells",
+            layoutEmpty: "empty cells:",
+            layoutEmptySuffix: "",
+            topBarLang: "Lang",
+            topBarTheme: "Theme",
+            themeDefault: "Default",
+            themeDark: "Dark",
+            themeNight: "Night",
+            themeMatrix: "Matrix",
+            themeUnicorn: "Unicorn",
+            themeCyberpunk: "Cyberpunk",
+            themeRetro: "Retro",
+            themeDefter: "Notebook",
+            chainTabLabel: "Chain",
+            locale: "en-US",
+          },
+        };
+        var lang = "tr";
+        function t() {
+          return LANGS[lang];
+        }
+
+        function fmtDate(d) {
+          return d.toLocaleDateString(t().locale, {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
+        }
+        function gs() {
+          try {
+            var s = JSON.parse(localStorage.getItem(SK) || "null");
+            return s && s.items ? s : { items: {}, order: [] };
+          } catch (e) {
+            return { items: {}, order: [] };
+          }
+        }
+        function ss(s) {
+          localStorage.setItem(SK, JSON.stringify(s));
+        }
+        function rid() {
+          return (
+            Math.random().toString(36).slice(2, 9) + Date.now().toString(36)
+          );
+        }
+        function pad2(n) {
+          return String(n).padStart(2, "0");
+        }
+        function toISO(d) {
+          return (
+            d.getFullYear() +
+            "-" +
+            pad2(d.getMonth() + 1) +
+            "-" +
+            pad2(d.getDate())
+          );
+        }
+        function daysB(s, e) {
+          var a = [],
+            d = new Date(s.getTime());
+          while (d <= e) {
+            a.push(new Date(d));
+            d.setDate(d.getDate() + 1);
+          }
+          return a;
+        }
+        function filterD(arr, p) {
+          return arr.filter(function (d) {
+            return p[String(d.getDay())];
+          });
+        }
+        function nowS() {
+          return new Date().toLocaleString(t().locale);
+        }
+
+        /* DOM */
+        var panel = id("panel"),
+          btnToggle = id("btn-toggle"),
+          btnView = id("btn-view"),
+          btnBgToggle = id("btn-bg-toggle"),
+          btnHelp = id("btn-help"),
+          themeSelect = id("theme-select"),
+          langSelect = id("lang-select"),
+          kindRadios = document.getElementsByName("kind"),
+          inpName = id("inp-name"),
+          inpStart = id("inp-start"),
+          inpEnd = id("inp-end"),
+          wdChecks = document.querySelectorAll(".wd"),
+          inpTotal = id("inp-total"),
+          inpStep = id("inp-step"),
+          inpRingsCount = id("inp-rings-count"),
+          stepChips = id("step-chips"),
+          inpRows = id("inp-rows"),
+          inpCols = id("inp-cols"),
+          layoutInfo = id("layout-info"),
+          showCount = id("show-count"),
+          btnAdd = id("btn-add"),
+          btnLoad = id("btn-load"),
+          btnDl = id("btn-dl"),
+          btnReset = id("btn-reset"),
+          fileInput = id("file-input"),
+          chainList = id("chain-list"),
+          errName = id("err-name"),
+          errDate = id("err-date"),
+          errWd = id("err-wd"),
+          errCount = id("err-count"),
+          errBackup = id("err-backup"),
+          datedFields = id("dated-fields"),
+          countFields = id("count-fields"),
+          modalNote = id("modal-note"),
+          mnTitle = id("mn-title"),
+          mnInput = id("mn-input");
+        function id(x) {
+          return document.getElementById(x);
+        }
+
+        var viewMode = "table",
+          activeId = null,
+          kind = "dated",
+          n = 0,
+          cols = 7,
+          rows = 1,
+          currentDates = [];
+        var _lch = null,
+          _nch = null,
+          _nidx = null,
+          noteMode = false;
+
+        function setNoteMode(on) {
+          noteMode = on;
+          document.body.classList.toggle("note-mode", on);
+          document.querySelectorAll(".btn-note").forEach(function (b) {
+            b.classList.toggle("note-active", on);
+          });
+        }
+
+        /* ── THEME ── */
+        function applyTheme(th) {
+          document.documentElement.setAttribute("data-theme", th || "");
+          localStorage.setItem(TK, th || "");
+          themeSelect.value = th || "";
+        }
+        (function () {
+          var th = localStorage.getItem(TK) || "";
+          if (th) applyTheme(th);
+        })();
+        themeSelect.addEventListener("change", function () {
+          applyTheme(themeSelect.value);
+        });
+
+        /* ── LANG ── */
+        function applyLang(l, skipRender) {
+          lang = l || "tr";
+          langSelect.value = lang;
+          localStorage.setItem(LK, lang);
+          applyLangUI();
+          if (!skipRender) renderAll();
+        }
+        function applyLangUI() {
+          var T = t();
+          /* form labels */
+          setTxt("lbl-kind", T.kindLbl);
+          setTxt("lbl-goal", T.goalLbl);
+          setTxt("lbl-start", T.startLbl);
+          setTxt("lbl-end", T.endLbl);
+          setTxt("lbl-days", T.daysLbl);
+          setTxt("lbl-total", T.totalLbl);
+          setTxt("lbl-step", T.stepLbl);
+          setTxt("lbl-rings-count", T.ringsCountLbl);
+          setTxt("lbl-rows", T.rowLbl);
+          setTxt("lbl-cols", T.colLbl);
+          setTxt("lbl-rings", T.ringLbl);
+          setTxt("lbl-dated", T.dated);
+          setTxt("lbl-count", T.count);
+          /* başlık */
+          var mt = document.querySelector(".main-title");
+          if (mt) mt.textContent = T.appTitle;
+          document.title = T.appTitle;
+          setTxt("top-bar-lbl-lang", T.topBarLang);
+          setTxt("top-bar-lbl-theme", T.topBarTheme);
+          /* theme options */
+          var ts = id("theme-select");
+          if (ts) {
+            var themeKeys = ["themeDefault","themeDark","themeNight","themeMatrix","themeUnicorn","themeCyberpunk","themeRetro","themeDefter"];
+            for (var oi = 0; oi < ts.options.length && oi < themeKeys.length; oi++) {
+              if (T[themeKeys[oi]]) ts.options[oi].text = T[themeKeys[oi]];
+            }
+          }
+          /* modal layout */
+          setTxt("lbl-rows", T.rowLbl);
+          setTxt("lbl-cols", T.colLbl);
+          /* modal note */
+          var mntitle = id("mn-title");
+          if (mntitle) mntitle.textContent = T.noteTitle;
+          var mnok = id("mn-ok");
+          if (mnok) mnok.textContent = T.noteOk;
+          var mncancel = id("mn-cancel");
+          if (mncancel) mncancel.textContent = T.noteCancel;
+          var mnclear = id("mn-clear");
+          if (mnclear) mnclear.textContent = T.noteClear;
+          /* placeholders */
+          var na = id("inp-name");
+          if (na) na.placeholder = kind === "count" ? T.goalPHcount : T.goalPH;
+          var sp = id("inp-step");
+          if (sp) sp.placeholder = T.stepPH;
+          /* main buttons */
+          if (btnAdd)
+            btnAdd.innerHTML = '<i class="fa-solid fa-plus"></i> ' + T.btnAdd;
+          if (btnLoad)
+            btnLoad.innerHTML =
+              '<i class="fa-solid fa-folder-plus"></i> ' + T.btnLoad;
+          if (btnDl)
+            btnDl.innerHTML = '<i class="fa-solid fa-download"></i> ' + T.btnDl;
+          if (btnReset)
+            btnReset.innerHTML =
+              '<i class="fa-solid fa-broom"></i> ' + T.btnReset;
+          errWd.textContent = T.errAtLeast;
+          if (btnView) btnView.title = T.viewTable + " / " + T.viewSnake;
+          /* chain action buttons (dinamik oluşturulduklarından renderAll sonrası güncellenir) */
+          document.querySelectorAll(".btn-note").forEach(function (b) {
+            b.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> ' + T.chainBtnNote;
+            b.title = T.chainBtnNote;
+          });
+          document.querySelectorAll(".btn-del").forEach(function (b) {
+            b.innerHTML = '<i class="fa-solid fa-trash"></i> ' + T.chainBtnDel;
+          });
+          /* chain tabs — zincir adına göre */
+          document.querySelectorAll(".chain-tab").forEach(function (tab) {
+            var cid = tab.dataset.id;
+            var ch = cid ? gs().items[cid] : null;
+            var nm = ch && ch.name ? ch.name.trim() : "";
+            var label =
+              nm.length > 8 ? nm.slice(0, 8) + "…" : nm || T.chainTabLabel;
+            tab.textContent = label;
+            tab.title = nm || T.chainTabLabel;
+          });
+        }
+        function setTxt(elId, txt) {
+          var el = id(elId);
+          if (el) el.textContent = txt;
+        }
+        (function () {
+          var l = localStorage.getItem(LK) || "tr";
+          lang = l;
+          langSelect.value = l;
+        })();
+        langSelect.addEventListener("change", function () {
+          applyLang(langSelect.value);
+        });
+
+        /* ── STEP PARSING ──
+   total    : hedef değer (ör: 210 sayfa)
+   ringCount: kaç halkaya bölüneceği (ör: 7)
+   stepStr  : opsiyonel özel adımlar "30,80,150" veya boş
+   Sonuç    : [30, 60, 90, 120, 150, 180, 210] gibi milestone listesi
+              (her bir halka bir milestone'a karşılık gelir)
+*/
+        function parseSteps(total, ringCount, stepStr) {
+          total = parseInt(total) || 0;
+          if (total < 1) return null;
+          var s = String(stepStr || "").trim();
+
+          if (s) {
+            /* Özel adımlar girilmişse */
+            var list = s.split(",").map(function (x) {
+              return parseInt(x.trim());
+            });
+            if (
+              list.some(isNaN) ||
+              list.some(function (x) {
+                return x < 1;
+              })
+            )
+              return null;
+            list.sort(function (a, b) {
+              return a - b;
+            });
+            /* Son değer her zaman total olsun */
+            if (list[list.length - 1] !== total) list.push(total);
+            return list.filter(function (v, i) {
+              return list.indexOf(v) === i;
+            });
+          }
+
+          /* Otomatik: total'i ringCount eşit parçaya böl */
+          var rings = Math.max(1, parseInt(ringCount) || 7);
+          var step = total / rings; /* tam bölünmeyebilir, float olabilir */
+          var parts = [];
+          for (var i = 1; i <= rings; i++) {
+            parts.push(Math.round(step * i));
+          }
+          /* Son değer kesinlikle total olsun */
+          parts[parts.length - 1] = total;
+          /* Tekrar edenleri temizle */
+          parts = parts.filter(function (v, i) {
+            return parts.indexOf(v) === i;
+          });
+          return parts;
+        }
+        function renderChips(steps) {
+          stepChips.innerHTML = "";
+          if (!steps) return;
+          steps.forEach(function (v) {
+            var c = document.createElement("span");
+            c.className = "step-chip";
+            c.textContent = v;
+            stepChips.appendChild(c);
+          });
+          /* auto-hint güncelle */
+          var hint = id("step-auto-hint");
+          if (hint) hint.textContent = steps.length + " halka";
+        }
+
+        /* ── LAYOUT ── */
+        function getPicked() {
+          var p = {};
+          wdChecks.forEach(function (c) {
+            if (c.checked) p[c.value] = true;
+          });
+          return p;
+        }
+        function getKind() {
+          for (var i = 0; i < kindRadios.length; i++)
+            if (kindRadios[i].checked) return kindRadios[i].value;
+          return "dated";
+        }
+        function computeDated() {
+          var sv = inpStart.value,
+            ev = inpEnd.value;
+          if (!sv || !ev) return [];
+          var sd = new Date(sv + "T00:00:00"),
+            ed = new Date(ev + "T00:00:00");
+          if (ed < sd) return null;
+          var p = getPicked();
+          if (!Object.keys(p).length) return [];
+          return filterD(daysB(sd, ed), p).map(toISO);
+        }
+        function bestLayout(total) {
+          var ns = kind === "dated" ? Object.keys(getPicked()).length : 0;
+          var step = ns > 0 ? ns : 1,
+            bestC = step,
+            bestD = Infinity;
+          for (var c = step; c <= total; c += step) {
+            var r = Math.ceil(total / c),
+              d = Math.abs(r - c);
+            if (d < bestD || (d === bestD && c > bestC)) {
+              bestD = d;
+              bestC = c;
+            }
+          }
+          cols = bestC;
+          rows = Math.ceil(total / cols);
+          inpCols.value = cols;
+          inpRows.value = rows;
+        }
+        function updateLT() {
+          if (!n) { layoutInfo.textContent = ""; return; }
+          var T = t(), total = rows * cols, empty = Math.max(0, total - n);
+          layoutInfo.textContent =
+            T.layoutPrefix + " " + rows + " " + T.layoutRows + " × " + cols + " " + T.layoutCols +
+            " = " + total + " " + T.layoutTotal +
+            (empty > 0 ? " (" + T.layoutEmpty + " " + empty + " " + T.layoutEmptySuffix + ")" : "");
+        }
+        function updateCount() {
+          if (kind === "count") {
+            var steps = parseSteps(
+              inpTotal.value,
+              inpRingsCount ? inpRingsCount.value : 7,
+              inpStep.value,
+            );
+            /* n = halka sayısı = milestone sayısı */
+            n = steps ? steps.length : 0;
+            showCount.textContent = n || 0;
+            renderChips(steps);
+            if (n > 0 && n <= MAX) {
+              bestLayout(n);
+              updateLT();
+            } else layoutInfo.textContent = "";
+            return;
+          }
+          var dates = computeDated();
+          if (dates === null) {
+            n = 0;
+            showCount.textContent = "0";
+            layoutInfo.textContent = "";
+            return;
+          }
+          currentDates = dates;
+          n = dates.length;
+          showCount.textContent = n > MAX ? n + "⚠" : n;
+          if (n > 0 && n <= MAX) {
+            bestLayout(n);
+            updateLT();
+          } else layoutInfo.textContent = "";
+        }
+        function syncMode() {
+          kind = getKind();
+          datedFields.style.display = kind === "dated" ? "" : "none";
+          countFields.style.display = kind === "count" ? "" : "none";
+          inpName.placeholder = kind === "count" ? t().goalPHcount : t().goalPH;
+          updateCount();
+        }
+        function showErr(el, msg) {
+          if (!el) return;
+          el.textContent = msg;
+          el.style.display = "inline-block";
+          clearTimeout(el._t);
+          el._t = setTimeout(function () {
+            el.style.display = "none";
+          }, 4000);
+        }
+
+        /* ── X SVG ── */
+        function makeX() {
+          var s = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+          s.setAttribute("viewBox", "0 0 100 100");
+          s.classList.add("x-svg");
+          ["M12,12L88,88", "M88,12L12,88"].forEach(function (d) {
+            var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            p.setAttribute("d", d);
+            p.setAttribute("stroke-linecap", "round");
+            p.setAttribute("stroke-linejoin", "round");
+            s.appendChild(p);
+          });
+          return s;
+        }
+
+        /* ── SAVE ── */
+        function save(ch) {
+          var s = gs();
+          s.items[ch.id] = ch;
+          ss(s);
+        }
+
+        /* ── PROGRESS ── */
+        function calcProg(ch) {
+          var total =
+            ch.kind === "dated"
+              ? ch.dates
+                ? ch.dates.length
+                : 0
+              : ch.total || 0;
+          if (!total) return { done: 0, total: 0, pct: 0 };
+          var done = Object.keys(ch.marks || {}).filter(function (k) {
+            return ch.marks[k];
+          }).length;
+          return {
+            done: done,
+            total: total,
+            pct: Math.round((done / total) * 100),
+          };
+        }
+
+        /* ── EVENTS (cell) ── */
+        function onCell(ch, idx) {
+          if (noteMode) {
+            openNote(ch, idx);
+            return;
+          }
+          if (!ch.marks) ch.marks = {};
+          ch.marks[idx] = !ch.marks[idx];
+          save(ch);
+
+          /* Partial DOM update — scroll pozisyonu bozulmaz */
+          var marked = !!ch.marks[idx];
+          var card = document.querySelector(
+            '.chain-card[data-id="' + ch.id + '"]',
+          );
+          if (!card) {
+            renderAll();
+            return;
+          }
+
+          var cell = null;
+          if (viewMode === "table") {
+            /* Sadece data td'leri (th'lar ve empty'ler hariç) */
+            var tds = card.querySelectorAll("td:not(.empty)");
+            cell = tds[idx] || null;
+          } else {
+            var ccs = card.querySelectorAll(".circle-cell");
+            cell = ccs[idx] || null;
+          }
+          if (!cell) {
+            renderAll();
+            return;
+          }
+
+          /* X ekle / kaldır */
+          var existingX = cell.querySelector(".x-svg");
+          if (marked && !existingX) cell.appendChild(makeX());
+          else if (!marked && existingX) existingX.remove();
+
+          /* İlerleme güncelle */
+          var prog = calcProg(ch);
+          var plbl = card.querySelector(".prog-lbl");
+          if (plbl)
+            plbl.textContent = t().progLbl(prog.done, prog.total, prog.pct);
+          var pf = card.querySelector(".prog-fill");
+          if (pf) pf.style.width = prog.pct + "%";
+        }
+        function onRClick(e, ch, idx) {
+          e.preventDefault();
+          openNote(ch, idx);
+        }
+
+        var HELP_ID = "__help__";
+
+        function buildHelpCard() {
+          var card = document.createElement("div");
+          card.className = "chain-card";
+          card.dataset.id = HELP_ID;
+          card.style.display = "none";
+          var head = document.createElement("div");
+          head.className = "chain-head";
+          var meta = document.createElement("div");
+          meta.className = "chain-meta";
+          var title = document.createElement("div");
+          title.className = "chain-title";
+          title.textContent = "Zinciri Kırma — Yöntem";
+          var acts = document.createElement("div");
+          acts.className = "chain-acts";
+          var bclose = document.createElement("button");
+          bclose.className = "btn-ca";
+          bclose.innerHTML = '<i class="fa-solid fa-xmark"></i> Kapat';
+          bclose.addEventListener("click", function () {
+            /* help sekmesini kaldır, ilk zincire geç */
+            var s = gs();
+            if (s.order.length) setActive(s.order[0]);
+            else {
+              activeId = null;
+              renderAll();
+            }
+          });
+          acts.appendChild(bclose);
+          meta.appendChild(title);
+          head.appendChild(meta);
+          head.appendChild(acts);
+          card.appendChild(head);
+
+          var content = document.createElement("div");
+          content.className = "grid-wrap help-body";
+          content.style.cssText =
+            "flex:1;min-height:0;overflow-y:auto;padding:0.5rem 0.2rem;";
+          content.innerHTML =
+            document.getElementById("help-content-tpl").innerHTML;
+
+          card.appendChild(content);
+          return card;
+        }
+
+        /* ── RENDER ── */
+        var _dragId = null,
+          _dragOver = null;
+
+        function addTabDrag(tab, id) {
+          tab.draggable = true;
+
+          tab.addEventListener("dragstart", function (e) {
+            _dragId = id;
+            tab.classList.add("dragging");
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", id);
+          });
+          tab.addEventListener("dragend", function () {
+            tab.classList.remove("dragging");
+            document.querySelectorAll(".chain-tab").forEach(function (t) {
+              t.classList.remove("drag-over");
+            });
+            _dragId = null;
+            _dragOver = null;
+          });
+          tab.addEventListener("dragover", function (e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+            if (_dragId && _dragId !== id && _dragOver !== id) {
+              _dragOver = id;
+              document.querySelectorAll(".chain-tab").forEach(function (t) {
+                t.classList.toggle("drag-over", t.dataset.id === id);
+              });
+            }
+          });
+          tab.addEventListener("drop", function (e) {
+            e.preventDefault();
+            if (!_dragId || _dragId === id) return;
+            var s = gs();
+            var fromIdx = s.order.indexOf(_dragId);
+            var toIdx = s.order.indexOf(id);
+            if (fromIdx < 0 || toIdx < 0) return;
+            s.order.splice(fromIdx, 1);
+            s.order.splice(toIdx, 0, _dragId);
+            ss(s);
+            renderAll();
+            setActive(_dragId);
+          });
+          /* touch drag — mobile için basit dokunmatik sıralama */
+          var _touchStartX = 0,
+            _touchId = null;
+          tab.addEventListener(
+            "touchstart",
+            function (e) {
+              _touchStartX = e.touches[0].clientX;
+              _touchId = id;
+              tab.classList.add("dragging");
+            },
+            { passive: true },
+          );
+          tab.addEventListener(
+            "touchmove",
+            function (e) {
+              if (!_touchId) return;
+              var x = e.touches[0].clientX;
+              var els = document.elementsFromPoint(x, e.touches[0].clientY);
+              var target = null;
+              for (var i = 0; i < els.length; i++) {
+                if (
+                  els[i].classList &&
+                  els[i].classList.contains("chain-tab") &&
+                  els[i] !== tab
+                ) {
+                  target = els[i];
+                  break;
+                }
+              }
+              document.querySelectorAll(".chain-tab").forEach(function (t) {
+                t.classList.remove("drag-over");
+              });
+              if (target) target.classList.add("drag-over");
+              _dragOver = target ? target.dataset.id : null;
+            },
+            { passive: true },
+          );
+          tab.addEventListener(
+            "touchend",
+            function () {
+              tab.classList.remove("dragging");
+              document.querySelectorAll(".chain-tab").forEach(function (t) {
+                t.classList.remove("drag-over");
+              });
+              if (_touchId && _dragOver && _touchId !== _dragOver) {
+                var s = gs();
+                var fromIdx = s.order.indexOf(_touchId);
+                var toIdx = s.order.indexOf(_dragOver);
+                if (fromIdx >= 0 && toIdx >= 0) {
+                  s.order.splice(fromIdx, 1);
+                  s.order.splice(toIdx, 0, _touchId);
+                  ss(s);
+                  renderAll();
+                  setActive(_touchId);
+                }
+              }
+              _touchId = null;
+              _dragOver = null;
+            },
+            { passive: true },
+          );
+        }
+
+        function renderAll() {
+          var s = gs();
+          chainList.innerHTML = "";
+          var tabBar = document.createElement("div");
+          tabBar.className = "tab-bar";
+          var wrap = document.createElement("div");
+          wrap.style.cssText =
+            "flex:1;min-height:0;display:flex;flex-direction:column";
+          var first = null;
+
+          /* zincir sekmeleri */
+          if (s.order.length) {
+            s.order.forEach(function (id, i) {
+              var ch = s.items[id];
+              if (!ch) return;
+              if (!first) first = id;
+              var tab = document.createElement("button");
+              tab.className = "chain-tab";
+              tab.dataset.id = id;
+              var chainName = ch.name ? ch.name.trim() : "";
+              var tabLabel =
+                chainName.length > 8
+                  ? chainName.slice(0, 8) + "…"
+                  : chainName || t().chainTabLabel + " " + (i + 1);
+              tab.textContent = tabLabel;
+              tab.title = chainName || t().chainTabLabel + " " + (i + 1);
+              tab.addEventListener("click", function () {
+                setActive(id);
+              });
+              addTabDrag(tab, id);
+              tabBar.appendChild(tab);
+              var card = buildCard(ch);
+              card.style.display = "none";
+              card.dataset.id = id;
+              wrap.appendChild(card);
+            });
+          }
+
+          /* yardım sekmesi — aktifse göster */
+          if (activeId === HELP_ID) {
+            var helpTab = document.createElement("button");
+            helpTab.className = "chain-tab active";
+            helpTab.dataset.id = HELP_ID;
+            helpTab.textContent = "?";
+            helpTab.title = "Yöntem Hakkında";
+            helpTab.addEventListener("click", function () {
+              setActive(HELP_ID);
+            });
+            tabBar.appendChild(helpTab);
+            var helpCard = buildHelpCard();
+            helpCard.style.display = "flex";
+            wrap.appendChild(helpCard);
+          }
+
+          chainList.appendChild(tabBar);
+          chainList.appendChild(wrap);
+          if (!activeId || (!s.items[activeId] && activeId !== HELP_ID))
+            activeId = first;
+          setActive(activeId, true);
+        }
+        function setActive(id, noScroll) {
+          activeId = id;
+          chainList.querySelectorAll(".chain-tab").forEach(function (t) {
+            t.classList.toggle("active", t.dataset.id === id);
+          });
+          chainList.querySelectorAll(".chain-card").forEach(function (c) {
+            var show = c.dataset.id === id;
+            c.style.display = show ? "flex" : "none";
+            if (show && !noScroll)
+              c.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }
+
+        /* ── CARD ── */
+        function buildCard(ch) {
+          var card = document.createElement("div");
+          card.className = "chain-card";
+          card.dataset.id = ch.id;
+          var head = document.createElement("div");
+          head.className = "chain-head";
+          var meta = document.createElement("div");
+          meta.className = "chain-meta";
+          var title = document.createElement("div");
+          title.className = "chain-title";
+          title.textContent = ch.name || (lang === "tr" ? "Zincir" : "Chain");
+          var info = document.createElement("div");
+          info.className = "chain-info";
+          var prog = calcProg(ch);
+          if (ch.kind === "dated" && ch.dates && ch.dates.length) {
+            var f = new Date(ch.dates[0] + "T00:00:00"),
+              l = new Date(ch.dates[ch.dates.length - 1] + "T00:00:00");
+            info.innerHTML = t().chainInfo(
+              ch.dates.length,
+              fmtDate(f),
+              fmtDate(l),
+            );
+          } else {
+            /* targetValue = 210 gibi asıl hedef, milestones = 30→60→...→210 */
+            var tv =
+              ch.targetValue ||
+              (ch.milestones && ch.milestones.length
+                ? ch.milestones[ch.milestones.length - 1]
+                : ch.total) ||
+              0;
+            var ms =
+              ch.milestones && ch.milestones.length
+                ? ch.milestones.join(" → ")
+                : "–";
+            info.innerHTML = t().chainInfoCount(tv, ms);
+          }
+          var plbl = document.createElement("div");
+          plbl.className = "prog-lbl";
+          plbl.textContent = t().progLbl(prog.done, prog.total, prog.pct);
+
+          /* Not özeti */
+          if (ch.notes && Object.keys(ch.notes).length > 0) {
+            var noteKeys = Object.keys(ch.notes);
+            var noteLbl = document.createElement("div");
+            noteLbl.className = "chain-note-summary";
+            var T = t();
+            var idxList = noteKeys.map(function(k) { return parseInt(k) + 1; }).sort(function(a,b){return a-b;});
+            var idxStr = idxList.length > 5
+              ? idxList.slice(0, 5).join(", ") + "…"
+              : idxList.join(", ");
+            noteLbl.innerHTML = '<i class="fa-solid fa-note-sticky"></i> '
+              + (T.notesSummary || "Not")
+              + ": " + noteKeys.length + " "
+              + (T.notesSummaryRings || "halka")
+              + " <span class=\"note-idxs\">(" + idxStr + ")</span>";
+            meta.appendChild(noteLbl);
+          }
+          var pw = document.createElement("div");
+          pw.className = "prog-wrap";
+          var pf = document.createElement("div");
+          pf.className = "prog-fill";
+          pf.style.width = prog.pct + "%";
+          pw.appendChild(pf);
+          meta.appendChild(title);
+          meta.appendChild(info);
+          meta.appendChild(plbl);
+          meta.appendChild(pw);
+          head.appendChild(meta);
+
+          var acts = document.createElement("div");
+          acts.className = "chain-acts";
+          var bnote = document.createElement("button");
+          bnote.className = "btn-ca btn-note";
+          bnote.title = t().chainBtnNote;
+          bnote.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> ' + t().chainBtnNote;
+          bnote.addEventListener("click", function () {
+            setNoteMode(!noteMode);
+          });
+          acts.appendChild(bnote);
+          var bdel = document.createElement("button");
+          bdel.className = "btn-ca btn-del";
+          bdel.title = t().delConfirm;
+          bdel.innerHTML =
+            '<i class="fa-solid fa-trash"></i> ' + t().chainBtnDel;
+          bdel.addEventListener("click", function () {
+            if (confirm(t().delConfirm)) {
+              var st = gs();
+              delete st.items[ch.id];
+              st.order = st.order.filter(function (x) {
+                return x !== ch.id;
+              });
+              ss(st);
+              renderAll();
+            }
+          });
+          acts.appendChild(bdel);
+          head.appendChild(acts);
+          card.appendChild(head);
+
+          var gw = document.createElement("div");
+          gw.className =
+            "grid-wrap" + (viewMode === "snake" ? " snake-mode" : "");
+          if (viewMode === "snake") card.classList.add("snake-card");
+          gw.appendChild(
+            viewMode === "snake" ? buildSnake(ch, gw) : buildTable(ch),
+          );
+          card.appendChild(gw);
+          return card;
+        }
+
+        /* ── TABLE ── */
+        function buildTable(ch) {
+          var total =
+            ch.kind === "dated"
+              ? ch.dates
+                ? ch.dates.length
+                : 0
+              : ch.total || 0;
+          var c = ch.cfg && ch.cfg.cols ? ch.cfg.cols : cols;
+          var r = Math.ceil(total / c);
+          var tbl = document.createElement("table");
+          tbl.className = "chtbl";
+          var hrow = document.createElement("tr");
+
+          /* İlk hücre: zincirin başladığı yıl */
+          var th0 = document.createElement("th");
+          if (ch.kind === "dated" && ch.dates && ch.dates[0]) {
+            th0.textContent = new Date(ch.dates[0] + "T00:00:00").getFullYear();
+          } else {
+            th0.textContent = "";
+          }
+          hrow.appendChild(th0);
+
+          for (var ci = 0; ci < c; ci++) {
+            var th = document.createElement("th");
+            if (ch.kind === "dated" && ch.dates && ch.dates[ci]) {
+              var colDay = new Date(ch.dates[ci] + "T00:00:00").getDay();
+              th.textContent = t().dayNames[colDay];
+            } else {
+              th.textContent = String(ci + 1);
+            }
+            hrow.appendChild(th);
+          }
+          tbl.appendChild(hrow);
+
+          var idx = 0;
+          var prevRowYear =
+            ch.kind === "dated" && ch.dates && ch.dates[0]
+              ? new Date(ch.dates[0] + "T00:00:00").getFullYear()
+              : null;
+
+          for (var ri = 0; ri < r; ri++) {
+            var tr = document.createElement("tr");
+            var rth = document.createElement("th");
+            if (ch.kind === "dated" && ch.dates && ch.dates[ri * c]) {
+              var d0 = new Date(ch.dates[ri * c] + "T00:00:00");
+              var thisYear = d0.getFullYear();
+              if (ri === 0) {
+                /* İlk satır: sadece ay adı (yıl zaten th0'da) */
+                rth.textContent = d0.toLocaleDateString(t().locale, {
+                  month: "long",
+                });
+              } else if (thisYear !== prevRowYear) {
+                /* Yıl değişimi: "Oca 2027" formatı */
+                rth.textContent = d0.toLocaleDateString(t().locale, {
+                  month: "long",
+                  year: "numeric",
+                });
+              } else {
+                /* Aynı yıl, ay değişimi: sadece ay */
+                rth.textContent = d0.toLocaleDateString(t().locale, {
+                  month: "long",
+                });
+              }
+              prevRowYear = thisYear;
+            } else {
+              rth.textContent =
+                ri * c + 1 + "–" + Math.min((ri + 1) * c, total);
+            }
+            tr.appendChild(rth);
+            for (var ci2 = 0; ci2 < c; ci2++) {
+              var td = document.createElement("td");
+              if (idx >= total) {
+                td.classList.add("empty");
+              } else {
+                (function (i) {
+                  if (ch.kind === "dated" && ch.dates && ch.dates[i]) {
+                    var dd = new Date(ch.dates[i] + "T00:00:00");
+                    td.textContent = String(dd.getDate());
+                    td.title = dd.toLocaleDateString(t().locale, {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    });
+                    if (i > 0 && ch.dates[i - 1]) {
+                      var pd = new Date(ch.dates[i - 1] + "T00:00:00");
+                      if (pd.getFullYear() !== dd.getFullYear())
+                        td.classList.add("yr");
+                      else if (pd.getMonth() !== dd.getMonth())
+                        td.classList.add("mo");
+                    }
+                  } else {
+                    var mv =
+                      ch.milestones && ch.milestones[i]
+                        ? ch.milestones[i]
+                        : i + 1;
+                    td.textContent = String(mv);
+                    td.title = String(mv);
+                    td.classList.add("ms");
+                  }
+                  if (ch.marks && ch.marks[i]) td.appendChild(makeX());
+                  if (ch.notes && ch.notes[i]) td.classList.add("has-note");
+                  td.addEventListener("click", function () {
+                    onCell(ch, i);
+                  });
+                  td.addEventListener("contextmenu", function (e) {
+                    onRClick(e, ch, i);
+                  });
+                })(idx);
+              }
+              tr.appendChild(td);
+              idx++;
+            }
+            tbl.appendChild(tr);
+          }
+          return tbl;
+        }
+
+        /* ── SNAKE ── */
+        function getCsPx() {
+          /* Snake modda --cs-snake (kare*1.27), table modda --cs */
+          var prop = viewMode === "snake" ? "--cs-snake" : "--cs";
+          var raw = getComputedStyle(document.documentElement)
+            .getPropertyValue(prop)
+            .trim();
+          if (!raw || raw === "0px")
+            raw = getComputedStyle(document.documentElement)
+              .getPropertyValue("--cs")
+              .trim();
+          if (raw.indexOf("px") > -1) return parseFloat(raw) || 32;
+          var fz =
+            parseFloat(getComputedStyle(document.documentElement).fontSize) ||
+            16;
+          return parseFloat(raw) * fz || 32;
+        }
+
+        function buildSnake(ch, wrapEl) {
+          var total =
+            ch.kind === "dated"
+              ? ch.dates
+                ? ch.dates.length
+                : 0
+              : ch.total || 0;
+          var cont = document.createElement("div");
+          cont.className = "snake-cont";
+
+          function render() {
+            var csPx = getCsPx();
+            var gap = Math.round(csPx * 0.25);
+            var cellW = csPx + gap;
+            var protrude = Math.round(csPx * 0.75);
+
+            /* wrapEl'e padding ver — köşeler bu alana taşar */
+            wrapEl.style.paddingLeft = protrude + "px";
+            wrapEl.style.paddingRight = protrude + "px";
+            wrapEl.style.boxSizing = "border-box";
+
+            /* Kullanılabilir iç genişlik: chain-col'dan ölç (wrapEl overflow:visible iken güvenilir) */
+            var chainCol = document.getElementById("chain-col");
+            var colW = chainCol
+              ? chainCol.clientWidth
+              : window.innerWidth - 380;
+            /* chain-card padding: 0.7rem*2 ≈ 22px, border 0.5rem*2 ≈ 16px → ~38px */
+            var fz =
+              parseFloat(getComputedStyle(document.documentElement).fontSize) ||
+              16;
+            var cardPad = Math.round(fz * 1.4) + 16;
+            /* İç genişlik: toplam - card padding - protrude*2 (her iki yanda köşe payı) */
+            var innerW = colW - cardPad - protrude * 2;
+            innerW = Math.max(cellW, innerW);
+
+            var cols = Math.max(1, Math.floor(innerW / cellW));
+            var rowW = cols * cellW;
+
+            cont.innerHTML = "";
+            cont.style.width = rowW + "px";
+            /* margin:auto ile wrapEl padding alanı içinde ortala */
+            cont.style.marginLeft = "auto";
+            cont.style.marginRight = "auto";
+
+            var remaining = total,
+              idx = 0,
+              leftToRight = true;
+
+            while (remaining > 0) {
+              var count = Math.min(cols, remaining);
+              var row = document.createElement("div");
+              row.className = "snake-row";
+              row.style.flexDirection = leftToRight ? "row" : "row-reverse";
+              row.style.width = rowW + "px";
+              row.style.marginLeft = "0";
+              row.style.marginTop = "0";
+              row.style.marginBottom = "0";
+              row.style.gap = gap + "px";
+              for (var i = 0; i < count; i++)
+                row.appendChild(mkCircle(ch, idx++));
+              cont.appendChild(row);
+              remaining -= count;
+              if (remaining <= 0) break;
+
+              var srow = document.createElement("div");
+              srow.className = "snake-row";
+              srow.style.width = rowW + protrude * 2 + "px";
+              srow.style.justifyContent = leftToRight
+                ? "flex-end"
+                : "flex-start";
+              srow.style.marginLeft = -protrude + "px";
+              srow.style.marginTop = csPx * 0.25 + "px";
+              srow.style.marginBottom = csPx * 0.25 + "px";
+              srow.appendChild(mkCircle(ch, idx++));
+              cont.appendChild(srow);
+              remaining--;
+              leftToRight = !leftToRight;
+            }
+          }
+
+          /* RAF ensures wrapEl is in DOM and has layout */
+          requestAnimationFrame(function () {
+            render();
+            /* Double-render after short delay: catches any residual layout shift */
+            setTimeout(function () {
+              render();
+            }, 80);
+
+            if (window.ResizeObserver) {
+              var _lastW = 0,
+                _busy = false;
+              var ro = new ResizeObserver(function () {
+                var w = wrapEl.clientWidth;
+                if (_busy || Math.abs(w - _lastW) < 1) return;
+                _lastW = w;
+                _busy = true;
+                requestAnimationFrame(function () {
+                  render();
+                  _busy = false;
+                });
+              });
+              ro.observe(wrapEl);
+              wrapEl._snakeRO = ro;
+            }
+            wrapEl._snakeRender = render;
+          });
+
+          return cont;
+        }
+        /* ── ARC HELPER ── */
+        function makeArc(spanFrac, color, strokePx, label) {
+          var svg = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "svg",
+          );
+          svg.classList.add("arc-svg");
+          /* viewBox: unit circle centered at 0,0. We enlarge by 0.5 extra for label space */
+          svg.setAttribute("viewBox", "-1.6 -1.6 3.2 3.2");
+
+          var halfAngle = spanFrac * Math.PI;
+          var startAngle = -Math.PI / 2 - halfAngle;
+          var endAngle = -Math.PI / 2 + halfAngle;
+          var r = 1.08; /* slightly outside the 1-unit circle */
+          var x1 = Math.cos(startAngle) * r,
+            y1 = Math.sin(startAngle) * r;
+          var x2 = Math.cos(endAngle) * r,
+            y2 = Math.sin(endAngle) * r;
+          var largeArc = halfAngle * 2 > Math.PI ? 1 : 0;
+
+          var path = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path",
+          );
+          path.setAttribute(
+            "d",
+            "M" +
+              x1.toFixed(4) +
+              "," +
+              y1.toFixed(4) +
+              " A" +
+              r +
+              "," +
+              r +
+              " 0 " +
+              largeArc +
+              ",1 " +
+              x2.toFixed(4) +
+              "," +
+              y2.toFixed(4),
+          );
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", color);
+          path.setAttribute(
+            "stroke-width",
+            strokePx,
+          ); /* will be in px via non-scaling-stroke */
+          path.setAttribute("vector-effect", "non-scaling-stroke");
+          path.setAttribute("stroke-linecap", "round");
+          svg.appendChild(path);
+
+          if (label) {
+            /* label sits at 12 o'clock, just above arc */
+            var txt = document.createElementNS(
+              "http://www.w3.org/2000/svg",
+              "text",
+            );
+            txt.setAttribute("x", "0");
+            txt.setAttribute("y", (-r - 0.28).toFixed(4));
+            txt.setAttribute("text-anchor", "middle");
+            txt.setAttribute("dominant-baseline", "auto");
+            txt.setAttribute("font-size", "0.38");
+            txt.setAttribute("fill", color);
+            txt.setAttribute("font-weight", "700");
+            txt.setAttribute("vector-effect", "non-scaling-stroke");
+            txt.textContent = label;
+            svg.appendChild(txt);
+          }
+          return svg;
+        }
+
+        function mkCircle(ch, idx) {
+          var el = document.createElement("div");
+          el.className = "circle-cell";
+          if (ch.kind === "dated" && ch.dates && ch.dates[idx]) {
+            var dd = new Date(ch.dates[idx] + "T00:00:00");
+            el.textContent = String(dd.getDate());
+            el.title = dd.toLocaleDateString(t().locale, {
+              weekday: "long",
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            });
+            var isFirst = idx === 0,
+              isYr = false,
+              isMo = false;
+            if (idx > 0 && ch.dates[idx - 1]) {
+              var pd = new Date(ch.dates[idx - 1] + "T00:00:00");
+              if (pd.getFullYear() !== dd.getFullYear()) {
+                isYr = true;
+                isFirst = true;
+              } else if (pd.getMonth() !== dd.getMonth()) {
+                isMo = true;
+                isFirst = true;
+              }
+            }
+            if (isFirst) {
+              /* Orijinal HTML gibi: basit metin etiketi, arc yok */
+              var lab = document.createElement("div");
+              lab.className = "month-lbl";
+              var monthName = dd.toLocaleDateString(t().locale, {
+                month: "long",
+              });
+              lab.textContent =
+                isYr || idx === 0
+                  ? monthName + " " + dd.getFullYear()
+                  : monthName;
+              el.appendChild(lab);
+            }
+          } else {
+            var mv =
+              ch.milestones && ch.milestones[idx]
+                ? ch.milestones[idx]
+                : idx + 1;
+            el.textContent = String(mv);
+            el.title = String(mv);
+            el.classList.add("ms");
+          }
+          if (ch.marks && ch.marks[idx]) el.appendChild(makeX());
+          if (ch.notes && ch.notes[idx]) el.classList.add("has-note");
+          (function (i) {
+            el.addEventListener("click", function () {
+              onCell(ch, i);
+            });
+            el.addEventListener("contextmenu", function (e) {
+              onRClick(e, ch, i);
+            });
+          })(idx);
+          return el;
+        }
+
+        /* ── MODALS ── */
+
+        function openNote(ch, idx) {
+          _nch = ch;
+          _nidx = idx;
+          var label =
+            ch.kind === "dated" && ch.dates && ch.dates[idx]
+              ? new Date(ch.dates[idx] + "T00:00:00").toLocaleDateString(
+                  t().locale,
+                  { day: "numeric", month: "long", year: "numeric" },
+                )
+              : idx + 1 + (lang === "tr" ? ". halka" : ". ring");
+          mnTitle.textContent = t().noteTitle + " — " + label;
+          mnInput.placeholder = t().notePH;
+          mnInput.value = (ch.notes && ch.notes[idx]) || "";
+          id("mn-ok").textContent = t().noteOk;
+          id("mn-cancel").textContent = t().noteCancel;
+          id("mn-clear").textContent = t().noteClear;
+          modalNote.style.display = "flex";
+          setTimeout(function () {
+            mnInput.focus();
+          }, 50);
+        }
+        id("mn-ok").addEventListener("click", function () {
+          if (_nch === null) return;
+          if (!_nch.notes) _nch.notes = {};
+          var v = mnInput.value.trim();
+          if (v) _nch.notes[_nidx] = v;
+          else delete _nch.notes[_nidx];
+          save(_nch);
+          modalNote.style.display = "none";
+          setNoteMode(false);
+          renderAll();
+        });
+        id("mn-clear").addEventListener("click", function () {
+          if (_nch && _nch.notes) delete _nch.notes[_nidx];
+          if (_nch) save(_nch);
+          modalNote.style.display = "none";
+          setNoteMode(false);
+          renderAll();
+        });
+        id("mn-cancel").addEventListener("click", function () {
+          modalNote.style.display = "none";
+          setNoteMode(false);
+        });
+        [modalNote].forEach(function (m) {
+          m.addEventListener("click", function (e) {
+            if (e.target === m) {
+              m.style.display = "none";
+              setNoteMode(false);
+            }
+          });
+        });
+
+        /* ── VALIDATE & CREATE ── */
+        function validate() {
+          var ok = true;
+          [errName, errDate, errWd, errCount].forEach(function (e) {
+            e.style.display = "none";
+          });
+          inpName.classList.remove("input-error");
+          if (!inpName.value.trim()) {
+            showErr(errName, t().errName);
+            inpName.classList.add("input-error");
+            inpName.focus();
+            ok = false;
+          }
+          if (kind === "dated") {
+            if (!inpStart.value || !inpEnd.value) {
+              showErr(
+                errDate,
+                lang === "tr"
+                  ? "Başlangıç ve bitiş tarihi girin."
+                  : "Enter start and end dates.",
+              );
+              ok = false;
+            } else {
+              var sd = new Date(inpStart.value + "T00:00:00"),
+                ed = new Date(inpEnd.value + "T00:00:00");
+              if (ed < sd) {
+                showErr(
+                  errDate,
+                  lang === "tr"
+                    ? "Bitiş tarihi başlangıçtan önce olamaz!"
+                    : "End date must be after start date!",
+                );
+                ok = false;
+              } else if (n > MAX) {
+                showErr(
+                  errDate,
+                  (lang === "tr" ? "Halka sayısı " : "Ring count exceeds ") +
+                    MAX +
+                    (lang === "tr"
+                      ? " sınırını aşıyor (" + n + ")."
+                      : " (currently: " + n + ")."),
+                );
+                ok = false;
+              } else if (n < 1) {
+                showErr(
+                  errDate,
+                  lang === "tr"
+                    ? "Geçerli tarih aralığı ve gün seçin."
+                    : "Select a valid date range and days.",
+                );
+                ok = false;
+              }
+            }
+            if (ok && !Object.keys(getPicked()).length) {
+              showErr(errWd, t().errAtLeast);
+              ok = false;
+            }
+          } else {
+            var steps = parseSteps(
+              inpTotal.value,
+              inpRingsCount ? inpRingsCount.value : 7,
+              inpStep.value,
+            );
+            if (!steps || !steps.length) {
+              showErr(
+                errCount,
+                lang === "tr"
+                  ? "Geçerli hedef/halka değeri girin."
+                  : "Enter valid target/ring values.",
+              );
+              ok = false;
+            } else if (steps.length > MAX) {
+              showErr(
+                errCount,
+                (lang === "tr" ? "Halka sayısı " : "Ring count exceeds ") +
+                  MAX +
+                  (lang === "tr" ? " sınırını aşıyor." : "."),
+              );
+              ok = false;
+            }
+          }
+          return ok;
+        }
+        function createChain() {
+          if (!validate()) return;
+          var c = Math.max(1, parseInt(inpCols.value) || cols),
+            r = Math.max(1, parseInt(inpRows.value) || rows);
+          if (r * c < n) r = Math.ceil(n / c);
+          var ch;
+          if (kind === "dated") {
+            ch = {
+              id: rid(),
+              kind: "dated",
+              name: inpName.value.trim(),
+              dates: currentDates.slice(),
+              cfg: { cols: c, rows: r },
+              marks: {},
+              notes: {},
+              created: nowS(),
+            };
+          } else {
+            var steps2 = parseSteps(
+              inpTotal.value,
+              inpRingsCount ? inpRingsCount.value : 7,
+              inpStep.value,
+            );
+            /* total = hedef değer (son milestone), milestones = tüm adımlar, her biri bir halka */
+            var targetVal = steps2[steps2.length - 1];
+            ch = {
+              id: rid(),
+              kind: "count",
+              name: inpName.value.trim(),
+              total: steps2.length /* halka sayısı */,
+              targetValue: targetVal /* asıl hedef (sayfa, dk, vs.) */,
+              milestones: steps2,
+              cfg: { cols: c, rows: r },
+              marks: {},
+              notes: {},
+              created: nowS(),
+            };
+          }
+          var s = gs();
+          s.items[ch.id] = ch;
+          s.order.push(ch.id);
+          ss(s);
+          activeId = ch.id;
+          resetForm();
+          renderAll();
+          setActive(ch.id);
+        }
+
+        /* ── BACKUP ── */
+        function download() {
+          var s = gs();
+          if (!s.order.length) {
+            showErr(errBackup, t().noChain);
+            return;
+          }
+          var payload = JSON.parse(JSON.stringify(s));
+          var th = localStorage.getItem(TK) || "";
+          if (th) payload.theme = th;
+          var blob = new Blob([JSON.stringify(payload, null, 2)], {
+            type: "application/json",
+          });
+          var a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = "zincirler.json";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        }
+        function valImp(imp) {
+          if (!imp || typeof imp !== "object") return "notObject";
+          if (!imp.items || typeof imp.items !== "object")
+            return "missingItems";
+          var ids = Object.keys(imp.items);
+          for (var i = 0; i < ids.length; i++) {
+            var ch = imp.items[ids[i]];
+            if (!ch || typeof ch !== "object") return "invalidChain";
+            if (!ch.id) return "missingId";
+            if (
+              ch.kind === "dated" &&
+              (!Array.isArray(ch.dates) || !ch.dates.length)
+            )
+              return "invalidDates";
+            if (
+              ch.kind === "count" &&
+              (typeof ch.total !== "number" || ch.total < 1)
+            )
+              return "missingTotal";
+          }
+          return null;
+        }
+        function loadFile(ev) {
+          var file = ev.target.files && ev.target.files[0];
+          if (!file) return;
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            var imp;
+            try {
+              imp = JSON.parse(e.target.result);
+            } catch (ex) {
+              alert(t().badJson);
+              return;
+            }
+            var err = valImp(imp);
+            if (err) {
+              alert(t().badFile + err);
+              return;
+            }
+            var cur = gs();
+            Object.keys(imp.items).forEach(function (id) {
+              if (!cur.items[id]) {
+                cur.items[id] = imp.items[id];
+                cur.order.push(id);
+              }
+            });
+            ss(cur);
+            if (imp.theme) applyTheme(imp.theme);
+            renderAll();
+            alert(t().loadOk);
+          };
+          reader.readAsText(file, "utf-8");
+        }
+
+        /* ── RESET ── */
+        function resetForm() {
+          inpName.value = "";
+          inpName.classList.remove("input-error");
+          [errName, errDate, errWd, errCount, errBackup].forEach(function (e) {
+            e.style.display = "none";
+          });
+          for (var i = 0; i < kindRadios.length; i++)
+            kindRadios[i].checked = kindRadios[i].value === "dated";
+          wdChecks.forEach(function (c) {
+            c.checked = true;
+          });
+          inpTotal.value = "210";
+          inpStep.value = "";
+          if (inpRingsCount) inpRingsCount.value = "7";
+          var today = new Date();
+          inpStart.value = toISO(today);
+          var later = new Date(today);
+          later.setDate(later.getDate() + 364);
+          inpEnd.value = toISO(later);
+          kind = "dated";
+          syncMode();
+        }
+
+        /* ── EVENTS ── */
+        btnToggle.addEventListener("click", function () {
+          var panelCol = document.getElementById("panel-col");
+          var isMobile = window.innerWidth <= 899;
+          var col = panelCol.classList.toggle("collapsed");
+          if (isMobile) {
+            /* Mobil: dikey kapanma — ▲ açık, ▼ kapalı */
+            btnToggle.textContent = col ? "▼" : "▲";
+          } else {
+            /* Masaüstü: yatay kapanma — ◀ açık, ▶ kapalı */
+            btnToggle.textContent = col ? "▶" : "◀";
+          }
+          localStorage.setItem(CK, col ? "1" : "");
+          setTimeout(function () {
+            if (viewMode === "snake") reRenderSnakes();
+          }, 350);
+        });
+        btnView.addEventListener("click", function () {
+          viewMode = viewMode === "table" ? "snake" : "table";
+          btnView.classList.toggle("alt", viewMode === "snake");
+          var ic = btnView.querySelector("i");
+          if (ic)
+            ic.className =
+              "fa-solid " +
+              (viewMode === "snake" ? "fa-worm" : "fa-table-cells");
+          localStorage.setItem(VK, viewMode);
+          applySnakeScrollMode();
+          renderAll();
+        });
+
+        if (btnHelp) {
+          btnHelp.addEventListener("click", function () {
+            activeId = HELP_ID;
+            renderAll();
+          });
+        }
+
+        if (btnBgToggle) {
+          /* Restore bg visibility state */
+          if (localStorage.getItem(BGK) === "0") {
+            document.body.classList.add("bg-off");
+            btnBgToggle.classList.add("bg-off");
+          }
+          btnBgToggle.addEventListener("click", function () {
+            var off = document.body.classList.toggle("bg-off");
+            btnBgToggle.classList.toggle("bg-off", off);
+            localStorage.setItem(BGK, off ? "0" : "1");
+          });
+        }
+        for (var i = 0; i < kindRadios.length; i++)
+          kindRadios[i].addEventListener("change", syncMode);
+        wdChecks.forEach(function (c) {
+          c.addEventListener("change", updateCount);
+        });
+        inpStart.addEventListener("change", updateCount);
+        inpEnd.addEventListener("change", updateCount);
+        inpTotal.addEventListener("input", updateCount);
+        inpStep.addEventListener("input", updateCount);
+        if (inpRingsCount) inpRingsCount.addEventListener("input", updateCount);
+        inpCols.addEventListener("change", function () {
+          cols = Math.max(1, parseInt(inpCols.value) || 1);
+          rows = Math.ceil(n / cols) || 1;
+          inpRows.value = rows;
+          updateLT();
+        });
+        inpRows.addEventListener("change", function () {
+          rows = Math.max(1, parseInt(inpRows.value) || 1);
+          cols = Math.ceil(n / rows) || 1;
+          inpCols.value = cols;
+          updateLT();
+        });
+        btnAdd.addEventListener("click", createChain);
+        btnLoad.addEventListener("click", function () {
+          fileInput.value = "";
+          fileInput.click();
+        });
+        fileInput.addEventListener("change", loadFile);
+        btnDl.addEventListener("click", download);
+        btnReset.addEventListener("click", resetForm);
+        /* snake modda scroll yönetimi */
+        function applySnakeScrollMode() {
+          var chainCol = document.getElementById("chain-col");
+          var cl = document.getElementById("chain-list");
+          if (viewMode === "snake") {
+            if (chainCol) chainCol.classList.add("snake-scroll");
+            if (cl) cl.classList.add("snake-list");
+          } else {
+            if (chainCol) chainCol.classList.remove("snake-scroll");
+            if (cl) cl.classList.remove("snake-list");
+          }
+        }
+
+        /* re-render all visible snake grids */
+        function reRenderSnakes() {
+          document
+            .querySelectorAll(".grid-wrap.snake-mode")
+            .forEach(function (gw) {
+              if (gw._snakeRender) requestAnimationFrame(gw._snakeRender);
+            });
+        }
+
+        (function () {
+          var busy = false;
+          var _lastMobile = window.innerWidth <= 899;
+          function onResize() {
+            /* Toggle okunu viewport değişimine göre güncelle */
+            var isMobile = window.innerWidth <= 899;
+            if (isMobile !== _lastMobile) {
+              _lastMobile = isMobile;
+              var col = document
+                .getElementById("panel-col")
+                .classList.contains("collapsed");
+              btnToggle.textContent = col
+                ? isMobile
+                  ? "▼"
+                  : "▶"
+                : isMobile
+                  ? "▲"
+                  : "◀";
+            }
+            if (viewMode !== "snake" || busy) return;
+            busy = true;
+            requestAnimationFrame(function () {
+              applyCS(parseInt(slider.value));
+              reRenderSnakes();
+              setTimeout(function () {
+                busy = false;
+              }, 150);
+            });
+          }
+          window.addEventListener("resize", onResize, { passive: true });
+          if (window.visualViewport) {
+            window.visualViewport.addEventListener("resize", onResize, {
+              passive: true,
+            });
+          }
+        })();
+
+        /* ── INIT ── */
+        (function () {
+          /* restore viewMode */
+          var savedView = localStorage.getItem(VK) || "table";
+          viewMode = savedView;
+          if (viewMode === "snake") {
+            btnView.classList.add("alt");
+            var ic = btnView.querySelector("i");
+            if (ic) ic.className = "fa-solid fa-worm";
+            applySnakeScrollMode();
+          }
+          /* restore collapsed — now targets panel-col */
+          if (localStorage.getItem(CK) === "1") {
+            var panelCol = document.getElementById("panel-col");
+            panelCol.classList.add("collapsed");
+            btnToggle.textContent = window.innerWidth <= 899 ? "▼" : "▶";
+          } else {
+            btnToggle.textContent = window.innerWidth <= 899 ? "▲" : "◀";
+          }
+        })();
+
+        resetForm();
+        /* apply lang UI labels after form reset (resetForm calls syncMode which sets placeholder) */
+        applyLangUI();
+        renderAll();
+
+        /* cell size knob */
+        (function () {
+          var slider = document.getElementById("cell-size-slider");
+          var valLabel = document.getElementById("cell-size-val");
+          var saved = parseInt(localStorage.getItem(CSK)) || 64;
+          slider.value = saved;
+          applyCS(saved);
+          function applyCS(px) {
+            /* Responsive: snake modda ekrana göre max sınır */
+            var w = window.innerWidth;
+            var maxPx = px;
+            if (viewMode === "snake") {
+              if (w <= 350) maxPx = Math.min(px, 85);
+              else if (w <= 400) maxPx = Math.min(px, 90);
+              else if (w <= 480) maxPx = Math.min(px, 95);
+            }
+            document.documentElement.style.setProperty("--cs", maxPx + "px");
+            /* Yılan modu: kare kenarının 1.27 katı çap */
+            document.documentElement.style.setProperty(
+              "--cs-snake",
+              Math.round(maxPx * 1.27) + "px",
+            );
+            valLabel.textContent = px;
+            var pct = Math.round(((px - 25) / (100 - 25)) * 100);
+            slider.style.setProperty("--pct", pct + "%");
+            localStorage.setItem(CSK, px);
+          }
+          slider.addEventListener("input", function () {
+            applyCS(parseInt(slider.value));
+            /* CSS var update needs a frame to propagate, then re-render */
+            requestAnimationFrame(function () {
+              requestAnimationFrame(function () {
+                reRenderSnakes();
+              });
+            });
+          });
+        })();
+      })();
+    </script>
+    <template id="help-content-tpl">
+      <h3 style="margin: 0 0 0.6rem; font-size: 1rem; color: var(--ctitle)">
+        🔗 Zinciri Kırma Yöntemi Nedir?
+      </h3>
+      <p style="margin: 0 0 0.7rem; line-height: 1.6; font-size: 0.88rem">
+        Zinciri Kırma (<em>Don't Break the Chain</em>), Jerry Seinfeld'e
+        atfedilen bir üretkenlik ve alışkanlık oluşturma tekniğidir. Temel fikir
+        son derece basittir: her gün hedefinizi gerçekleştirdiğinizde o günü
+        işaretlersiniz. Günler üst üste gelince bir "zincir" oluşur — ve o
+        zinciri kırmamalısınız.
+      </p>
+      <h4 style="margin: 0 0 0.4rem; font-size: 0.9rem; color: var(--ctitle)">
+        Nasıl Çalışır?
+      </h4>
+      <ol
+        style="
+          margin: 0 0 0.7rem;
+          padding-left: 1.2rem;
+          line-height: 1.7;
+          font-size: 0.88rem;
+        "
+      >
+        <li>
+          <strong>Bir hedef belirleyin.</strong> "Her gün 30 dakika okuyacağım"
+          gibi somut ve günlük yapılabilir bir hedef seçin.
+        </li>
+        <li>
+          <strong>Takvim veya halka listesi oluşturun.</strong> Bu uygulamada
+          takvimli ya da adım bazlı zincirler oluşturabilirsiniz.
+        </li>
+        <li>
+          <strong>Her gün yapın ve işaretleyin.</strong> Hedefinizi
+          tamamladığınız her gün halkayı ✕ ile işaretleyin.
+        </li>
+        <li>
+          <strong>Zinciri kırmayın.</strong> Birbirini izleyen işaretler görsel
+          bir motivasyon oluşturur. Uzun bir zinciri kırmak istemezsiniz.
+        </li>
+      </ol>
+      <h4 style="margin: 0 0 0.4rem; font-size: 0.9rem; color: var(--ctitle)">
+        Neden İşe Yarar?
+      </h4>
+      <ul
+        style="
+          margin: 0 0 0.7rem;
+          padding-left: 1.2rem;
+          line-height: 1.7;
+          font-size: 0.88rem;
+        "
+      >
+        <li>
+          Küçük günlük adımları görünür kılar, soyut hedefleri somutlaştırır.
+        </li>
+        <li>
+          Devamlılık hissi oluşturur; her yeni halka öncekine değer katar.
+        </li>
+        <li>Sonuca değil <em>sürece</em> odaklanmayı sağlar.</li>
+        <li>
+          Kaçırılan günlerde motivasyonu yeniden bulmayı kolaylaştırır — bir
+          halka boş kalabilir, ama zinciri tamamen terk etmeyin.
+        </li>
+      </ul>
+      <h4 style="margin: 0 0 0.4rem; font-size: 0.9rem; color: var(--ctitle)">
+        Uygulama İpuçları
+      </h4>
+      <ul
+        style="
+          margin: 0 0 0.5rem;
+          padding-left: 1.2rem;
+          line-height: 1.7;
+          font-size: 0.88rem;
+        "
+      >
+        <li>
+          <strong>Takvimli mod:</strong> Belirli tarih aralığı ve günlerde
+          tekrar eden alışkanlıklar için. Kitap okuma, egzersiz, meditasyon…
+        </li>
+        <li>
+          <strong>Tarihsiz mod:</strong> Toplam hedef ve kademe sayısı
+          belirlersiniz. 210 sayfalık kitap için 7 halka → her halka 30 sayfa.
+        </li>
+        <li>
+          Halkaya sağ tıklayarak (veya uzun basarak) not ekleyebilirsiniz.
+        </li>
+        <li>Yedek al / yükle ile verilerinizi yedekleyin.</li>
+      </ul>
+    </template>
+  </body>
+</html>
