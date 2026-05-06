@@ -31,12 +31,16 @@
     <meta name="twitter:description" content="Her gün hedefini tamamla, zinciri kırma. Ücretsiz alışkanlık takip uygulaması." />
     <meta name="twitter:image" content="https://zincirikirma.org/og-image.png" />
 
-    <!-- ── Favicon ── -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <!-- ── Favicon (her cihaz için) ── -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- ── Tema rengi (mobil tarayıcı barı) ── -->
-    <meta name="theme-color" content="#789f96" />
+    <meta name="theme-color" content="#e85d5d" />
 
     <!-- ── JSON-LD: Google'a uygulama olduğunu söyler ── -->
     <script type="application/ld+json">
@@ -676,13 +680,16 @@
       body::before {
         display: none !important;
       }
-      body.bg-off .chain-card::before {
+      body.bg-off .chain-card::before,
+      body.bg-off #panel::before {
         display: none;
       }
-      .chain-card {
+      .chain-card,
+      #panel {
         position: relative;
       }
-      .chain-card::before {
+      .chain-card::before,
+      #panel::before {
         content: "";
         position: absolute;
         top: 0;
@@ -700,6 +707,20 @@
         opacity: 0.5;
         pointer-events: none;
         z-index: 0;
+      }
+      /* Panel için zincir görselini 90° dikey döndür */
+      #panel::before {
+        /* width ile height'ı swap edip rotate edince dikey görünür */
+        top: 50%;
+        left: 50%;
+        width: 200vh;
+        height: 245px;
+        transform: translate(-50%, -50%) rotate(90deg);
+        transform-origin: center center;
+        -webkit-mask-repeat: repeat-x;
+        -webkit-mask-size: auto 100%;
+        mask-repeat: repeat-x;
+        mask-size: auto 100%;
       }
 
       /* ── DESKTOP (≥900px): yatay iki kolon ── */
@@ -798,6 +819,12 @@
         border-radius: 0.2rem 0.65rem;
         padding: 0.55rem 0.4rem 0.75rem 0.4rem;
         width: 245px;
+        overflow: hidden;
+      }
+      /* Panel içeriği zincir arkaplanının üstünde kalsın */
+      #panel > * {
+        position: relative;
+        z-index: 1;
       }
 
       /* ── TOGGLE BUTTON ── */
@@ -2428,6 +2455,7 @@
             rowLbl: "Satır:",
             colLbl: "Sütun:",
             ringLbl: "Toplam halka:",
+            ringHint: "halka",
             btnAdd: "Oluştur",
             btnLoad: "Yükle",
             btnDl: "Yedek",
@@ -2507,6 +2535,7 @@
             rowLbl: "Rows:",
             colLbl: "Cols:",
             ringLbl: "Total rings:",
+            ringHint: "rings",
             btnAdd: "Create",
             btnLoad: "Import",
             btnDl: "Backup",
@@ -2545,7 +2574,7 @@
             loadOk: "Backup loaded successfully.",
             viewTable: "Table",
             viewSnake: "Snake",
-            appTitle: "Break the Chain!",
+            appTitle: "Don't Break the Chain!",
             chainBtnDel: "Delete",
             chainBtnNote: "Note",
             notesSummary: "Notes",
@@ -2789,6 +2818,10 @@
             tab.textContent = label;
             tab.title = nm || T.chainTabLabel;
           });
+          /* Form içindeki dinamik metinleri (layout-info, halka chip hint) güncelle */
+          if (typeof updateCount === "function") {
+            try { updateCount(); } catch(e) {}
+          }
         }
         function setTxt(elId, txt) {
           var el = id(elId);
@@ -2863,7 +2896,7 @@
           });
           /* auto-hint güncelle */
           var hint = id("step-auto-hint");
-          if (hint) hint.textContent = steps.length + " halka";
+          if (hint) hint.textContent = steps.length + " " + (t().ringHint || "halka");
         }
 
         /* ── LAYOUT ── */
