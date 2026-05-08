@@ -943,24 +943,31 @@
       .top-bar-group {
         display: flex;
         align-items: center;
-        gap: 0.3rem;
-        padding: 0.28rem 0.4rem;
+        gap: 0.25rem;
+        padding: 0.28rem 0.3rem;
         min-width: 0;
       }
       #top-bar-lang {
         border-right: 1px solid var(--hr-color);
       }
       .top-bar-controls {
-        gap: 0.4rem;
+        gap: 0.3rem;
         justify-content: center;
         flex-wrap: nowrap;
-        padding-left: 0.3rem;
+        padding-left: 0.25rem;
+        flex-shrink: 0;
       }
       .top-bar-lbl {
         font-size: 0.68rem;
         font-weight: 700;
         color: var(--lbl-color);
         white-space: nowrap;
+      }
+      /* Desktop-dar panelde Dil/Tema yazıları sığmıyor — sadece select kalır */
+      @media (min-width: 900px) {
+        .top-bar-lbl {
+          display: none;
+        }
       }
 
       #btn-view {
@@ -1029,12 +1036,24 @@
       }
       /* Sabit select genişlikleri: dil/tema seçimi top-bar layout'unu bozmasın */
       #lang-select {
-        width: 3rem;
+        width: 2.7rem;
         flex-shrink: 0;
       }
       #theme-select {
-        width: 5.5rem;
+        width: 4.6rem;
         flex-shrink: 0;
+      }
+      /* Mobil (panel geniş) — daha rahat genişlikler */
+      @media (max-width: 899px) {
+        #lang-select {
+          width: 3rem;
+        }
+        #theme-select {
+          width: 6rem;
+        }
+        #cell-size-slider {
+          width: 5.5rem;
+        }
       }
 
       #dated-fields {
@@ -2108,7 +2127,7 @@
       #cell-size-slider {
         -webkit-appearance: none;
         appearance: none;
-        width: 5.5rem;
+        width: 4rem;
         height: 0.45rem;
         background: linear-gradient(
           to right,
@@ -2154,6 +2173,12 @@
         opacity: 1;
         transition: opacity 0.2s;
       }
+      /* Kademeli görünüm: arka plan ne kadar belirginse, buton o kadar geri çekilir */
+      #btn-bg-toggle.bg-lvl-0 { opacity: 1; }
+      #btn-bg-toggle.bg-lvl-1 { opacity: 0.78; }
+      #btn-bg-toggle.bg-lvl-2 { opacity: 0.56; }
+      #btn-bg-toggle.bg-lvl-3 { opacity: 0.35; }
+      /* Eski class adı geriye dönük uyumluluk için */
       #btn-bg-toggle.bg-off {
         opacity: 0.35;
       }
@@ -4247,6 +4272,10 @@
             document.body.style.setProperty("--bg-chain-opacity", op);
             var off = op === 0;
             document.body.classList.toggle("bg-off", off);
+            /* Buton üzerinde kademeli class: bg-lvl-0..3 */
+            for (var i = 0; i < BG_LEVELS.length; i++) {
+              btnBgToggle.classList.toggle("bg-lvl-" + i, i === idx);
+            }
             btnBgToggle.classList.toggle("bg-off", off);
             localStorage.setItem(BGOK, String(idx));
             /* Geriye dönük: eski key'i de güncel tut */
