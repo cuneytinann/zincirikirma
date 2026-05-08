@@ -929,8 +929,9 @@
       /* ── TOP BAR: dil + tema + görünüm kontrolleri ── */
       #top-bar {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-around;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: stretch;
         gap: 0;
         margin: -0.55rem -0.4rem 0 -0.4rem;
         border-radius: 0.2rem 0.6rem 0 0;
@@ -943,7 +944,8 @@
         display: flex;
         align-items: center;
         gap: 0.3rem;
-        padding: 0.28rem 0.55rem;
+        padding: 0.28rem 0.4rem;
+        min-width: 0;
       }
       #top-bar-lang {
         border-right: 1px solid var(--hr-color);
@@ -1025,6 +1027,15 @@
         color: var(--inp-color);
         cursor: pointer;
       }
+      /* Sabit select genişlikleri: dil/tema seçimi top-bar layout'unu bozmasın */
+      #lang-select {
+        width: 3rem;
+        flex-shrink: 0;
+      }
+      #theme-select {
+        width: 5.5rem;
+        flex-shrink: 0;
+      }
 
       #dated-fields {
         display: flex;
@@ -1051,7 +1062,7 @@
       #panel-rows {
         display: flex;
         flex-direction: column;
-        gap: 0.55rem;
+        gap: 0.85rem;
       }
       .panel-row {
         display: flex;
@@ -1541,7 +1552,7 @@
       .btn-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.32rem;
+        gap: 0.6rem;
         margin-top: 0.42rem;
         justify-content: center;
       }
@@ -2219,6 +2230,24 @@
           <!-- ── BAŞLIK ── -->
           <div id="panel-head">
             <span class="main-title">Zinciri Kırma!</span>
+            <button
+              id="btn-help"
+              title="Yöntem hakkında bilgi"
+              style="
+                margin-left: 0.4rem;
+                font-size: 0.75rem;
+                width: 1.4rem;
+                height: 1.4rem;
+                padding: 0;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+                font-weight: 700;
+              "
+            >
+              ?
+            </button>
           </div>
           <hr />
           <!-- ── PANEL SATIRLARI — modüler ── -->
@@ -2363,28 +2392,29 @@
               </div>
             </div>
 
-            <!-- S11: Satır -->
-            <div class="panel-row" id="prow-rows">
-              <span class="lbl" id="lbl-rows">Satır:</span>
-              <input
-                id="inp-rows"
-                type="number"
-                min="1"
-                max="10080"
-                style="width: 4rem"
-              />
-            </div>
+            <!-- S11+S12: Satır + Sütun (mobilde yan yana, desktop'ta alt alta) -->
+            <div class="prow-pair" id="prow-rc-pair">
+              <div class="panel-row" id="prow-rows">
+                <span class="lbl" id="lbl-rows">Satır:</span>
+                <input
+                  id="inp-rows"
+                  type="number"
+                  min="1"
+                  max="10080"
+                  style="width: 4rem"
+                />
+              </div>
 
-            <!-- S12: Sütun -->
-            <div class="panel-row" id="prow-cols">
-              <span class="lbl" id="lbl-cols">Sütun:</span>
-              <input
-                id="inp-cols"
-                type="number"
-                min="1"
-                max="10080"
-                style="width: 4rem"
-              />
+              <div class="panel-row" id="prow-cols">
+                <span class="lbl" id="lbl-cols">Sütun:</span>
+                <input
+                  id="inp-cols"
+                  type="number"
+                  min="1"
+                  max="10080"
+                  style="width: 4rem"
+                />
+              </div>
             </div>
 
             <!-- S13: Layout bilgisi -->
@@ -2490,6 +2520,7 @@
             btnReset: "Temizle",
             errName: "Zincir adı gerekli.",
             errNameDup: "Bu adda bir zincir zaten var.",
+            errNameReserved: "Bu zincir adı kullanılamaz.",
             errAtLeast: "En az 1 gün seçin.",
             dayNames: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"],
             dayNamesFull: [
@@ -2571,6 +2602,7 @@
             btnReset: "Clear",
             errName: "Chain name is required.",
             errNameDup: "A chain with this name already exists.",
+            errNameReserved: "This chain name is not allowed.",
             errAtLeast: "Select at least 1 day.",
             dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
             dayNamesFull: [
@@ -3921,6 +3953,12 @@
           inpName.classList.remove("input-error");
           if (!inpName.value.trim()) {
             showErr(errName, t().errName);
+            inpName.classList.add("input-error");
+            inpName.focus();
+            ok = false;
+          } else if (inpName.value.trim() === "?") {
+            /* "?" yardım sembolüyle karışmaması için yasak */
+            showErr(errName, t().errNameReserved);
             inpName.classList.add("input-error");
             inpName.focus();
             ok = false;
