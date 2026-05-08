@@ -704,7 +704,7 @@
         mask-repeat: repeat-y;
         mask-size: 100% auto;
         mask-position: left top;
-        opacity: 0.5;
+        opacity: var(--bg-chain-opacity, 0.3);
         pointer-events: none;
         z-index: 0;
       }
@@ -808,6 +808,49 @@
           padding-left: 0;
           height: auto;
           overflow: visible;
+        }
+      }
+
+      /* ── PROW-PAIR: desktop'ta alt alta (transparent), mobilde yan yana ── */
+      .prow-pair {
+        display: contents;
+      }
+
+      /* ── MOBILE (≤899px): panel geniş, içerik daha açık düzende ── */
+      @media (max-width: 899px) {
+        /* 1) Top-bar: dil/tema/görünüm hep tek satır */
+        #top-bar {
+          flex-wrap: nowrap;
+          justify-content: space-between;
+        }
+        /* 2) Hedefim: alçak ve geniş (1 satır yüksekliği) */
+        #inp-name {
+          min-height: 2.2rem;
+          max-height: 2.4rem;
+        }
+        /* 3) Tarih/sayı çiftleri: yan yana */
+        .prow-pair {
+          display: flex;
+          flex-wrap: nowrap;
+          gap: 0.55rem;
+        }
+        .prow-pair > .panel-row {
+          flex: 1 1 0;
+          min-width: 0;
+        }
+        /* 4) Günler: 7 gün tek satırda — orta break div'i gizle */
+        #prow-days > div[style*="flex-basis"] {
+          display: none;
+        }
+        #prow-days {
+          flex-wrap: nowrap;
+        }
+        /* 5) Butonlar: 4'ü yan yana — orta break gizle */
+        .btn-row-break {
+          display: none;
+        }
+        .btn-row {
+          flex-wrap: nowrap;
         }
       }
 
@@ -2176,24 +2219,6 @@
           <!-- ── BAŞLIK ── -->
           <div id="panel-head">
             <span class="main-title">Zinciri Kırma!</span>
-            <button
-              id="btn-help"
-              title="Yöntem hakkında bilgi"
-              style="
-                margin-left: 0.4rem;
-                font-size: 0.75rem;
-                width: 1.4rem;
-                height: 1.4rem;
-                padding: 0;
-                border-radius: 50%;
-                display: grid;
-                place-items: center;
-                flex-shrink: 0;
-                font-weight: 700;
-              "
-            >
-              ?
-            </button>
           </div>
           <hr />
           <!-- ── PANEL SATIRLARI — modüler ── -->
@@ -2241,16 +2266,17 @@
 
             <!-- Takvimli mod alanları -->
             <div id="dated-fields">
-              <!-- S6: Başlangıç -->
-              <div class="panel-row" id="prow-start">
-                <span class="lbl" id="lbl-start">Başlangıç:</span>
-                <input id="inp-start" type="date" />
-              </div>
-              <!-- S7: Bitiş -->
-              <div class="panel-row" id="prow-end">
-                <span class="lbl" id="lbl-end">Bitiş:</span>
-                <input id="inp-end" type="date" />
-                <span id="err-date" class="err"></span>
+              <!-- S6+S7: Başlangıç + Bitiş (mobilde yan yana, desktop'ta alt alta) -->
+              <div class="prow-pair" id="prow-dates">
+                <div class="panel-row" id="prow-start">
+                  <span class="lbl" id="lbl-start">Başlangıç:</span>
+                  <input id="inp-start" type="date" />
+                </div>
+                <div class="panel-row" id="prow-end">
+                  <span class="lbl" id="lbl-end">Bitiş:</span>
+                  <input id="inp-end" type="date" />
+                  <span id="err-date" class="err"></span>
+                </div>
               </div>
               <!-- S8+S9: Günler (tek div, iki satır) -->
               <div class="panel-row" id="prow-days">
@@ -2290,30 +2316,31 @@
 
             <!-- Tarihsiz mod alanları -->
             <div id="count-fields" style="display: none">
-              <!-- SC1: Hedef -->
-              <div class="panel-row" id="prow-total">
-                <span class="lbl" id="lbl-total">Hedef:</span>
-                <input
-                  id="inp-total"
-                  type="number"
-                  min="1"
-                  max="10080"
-                  value="210"
-                  style="width: 5rem"
-                />
-              </div>
-              <!-- SC2: Halka -->
-              <div class="panel-row" id="prow-rings-count">
-                <span class="lbl" id="lbl-rings-count">Halka:</span>
-                <input
-                  id="inp-rings-count"
-                  type="number"
-                  min="1"
-                  max="10080"
-                  value="7"
-                  style="width: 4rem"
-                />
-                <span class="hint" id="step-auto-hint" style="margin-left: 0.3rem"></span>
+              <!-- SC1+SC2: Hedef + Halka (mobilde yan yana, desktop'ta alt alta) -->
+              <div class="prow-pair" id="prow-count-pair">
+                <div class="panel-row" id="prow-total">
+                  <span class="lbl" id="lbl-total">Hedef:</span>
+                  <input
+                    id="inp-total"
+                    type="number"
+                    min="1"
+                    max="10080"
+                    value="210"
+                    style="width: 5rem"
+                  />
+                </div>
+                <div class="panel-row" id="prow-rings-count">
+                  <span class="lbl" id="lbl-rings-count">Halka:</span>
+                  <input
+                    id="inp-rings-count"
+                    type="number"
+                    min="1"
+                    max="10080"
+                    value="7"
+                    style="width: 4rem"
+                  />
+                  <span class="hint" id="step-auto-hint" style="margin-left: 0.3rem"></span>
+                </div>
               </div>
               <!-- SC3+SC4: Özel adımlar + göstergesi (tek div) -->
               <div class="panel-row" id="prow-step">
@@ -2434,7 +2461,8 @@
           LK = "zkm2_lang",
           CK = "zkm2_collapsed",
           CSK = "zkm2_cellsize",
-          BGK = "zkm2_bgvis";
+          BGK = "zkm2_bgvis",
+          BGOK = "zkm2_bgopacity";
 
         /* ── I18N ── */
         var LANGS = {
@@ -2461,6 +2489,7 @@
             btnDl: "Yedek",
             btnReset: "Temizle",
             errName: "Zincir adı gerekli.",
+            errNameDup: "Bu adda bir zincir zaten var.",
             errAtLeast: "En az 1 gün seçin.",
             dayNames: ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"],
             dayNamesFull: [
@@ -2541,6 +2570,7 @@
             btnDl: "Backup",
             btnReset: "Clear",
             errName: "Chain name is required.",
+            errNameDup: "A chain with this name already exists.",
             errAtLeast: "Select at least 1 day.",
             dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
             dayNamesFull: [
@@ -3894,6 +3924,23 @@
             inpName.classList.add("input-error");
             inpName.focus();
             ok = false;
+          } else {
+            /* Aynı adlı zincir var mı? (boşluk farkı/case yoksay) */
+            var newName = inpName.value.trim().toLowerCase();
+            var existing = gs().items;
+            for (var eid in existing) {
+              if (
+                existing[eid] &&
+                existing[eid].name &&
+                existing[eid].name.trim().toLowerCase() === newName
+              ) {
+                showErr(errName, t().errNameDup);
+                inpName.classList.add("input-error");
+                inpName.focus();
+                ok = false;
+                break;
+              }
+            }
           }
           if (kind === "dated") {
             if (!inpStart.value || !inpEnd.value) {
@@ -4150,15 +4197,27 @@
         }
 
         if (btnBgToggle) {
-          /* Restore bg visibility state */
-          if (localStorage.getItem(BGK) === "0") {
-            document.body.classList.add("bg-off");
-            btnBgToggle.classList.add("bg-off");
+          /* 4 seviyeli opacity döngüsü: 0.3 -> 0.6 -> 0.9 -> 0 -> 0.3 ... */
+          var BG_LEVELS = [0.3, 0.6, 0.9, 0];
+          var bgLevel = parseInt(localStorage.getItem(BGOK), 10);
+          if (isNaN(bgLevel) || bgLevel < 0 || bgLevel >= BG_LEVELS.length) {
+            /* Eski 0/1 key'inden migrate: "0" -> kapalı (idx 3), diğer -> default (idx 0) */
+            bgLevel = localStorage.getItem(BGK) === "0" ? 3 : 0;
           }
-          btnBgToggle.addEventListener("click", function () {
-            var off = document.body.classList.toggle("bg-off");
+          function applyBgLevel(idx) {
+            var op = BG_LEVELS[idx];
+            document.body.style.setProperty("--bg-chain-opacity", op);
+            var off = op === 0;
+            document.body.classList.toggle("bg-off", off);
             btnBgToggle.classList.toggle("bg-off", off);
+            localStorage.setItem(BGOK, String(idx));
+            /* Geriye dönük: eski key'i de güncel tut */
             localStorage.setItem(BGK, off ? "0" : "1");
+          }
+          applyBgLevel(bgLevel);
+          btnBgToggle.addEventListener("click", function () {
+            bgLevel = (bgLevel + 1) % BG_LEVELS.length;
+            applyBgLevel(bgLevel);
           });
         }
         for (var i = 0; i < kindRadios.length; i++)
